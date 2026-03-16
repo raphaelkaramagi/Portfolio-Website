@@ -63,9 +63,12 @@ export default function ProjectPage() {
   }
 
   useLayoutEffect(() => {
-    ScrollTrigger.getAll().forEach((t) => {
-      if (t.pin) t.kill()
-    })
+    ScrollTrigger.getAll().forEach((t) => t.kill())
+    gsap.set('.footer-content', { clearProps: 'all' })
+    window.scrollTo(0, 0)
+  }, [slug])
+
+  useEffect(() => {
     window.scrollTo(0, 0)
   }, [slug])
 
