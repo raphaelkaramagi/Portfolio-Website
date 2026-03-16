@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: #F5F3EE;
+    color: #111111;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: #E63B2E;
+    color: #F5F3EE;
+  }
+}
+
+/* Global noise overlay via SVG feTurbulence */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.05;
+}
+
+/* Smooth scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #E8E4DD;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #111111;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #E63B2E;
+}
+
+/* Utility animation classes for GSAP targets */
+.fade-up {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.word-reveal span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(100%);
+}
