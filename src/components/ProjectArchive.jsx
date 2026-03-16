@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ArrowRight } from 'lucide-react'
 import { projects } from '../data/projects'
+import { hasPlayedHomeIntro } from '../lib/animationState'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -103,6 +104,8 @@ export default function ProjectArchive() {
   const sectionRef = useRef(null)
 
   useEffect(() => {
+    if (hasPlayedHomeIntro) return
+
     const ctx = gsap.context(() => {
       gsap.from('.archive-header', {
         scrollTrigger: {

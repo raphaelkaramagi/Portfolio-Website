@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Brain, Cpu, Globe } from 'lucide-react'
+import { hasPlayedHomeIntro } from '../lib/animationState'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -198,6 +199,8 @@ export default function Domains() {
   const sectionRef = useRef(null)
 
   useEffect(() => {
+    if (hasPlayedHomeIntro) return
+
     const ctx = gsap.context(() => {
       gsap.from('.about-header', {
         scrollTrigger: {

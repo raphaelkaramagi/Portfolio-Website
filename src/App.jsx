@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { Analytics } from '@vercel/analytics/react'
 import Navbar from './components/Navbar'
@@ -8,11 +8,35 @@ import ProjectArchive from './components/ProjectArchive'
 import ProjectPage from './components/ProjectPage'
 import Footer from './components/Footer'
 
-function ScrollToTop() {
+const homeScrollY = { current: 0 }
+
+function ScrollManager() {
   const { pathname } = useLocation()
+  const prevPath = useRef(pathname)
+
   useEffect(() => {
-    window.scrollTo(0, 0)
+    history.scrollRestoration = 'manual'
+  }, [])
+
+  useLayoutEffect(() => {
+    const prev = prevPath.current
+    prevPath.current = pathname
+    if (prev === pathname) return
+
+    if (pathname === '/' && prev !== '/') {
+      window.scrollTo(0, homeScrollY.current)
+    } else {
+      window.scrollTo(0, 0)
+    }
   }, [pathname])
+
+  useEffect(() => {
+    if (pathname !== '/') return
+    const saveScroll = () => { homeScrollY.current = window.scrollY }
+    window.addEventListener('scroll', saveScroll, { passive: true })
+    return () => window.removeEventListener('scroll', saveScroll)
+  }, [pathname])
+
   return null
 }
 
@@ -29,7 +53,7 @@ function HomePage() {
 export default function App() {
   return (
     <>
-      <ScrollToTop />
+      <ScrollManager />
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />

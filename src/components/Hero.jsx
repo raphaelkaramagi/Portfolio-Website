@@ -1,13 +1,19 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ArrowDown } from 'lucide-react'
+import { hasPlayedHomeIntro, markHomeIntroPlayed } from '../lib/animationState'
 
 export default function Hero() {
   const heroRef = useRef(null)
 
   useEffect(() => {
+    if (hasPlayedHomeIntro) return
+
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ delay: 0.6 })
+      const tl = gsap.timeline({
+        delay: 0.6,
+        onComplete: markHomeIntroPlayed,
+      })
 
       tl.from('.hero-line-1', {
         y: 60,

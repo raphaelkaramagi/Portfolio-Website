@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import gsap from 'gsap'
-import { ArrowLeft, ImageIcon } from 'lucide-react'
+import { ArrowLeft, Github, ImageIcon, ChevronDown } from 'lucide-react'
 import { projects } from '../data/projects'
 
 const statusColors = {
@@ -10,10 +10,17 @@ const statusColors = {
   Planned: 'bg-dark/8 text-dark/60 border-dark/15',
 }
 
+const VISIBLE_COUNT = 3
+
 export default function ProjectPage() {
   const { slug } = useParams()
   const pageRef = useRef(null)
   const project = projects.find((p) => p.slug === slug)
+  const [expanded, setExpanded] = useState(false)
+
+  useEffect(() => {
+    setExpanded(false)
+  }, [slug])
 
   useEffect(() => {
     if (!pageRef.current) return
@@ -48,14 +55,13 @@ export default function ProjectPage() {
     )
   }
 
-  const placeholderImages = project.images.length > 0
-    ? project.images
-    : [null, null, null]
+  const hasImages = project.images.length > 0
+  const hasMany = project.images.length > VISIBLE_COUNT
+  const visibleImages = expanded ? project.images : project.images.slice(0, VISIBLE_COUNT)
 
   return (
     <div ref={pageRef} className="min-h-[100dvh] pt-32 pb-24 px-6 sm:px-12">
       <div className="max-w-4xl mx-auto">
-        {/* Back link */}
         <Link
           to="/"
           className="proj-animate inline-flex items-center gap-2 font-mono text-sm text-dark/50 hover:text-signal transition-colors duration-300 mb-12"
@@ -64,7 +70,6 @@ export default function ProjectPage() {
           Back to all projects
         </Link>
 
-        {/* Header */}
         <div className="proj-animate flex items-start justify-between flex-wrap gap-4 mb-4">
           <span className="font-mono text-6xl sm:text-8xl font-bold text-dark/6 leading-none">
             {project.number}
@@ -82,8 +87,7 @@ export default function ProjectPage() {
           {project.title}
         </h1>
 
-        {/* Tech stack */}
-        <div className="proj-animate flex flex-wrap gap-2 mb-10">
+        <div className="proj-animate flex flex-wrap items-center gap-2 mb-10">
           {project.stack.map((tech) => (
             <span
               key={tech}
@@ -92,9 +96,20 @@ export default function ProjectPage() {
               {tech}
             </span>
           ))}
+          {project.repoUrl && (
+            <a
+              href={project.repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 font-mono text-xs bg-dark text-offwhite px-4 py-1.5 rounded-full
+                hover:bg-signal transition-colors duration-300 ml-1"
+            >
+              <Github className="w-3.5 h-3.5" />
+              Repository
+            </a>
+          )}
         </div>
 
-        {/* Long description */}
         <div className="proj-animate mb-16">
           {project.longDescription.split('\n\n').map((paragraph, i) => (
             <p
@@ -106,34 +121,33 @@ export default function ProjectPage() {
           ))}
         </div>
 
-        {/* Image gallery */}
-        <div className="proj-animate">
-          <h2 className="font-grotesk text-xl font-semibold text-dark mb-6">
-            Gallery
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {placeholderImages.map((img, i) =>
-              img ? (
+        {hasImages && (
+          <div className="proj-animate">
+            <h2 className="font-grotesk text-xl font-semibold text-dark mb-6">
+              Gallery
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {visibleImages.map((img, i) => (
                 <img
                   key={i}
                   src={img}
                   alt={`${project.title} screenshot ${i + 1}`}
-                  className="w-full aspect-video object-cover rounded-[2rem] border border-dark/8"
+                  className="w-full aspect-video object-cover rounded-2xl border border-dark/8"
                 />
-              ) : (
-                <div
-                  key={i}
-                  className="w-full aspect-video bg-paper border border-dark/8 rounded-[2rem] flex flex-col items-center justify-center gap-3"
-                >
-                  <ImageIcon className="w-8 h-8 text-dark/15" />
-                  <span className="font-mono text-xs text-dark/25">
-                    Screenshot placeholder
-                  </span>
-                </div>
-              )
+              ))}
+            </div>
+            {hasMany && !expanded && (
+              <button
+                onClick={() => setExpanded(true)}
+                className="mt-6 mx-auto flex items-center gap-2 font-mono text-sm text-dark/50
+                  hover:text-signal transition-colors duration-300"
+              >
+                Show all {project.images.length} images
+                <ChevronDown className="w-4 h-4" />
+              </button>
             )}
           </div>
-        </div>
+        )}
       </div>
     </div>
   )

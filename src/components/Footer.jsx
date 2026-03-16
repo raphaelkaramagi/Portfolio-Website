@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { Github, Linkedin, Mail } from 'lucide-react'
@@ -25,8 +26,21 @@ const links = [
 
 export default function Footer() {
   const footerRef = useRef(null)
+  const { pathname } = useLocation()
 
   useEffect(() => {
+    const el = footerRef.current
+    if (!el) return
+
+    const content = el.querySelector('.footer-content')
+    if (content) {
+      gsap.set(content, { clearProps: 'all' })
+    }
+
+    const timer = requestAnimationFrame(() => {
+      ScrollTrigger.refresh()
+    })
+
     const ctx = gsap.context(() => {
       gsap.from('.footer-content', {
         scrollTrigger: {
@@ -41,8 +55,11 @@ export default function Footer() {
       })
     }, footerRef)
 
-    return () => ctx.revert()
-  }, [])
+    return () => {
+      cancelAnimationFrame(timer)
+      ctx.revert()
+    }
+  }, [pathname])
 
   return (
     <footer
@@ -51,7 +68,6 @@ export default function Footer() {
     >
       <div className="footer-content max-w-7xl mx-auto px-6 sm:px-12 py-16 sm:py-24">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
-          {/* Name block */}
           <div>
             <h3 className="font-grotesk text-2xl sm:text-3xl font-bold text-offwhite mb-3">
               Raphael
@@ -64,7 +80,6 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Links */}
           <div className="flex flex-col gap-4">
             <span className="font-mono text-xs text-paper/30 tracking-widest uppercase mb-2">
               Connect
@@ -86,7 +101,6 @@ export default function Footer() {
             ))}
           </div>
 
-          {/* Status indicator */}
           <div className="flex flex-col items-start md:items-end justify-between">
             <div className="flex items-center gap-3 mb-6">
               <span className="relative flex h-3 w-3">
@@ -104,7 +118,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom rule */}
         <div className="mt-16 pt-8 border-t border-paper/8 flex flex-wrap items-center justify-between gap-4">
           <span className="font-mono text-xs text-paper/20">
             Built with precision — React, GSAP, Tailwind
