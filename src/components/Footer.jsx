@@ -29,18 +29,6 @@ export default function Footer() {
   const { pathname } = useLocation()
 
   useEffect(() => {
-    const el = footerRef.current
-    if (!el) return
-
-    const content = el.querySelector('.footer-content')
-    if (content) {
-      gsap.set(content, { clearProps: 'all' })
-    }
-
-    const timer = requestAnimationFrame(() => {
-      ScrollTrigger.refresh()
-    })
-
     const ctx = gsap.context(() => {
       gsap.from('.footer-content', {
         scrollTrigger: {
@@ -55,10 +43,7 @@ export default function Footer() {
       })
     }, footerRef)
 
-    return () => {
-      cancelAnimationFrame(timer)
-      ctx.revert()
-    }
+    return () => ctx.revert()
   }, [pathname])
 
   return (

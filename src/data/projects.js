@@ -10,7 +10,7 @@ export const projects = [
     longDescription:
       'DAML is a stock movement prediction system that fuses two distinct ML approaches. The first model is a price-based LSTM trained on 60-day windowed technical indicators. The second is a FinBERT NLP model that scores financial headlines for sentiment. An ensemble layer combines both signals to predict next-day movement.\n\nThe project is roughly halfway complete — the LSTM price model and the Finnhub data ingestion pipeline are working, and the FinBERT sentiment component is currently being integrated.',
     repoUrl: 'https://github.com/raphaelkaramagi/news-to-alpha',
-    images: [],
+    images: ['/projects/portfolio1.png', '/projects/portfolio2.png', '/projects/portfolio3.png', '/projects/portfolio4.png'],
   },
   {
     number: '02',

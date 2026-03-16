@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 const RESUME_URL =
   'https://docs.google.com/document/d/e/2PACX-1vTAwbKjKBeitz8um71lzTx__5dS8nAPpiRBLBeJJi7IFbsKAVBI9r3_3eO0YEolfw/pub'
@@ -25,13 +25,17 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  const navigate = useNavigate()
+
   const handleNavClick = (e, link) => {
     if (link.external) return
     if (link.href.startsWith('/#')) {
+      e.preventDefault()
+      const id = link.href.replace('/#', '')
       if (location.pathname === '/') {
-        e.preventDefault()
-        const id = link.href.replace('/#', '')
         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+      } else {
+        navigate('/#' + id)
       }
     }
   }

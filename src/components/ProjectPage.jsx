@@ -63,7 +63,7 @@ export default function ProjectPage() {
     <div ref={pageRef} className="min-h-[100dvh] pt-32 pb-24 px-6 sm:px-12">
       <div className="max-w-4xl mx-auto">
         <Link
-          to="/"
+          to="/#projects"
           className="proj-animate inline-flex items-center gap-2 font-mono text-sm text-dark/50 hover:text-signal transition-colors duration-300 mb-12"
         >
           <ArrowLeft className="w-4 h-4" />
