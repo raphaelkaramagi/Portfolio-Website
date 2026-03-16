@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
+import { Analytics } from '@vercel/analytics/react'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Domains from './components/Domains'
@@ -35,6 +36,7 @@ export default function App() {
         <Route path="/projects/:slug" element={<ProjectPage />} />
       </Routes>
       <Footer />
+      <Analytics />
     </>
   )
 }
