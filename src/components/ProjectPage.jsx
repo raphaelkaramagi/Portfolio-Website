@@ -15,11 +15,52 @@ const statusColors = {
 
 const VISIBLE_COUNT = 3
 
+function Lightbox({ src, overlayRef, imgRef, onClose }) {
+  useEffect(() => {
+    const overlay = overlayRef.current
+    const img = imgRef.current
+    if (!overlay || !img) return
+    gsap.set(overlay, { opacity: 0 })
+    gsap.set(img, { scale: 0.85, opacity: 0 })
+    const tl = gsap.timeline()
+    tl.to(overlay, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 0)
+    tl.to(img, { scale: 1, opacity: 1, duration: 0.4, ease: 'power3.out' }, 0.05)
+  }, [])
+
+  return (
+    <div
+      ref={overlayRef}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <img
+        ref={imgRef}
+        src={src}
+        alt="Enlarged view"
+        onClick={(e) => e.stopPropagation()}
+        className="max-w-[90vw] max-h-[85vh] object-contain rounded-2xl"
+      />
+    </div>
+  )
+}
+
 export default function ProjectPage() {
   const { slug } = useParams()
   const pageRef = useRef(null)
   const project = projects.find((p) => p.slug === slug)
   const [expanded, setExpanded] = useState(false)
+  const [lightboxImg, setLightboxImg] = useState(null)
+  const overlayRef = useRef(null)
+  const lightboxImgRef = useRef(null)
+
+  const closeLightbox = () => {
+    const overlay = overlayRef.current
+    const img = lightboxImgRef.current
+    if (!overlay || !img) { setLightboxImg(null); return }
+    const tl = gsap.timeline({ onComplete: () => setLightboxImg(null) })
+    tl.to(img, { scale: 0.85, opacity: 0, duration: 0.25, ease: 'power2.in' }, 0)
+    tl.to(overlay, { opacity: 0, duration: 0.3, ease: 'power2.in' }, 0)
+  }
 
   useLayoutEffect(() => {
     ScrollTrigger.getAll().forEach((t) => {
@@ -45,6 +86,17 @@ export default function ProjectPage() {
     }, pageRef)
     return () => ctx.revert()
   }, [slug])
+
+  useEffect(() => {
+    if (!lightboxImg) return
+    document.body.style.overflow = 'hidden'
+    const onKey = (e) => { if (e.key === 'Escape') closeLightbox() }
+    window.addEventListener('keydown', onKey)
+    return () => {
+      document.body.style.overflow = ''
+      window.removeEventListener('keydown', onKey)
+    }
+  }, [lightboxImg])
 
   if (!project) {
     return (
@@ -142,7 +194,9 @@ export default function ProjectPage() {
                   key={i}
                   src={img}
                   alt={`${project.title} screenshot ${i + 1}`}
-                  className="w-full aspect-video object-cover rounded-2xl border border-dark/8"
+                  onClick={() => setLightboxImg(img)}
+                  className="w-full aspect-video object-cover rounded-2xl border border-dark/8 cursor-pointer
+                    hover:scale-[1.02] transition-transform duration-300"
                 />
               ))}
             </div>
@@ -159,6 +213,15 @@ export default function ProjectPage() {
           </div>
         )}
       </div>
+
+      {lightboxImg && (
+        <Lightbox
+          src={lightboxImg}
+          overlayRef={overlayRef}
+          imgRef={lightboxImgRef}
+          onClose={closeLightbox}
+        />
+      )}
     </div>
   )
 }
