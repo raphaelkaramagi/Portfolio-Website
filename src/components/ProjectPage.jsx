@@ -1,8 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import gsap from 'gsap'
-import { ArrowLeft, Github, ImageIcon, ChevronDown } from 'lucide-react'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ArrowLeft, Github, ImageIcon, ChevronDown, ChevronUp } from 'lucide-react'
 import { projects } from '../data/projects'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const statusColors = {
   Ongoing: 'bg-signal/15 text-signal border-signal/30',
@@ -17,6 +20,13 @@ export default function ProjectPage() {
   const pageRef = useRef(null)
   const project = projects.find((p) => p.slug === slug)
   const [expanded, setExpanded] = useState(false)
+
+  useLayoutEffect(() => {
+    ScrollTrigger.getAll().forEach((t) => {
+      if (t.pin) t.kill()
+    })
+    window.scrollTo(0, 0)
+  }, [slug])
 
   useEffect(() => {
     setExpanded(false)
@@ -63,11 +73,11 @@ export default function ProjectPage() {
     <div ref={pageRef} className="min-h-[100dvh] pt-32 pb-24 px-6 sm:px-12">
       <div className="max-w-4xl mx-auto">
         <Link
-          to="/#projects"
+          to="/"
           className="proj-animate inline-flex items-center gap-2 font-mono text-sm text-dark/50 hover:text-signal transition-colors duration-300 mb-12"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to all projects
+          Back to Home
         </Link>
 
         <div className="proj-animate flex items-start justify-between flex-wrap gap-4 mb-4">
@@ -136,14 +146,14 @@ export default function ProjectPage() {
                 />
               ))}
             </div>
-            {hasMany && !expanded && (
+            {hasMany && (
               <button
-                onClick={() => setExpanded(true)}
+                onClick={() => setExpanded(!expanded)}
                 className="mt-6 mx-auto flex items-center gap-2 font-mono text-sm text-dark/50
                   hover:text-signal transition-colors duration-300"
               >
-                Show all {project.images.length} images
-                <ChevronDown className="w-4 h-4" />
+                {expanded ? 'Show less' : `Show all ${project.images.length} images`}
+                {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
               </button>
             )}
           </div>

@@ -176,7 +176,7 @@ const domains = [
     icon: Brain,
     title: 'Applied Machine Learning',
     description:
-      'Building production-flavored models, from LSTM stock predictors to reinforcement learning agents.',
+      'Building production-ready models — from ASL gesture recognition systems and LSTM stock predictors to NLP sentiment analysis pipelines.',
     Component: TelemetryTypewriter,
   },
   {

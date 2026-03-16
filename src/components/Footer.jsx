@@ -60,8 +60,7 @@ export default function Footer() {
               Karamagi.
             </h3>
             <p className="font-grotesk text-sm text-paper/40 leading-relaxed max-w-xs">
-              ECE &amp; CS at Duke University. Building at the intersection of
-              intelligence and systems.
+              ECE &amp; CS at Duke University. 
             </p>
           </div>
 
@@ -105,7 +104,7 @@ export default function Footer() {
 
         <div className="mt-16 pt-8 border-t border-paper/8 flex flex-wrap items-center justify-between gap-4">
           <span className="font-mono text-xs text-paper/20">
-            Built with precision — React, GSAP, Tailwind
+            Built with precision.
           </span>
           <span className="font-mono text-xs text-paper/20">
             Durham, NC
