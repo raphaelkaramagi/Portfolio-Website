@@ -80,7 +80,7 @@ export default function Hero() {
             Architecture.
           </h1>
           <p className="hero-subtitle font-mono text-sm sm:text-base text-dark/50 max-w-lg mb-10 leading-relaxed">
-            Duke ECE/CS &apos;29. Focused on ML, Systems, and Full-Stack.
+            Duke Electrical Engineering and Computer Science &apos;29. Focused on Machine Learning, Systems, and Full-Stack.
           </p>
           <div className="hero-cta flex flex-wrap gap-4">
             <a
