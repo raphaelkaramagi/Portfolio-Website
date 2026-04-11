@@ -73,13 +73,13 @@ export default function Hero() {
     >
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-12">
         <div className="max-w-3xl">
-          <h1 className="hero-line-1 font-grotesk text-4xl sm:text-6xl lg:text-7xl font-bold text-dark tracking-tight leading-none mb-2">
+          <h1 className="hero-line-1 font-grotesk text-4xl sm:text-6xl lg:text-7xl font-bold text-dark dark:text-dark-text tracking-tight leading-none mb-2">
             Engineering the
           </h1>
           <h1 className="hero-line-2 font-serif italic text-6xl sm:text-8xl lg:text-[9rem] text-signal leading-[0.9] mb-8">
             Architecture.
           </h1>
-          <p className="hero-subtitle font-mono text-sm sm:text-base text-dark/50 max-w-lg mb-10 leading-relaxed">
+          <p className="hero-subtitle font-mono text-sm sm:text-base text-dark/50 dark:text-dark-text/50 max-w-lg mb-10 leading-relaxed">
             Duke Electrical Engineering and Computer Science &apos;29. Focused on Machine Learning, Systems, and Full-Stack.
           </p>
           <div className="hero-cta flex flex-wrap gap-4">
@@ -88,14 +88,14 @@ export default function Hero() {
               target="_blank"
               rel="noopener noreferrer"
               className="font-grotesk text-sm font-semibold bg-signal text-offwhite px-7 py-3 rounded-full
-                hover:bg-dark transition-all duration-300"
+                hover:bg-dark dark:hover:bg-dark-text dark:hover:text-dark-bg transition-all duration-300"
             >
               View My GitHub
             </a>
             <a
               href="mailto:raphael.karamagi@duke.edu"
-              className="font-grotesk text-sm font-semibold border border-dark/20 text-dark px-7 py-3 rounded-full
-                hover:bg-dark hover:text-offwhite transition-all duration-300"
+              className="font-grotesk text-sm font-semibold border border-dark/20 dark:border-dark-text/20 text-dark dark:text-dark-text px-7 py-3 rounded-full
+                hover:bg-dark hover:text-offwhite dark:hover:bg-dark-text dark:hover:text-dark-bg transition-all duration-300"
             >
               Contact Me
             </a>
@@ -103,10 +103,10 @@ export default function Hero() {
         </div>
 
         <div className="hero-scroll absolute bottom-12 right-6 sm:right-12 flex flex-col items-center gap-2">
-          <span className="font-mono text-xs text-dark/30 tracking-widest uppercase">
+          <span className="font-mono text-xs text-dark/30 dark:text-dark-text/30 tracking-widest uppercase">
             Scroll
           </span>
-          <ArrowDown className="w-4 h-4 text-dark/30 animate-bounce" />
+          <ArrowDown className="w-4 h-4 text-dark/30 dark:text-dark-text/30 animate-bounce" />
         </div>
       </div>
     </section>

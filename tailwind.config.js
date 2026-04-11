@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -11,6 +12,10 @@ export default {
         signal: '#E63B2E',
         offwhite: '#F5F3EE',
         dark: '#111111',
+        'dark-bg': '#1c1c1c',
+        'dark-card': '#262626',
+        'dark-card-alt': '#2a2a2a',
+        'dark-text': '#e5e5e5',
       },
       fontFamily: {
         grotesk: ['"Space Grotesk"', 'sans-serif'],

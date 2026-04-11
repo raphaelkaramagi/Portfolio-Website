@@ -10,8 +10,8 @@ gsap.registerPlugin(ScrollTrigger)
 
 const statusColors = {
   Ongoing: 'bg-signal/15 text-signal border-signal/30',
-  Completed: 'bg-green-500/15 text-green-600 border-green-500/30',
-  Planned: 'bg-dark/8 text-dark/60 border-dark/15',
+  Completed: 'bg-green-500/15 text-green-600 dark:text-green-400 border-green-500/30',
+  Planned: 'bg-dark/8 dark:bg-dark-text/8 text-dark/60 dark:text-dark-text/60 border-dark/15 dark:border-dark-text/15',
 }
 
 function ProjectCard({ project, index }) {
@@ -54,10 +54,10 @@ function ProjectCard({ project, index }) {
         to={`/projects/${project.slug}`}
         className="block group"
       >
-        <div className="bg-offwhite border border-dark/8 rounded-[2rem] p-8 sm:p-12 min-h-[380px] flex flex-col justify-between shadow-sm
+        <div className="bg-offwhite dark:bg-dark-card border border-dark/8 dark:border-dark-text/8 rounded-[2rem] p-8 sm:p-12 min-h-[380px] flex flex-col justify-between shadow-sm
           group-hover:border-signal/30 transition-colors duration-300">
           <div className="flex items-start justify-between mb-8">
-            <span className="font-mono text-5xl sm:text-7xl font-bold text-dark/8 leading-none">
+            <span className="font-mono text-5xl sm:text-7xl font-bold text-dark/8 dark:text-dark-text/8 leading-none">
               {project.number}
             </span>
             <span
@@ -69,12 +69,12 @@ function ProjectCard({ project, index }) {
             </span>
           </div>
 
-          <h3 className="font-grotesk text-2xl sm:text-4xl font-bold text-dark tracking-tight mb-6 max-w-2xl">
+          <h3 className="font-grotesk text-2xl sm:text-4xl font-bold text-dark dark:text-dark-text tracking-tight mb-6 max-w-2xl">
             {project.title}
           </h3>
 
           <div>
-            <p className="font-grotesk text-sm sm:text-base text-dark/60 leading-relaxed mb-6 max-w-2xl">
+            <p className="font-grotesk text-sm sm:text-base text-dark/60 dark:text-dark-text/60 leading-relaxed mb-6 max-w-2xl">
               {project.description}
             </p>
             <div className="flex items-center justify-between gap-4">
@@ -82,13 +82,13 @@ function ProjectCard({ project, index }) {
                 {project.stack.map((tech) => (
                   <span
                     key={tech}
-                    className="font-mono text-xs bg-paper border border-dark/8 text-dark/70 px-3 py-1.5 rounded-full"
+                    className="font-mono text-xs bg-paper dark:bg-dark-card-alt border border-dark/8 dark:border-dark-text/8 text-dark/70 dark:text-dark-text/70 px-3 py-1.5 rounded-full"
                   >
                     {tech}
                   </span>
                 ))}
               </div>
-              <span className="hidden sm:flex items-center gap-1.5 font-mono text-xs text-dark/30 group-hover:text-signal transition-colors duration-300 shrink-0">
+              <span className="hidden sm:flex items-center gap-1.5 font-mono text-xs text-dark/30 dark:text-dark-text/30 group-hover:text-signal transition-colors duration-300 shrink-0">
                 View project
                 <ArrowRight className="w-3.5 h-3.5" />
               </span>
@@ -133,7 +133,7 @@ export default function ProjectArchive() {
         <span className="font-mono text-xs text-signal tracking-widest uppercase">
           Archive
         </span>
-        <h2 className="font-grotesk text-3xl sm:text-5xl font-bold text-dark mt-3 tracking-tight">
+        <h2 className="font-grotesk text-3xl sm:text-5xl font-bold text-dark dark:text-dark-text mt-3 tracking-tight">
           Project Archive
         </h2>
       </div>

@@ -59,7 +59,7 @@ function TelemetryTypewriter() {
   }, [typeEffect])
 
   return (
-    <div className="h-56 overflow-hidden font-mono text-xs sm:text-sm leading-relaxed text-dark/60">
+    <div className="h-56 overflow-hidden font-mono text-xs sm:text-sm leading-relaxed text-dark/60 dark:text-dark-text/60">
       {lines.map((line, i) => (
         <div key={i} className="whitespace-nowrap overflow-hidden text-ellipsis">
           <span className="text-signal mr-2">$</span>
@@ -81,9 +81,9 @@ function TelemetryTypewriter() {
 function DiagnosticShuffler() {
   const items = [
     { label: 'malloc()', detail: 'heap allocation', color: 'text-signal' },
-    { label: 'mutex_lock()', detail: 'thread sync', color: 'text-dark' },
+    { label: 'mutex_lock()', detail: 'thread sync', color: 'text-dark dark:text-dark-text' },
     { label: 'fork()', detail: 'process spawn', color: 'text-signal' },
-    { label: 'mmap()', detail: 'memory mapping', color: 'text-dark' },
+    { label: 'mmap()', detail: 'memory mapping', color: 'text-dark dark:text-dark-text' },
     { label: 'syscall()', detail: 'kernel trap', color: 'text-signal' },
   ]
 
@@ -105,7 +105,7 @@ function DiagnosticShuffler() {
       {stack.map((item, i) => (
         <div
           key={item.label}
-          className="absolute w-full max-w-[280px] bg-paper border border-dark/10 rounded-2xl-plus px-5 py-4 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+          className="absolute w-full max-w-[280px] bg-paper dark:bg-dark-card-alt border border-dark/10 dark:border-dark-text/10 rounded-2xl-plus px-5 py-4 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
           style={{
             transform: `translateY(${i * 14}px) scale(${1 - i * 0.04})`,
             opacity: 1 - i * 0.2,
@@ -116,9 +116,9 @@ function DiagnosticShuffler() {
             <code className={`text-sm font-bold font-mono ${item.color}`}>
               {item.label}
             </code>
-            <span className="font-mono text-xs text-dark/40">{item.detail}</span>
+            <span className="font-mono text-xs text-dark/40 dark:text-dark-text/40">{item.detail}</span>
           </div>
-          <div className="mt-2 h-1 bg-dark/5 rounded-full overflow-hidden">
+          <div className="mt-2 h-1 bg-dark/5 dark:bg-dark-text/10 rounded-full overflow-hidden">
             <div
               className="h-full bg-signal/40 rounded-full transition-all duration-700"
               style={{ width: `${100 - i * 20}%` }}
@@ -155,14 +155,14 @@ function CursorProtocolScheduler() {
               ${
                 activeCell === cell
                   ? 'bg-signal border-signal text-offwhite scale-110'
-                  : 'bg-paper/60 border-dark/10 text-dark/30'
+                  : 'bg-paper/60 dark:bg-dark-card-alt/60 border-dark/10 dark:border-dark-text/10 text-dark/30 dark:text-dark-text/30'
               }`}
           >
             {activeCell === cell ? '▸' : cell.toString(16).toUpperCase()}
           </div>
         ))}
       </div>
-      <div className="font-mono text-xs text-dark/40 flex items-center gap-2">
+      <div className="font-mono text-xs text-dark/40 dark:text-dark-text/40 flex items-center gap-2">
         <span className="w-2 h-2 rounded-full bg-signal animate-pulse" />
         Process scheduling active — PID {activeCell ?? 0}
       </div>
@@ -242,7 +242,7 @@ export default function Domains() {
         <span className="font-mono text-xs text-signal tracking-widest uppercase">
           About
         </span>
-        <h2 className="font-grotesk text-3xl sm:text-5xl font-bold text-dark mt-3 tracking-tight">
+        <h2 className="font-grotesk text-3xl sm:text-5xl font-bold text-dark dark:text-dark-text mt-3 tracking-tight">
           What I Build
         </h2>
       </div>
@@ -251,7 +251,7 @@ export default function Domains() {
         {domains.map(({ icon: Icon, title, description, Component }) => (
           <div
             key={title}
-            className="domain-card group bg-offwhite border border-dark/8 rounded-[2rem] p-6 sm:p-8
+            className="domain-card group bg-offwhite dark:bg-dark-card border border-dark/8 dark:border-dark-text/8 rounded-[2rem] p-6 sm:p-8
               hover:scale-[1.03] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
               cursor-default overflow-hidden"
           >
@@ -259,12 +259,12 @@ export default function Domains() {
               <div className="w-10 h-10 rounded-xl bg-signal/10 flex items-center justify-center">
                 <Icon className="w-5 h-5 text-signal" />
               </div>
-              <h3 className="font-grotesk text-lg font-semibold text-dark">{title}</h3>
+              <h3 className="font-grotesk text-lg font-semibold text-dark dark:text-dark-text">{title}</h3>
             </div>
-            <p className="font-grotesk text-sm text-dark/60 mb-6 leading-relaxed">
+            <p className="font-grotesk text-sm text-dark/60 dark:text-dark-text/60 mb-6 leading-relaxed">
               {description}
             </p>
-            <div className="border-t border-dark/8 pt-5">
+            <div className="border-t border-dark/8 dark:border-dark-text/8 pt-5">
               <Component />
             </div>
           </div>

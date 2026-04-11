@@ -9,8 +9,8 @@ gsap.registerPlugin(ScrollTrigger)
 
 const statusColors = {
   Ongoing: 'bg-signal/15 text-signal border-signal/30',
-  Completed: 'bg-green-500/15 text-green-600 border-green-500/30',
-  Planned: 'bg-dark/8 text-dark/60 border-dark/15',
+  Completed: 'bg-green-500/15 text-green-600 dark:text-green-400 border-green-500/30',
+  Planned: 'bg-dark/8 dark:bg-dark-text/8 text-dark/60 dark:text-dark-text/60 border-dark/15 dark:border-dark-text/15',
 }
 
 const VISIBLE_COUNT = 3
@@ -104,15 +104,15 @@ export default function ProjectPage() {
   if (!project) {
     return (
       <div className="min-h-[100dvh] flex flex-col items-center justify-center px-6">
-        <h1 className="font-grotesk text-4xl font-bold text-dark mb-4">
+        <h1 className="font-grotesk text-4xl font-bold text-dark dark:text-dark-text mb-4">
           Project not found
         </h1>
-        <p className="font-mono text-sm text-dark/50 mb-8">
+        <p className="font-mono text-sm text-dark/50 dark:text-dark-text/50 mb-8">
           No project matches that URL.
         </p>
         <Link
           to="/"
-          className="font-grotesk text-sm font-semibold bg-signal text-offwhite px-6 py-3 rounded-full hover:bg-dark transition-colors duration-300"
+          className="font-grotesk text-sm font-semibold bg-signal text-offwhite px-6 py-3 rounded-full hover:bg-dark dark:hover:bg-dark-text dark:hover:text-dark-bg transition-colors duration-300"
         >
           Back to Home
         </Link>
@@ -129,14 +129,14 @@ export default function ProjectPage() {
       <div className="max-w-4xl mx-auto">
         <Link
           to="/"
-          className="proj-animate inline-flex items-center gap-2 font-mono text-sm text-dark/50 hover:text-signal transition-colors duration-300 mb-12"
+          className="proj-animate inline-flex items-center gap-2 font-mono text-sm text-dark/50 dark:text-dark-text/50 hover:text-signal transition-colors duration-300 mb-12"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Home
         </Link>
 
         <div className="proj-animate flex items-start justify-between flex-wrap gap-4 mb-4">
-          <span className="font-mono text-6xl sm:text-8xl font-bold text-dark/6 leading-none">
+          <span className="font-mono text-6xl sm:text-8xl font-bold text-dark/6 dark:text-dark-text/6 leading-none">
             {project.number}
           </span>
           <span
@@ -148,7 +148,7 @@ export default function ProjectPage() {
           </span>
         </div>
 
-        <h1 className="proj-animate font-grotesk text-3xl sm:text-5xl font-bold text-dark tracking-tight mb-6">
+        <h1 className="proj-animate font-grotesk text-3xl sm:text-5xl font-bold text-dark dark:text-dark-text tracking-tight mb-6">
           {project.title}
         </h1>
 
@@ -156,7 +156,7 @@ export default function ProjectPage() {
           {project.stack.map((tech) => (
             <span
               key={tech}
-              className="font-mono text-xs bg-paper border border-dark/8 text-dark/70 px-3 py-1.5 rounded-full"
+              className="font-mono text-xs bg-paper dark:bg-dark-card-alt border border-dark/8 dark:border-dark-text/8 text-dark/70 dark:text-dark-text/70 px-3 py-1.5 rounded-full"
             >
               {tech}
             </span>
@@ -166,8 +166,8 @@ export default function ProjectPage() {
               href={project.repoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 font-mono text-xs bg-dark text-offwhite px-4 py-1.5 rounded-full
-                hover:bg-signal transition-colors duration-300 ml-1"
+              className="inline-flex items-center gap-1.5 font-mono text-xs bg-dark dark:bg-dark-text text-offwhite dark:text-dark-bg px-4 py-1.5 rounded-full
+                hover:bg-signal hover:text-offwhite transition-colors duration-300 ml-1"
             >
               <Github className="w-3.5 h-3.5" />
               Repository
@@ -179,7 +179,7 @@ export default function ProjectPage() {
           {project.longDescription.split('\n\n').map((paragraph, i) => (
             <p
               key={i}
-              className="font-grotesk text-base sm:text-lg text-dark/70 leading-relaxed mb-4"
+              className="font-grotesk text-base sm:text-lg text-dark/70 dark:text-dark-text/70 leading-relaxed mb-4"
             >
               {paragraph}
             </p>
@@ -188,7 +188,7 @@ export default function ProjectPage() {
 
         {hasImages && (
           <div className="proj-animate">
-            <h2 className="font-grotesk text-xl font-semibold text-dark mb-6">
+            <h2 className="font-grotesk text-xl font-semibold text-dark dark:text-dark-text mb-6">
               Gallery
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -198,7 +198,7 @@ export default function ProjectPage() {
                   src={img}
                   alt={`${project.title} screenshot ${i + 1}`}
                   onClick={() => setLightboxImg(img)}
-                  className="w-full aspect-video object-cover rounded-2xl border border-dark/8 cursor-pointer
+                  className="w-full aspect-video object-cover rounded-2xl border border-dark/8 dark:border-dark-text/8 cursor-pointer
                     hover:scale-[1.02] transition-transform duration-300"
                 />
               ))}
@@ -206,7 +206,7 @@ export default function ProjectPage() {
             {hasMany && (
               <button
                 onClick={() => setExpanded(!expanded)}
-                className="mt-6 mx-auto flex items-center gap-2 font-mono text-sm text-dark/50
+                className="mt-6 mx-auto flex items-center gap-2 font-mono text-sm text-dark/50 dark:text-dark-text/50
                   hover:text-signal transition-colors duration-300"
               >
                 {expanded ? 'Show less' : `Show all ${project.images.length} images`}

@@ -22,11 +22,22 @@
     background-color: #F5F3EE;
     color: #111111;
     overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .dark body {
+    background-color: #1c1c1c;
+    color: #e5e5e5;
   }
 
   ::selection {
     background-color: #E63B2E;
     color: #F5F3EE;
+  }
+
+  .dark ::selection {
+    background-color: #E63B2E;
+    color: #1c1c1c;
   }
 }
 
@@ -39,9 +50,17 @@
   background: #E8E4DD;
 }
 
+.dark ::-webkit-scrollbar-track {
+  background: #262626;
+}
+
 ::-webkit-scrollbar-thumb {
   background: #111111;
   border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #555;
 }
 
 ::-webkit-scrollbar-thumb:hover {

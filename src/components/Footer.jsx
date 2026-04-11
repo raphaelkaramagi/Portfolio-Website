@@ -102,7 +102,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 pt-8 border-t border-paper/8 flex flex-wrap items-center justify-between gap-4">
+        <div className="mt-16 pt-8 border-t border-paper/8 dark:border-paper/12 flex flex-wrap items-center justify-between gap-4">
           <span className="font-mono text-xs text-paper/20">
             Built with precision.
           </span>
