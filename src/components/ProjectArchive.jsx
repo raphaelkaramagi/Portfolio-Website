@@ -54,8 +54,8 @@ function ProjectCard({ project, index }) {
         to={`/projects/${project.slug}`}
         className="block group"
       >
-        <div className="bg-offwhite dark:bg-dark-card border border-dark/8 dark:border-dark-text/8 rounded-[2rem] p-8 sm:p-12 min-h-[380px] flex flex-col justify-between shadow-sm
-          group-hover:border-signal/30 transition-colors duration-300">
+        <div className="bg-offwhite dark:bg-dark-card border border-dark/8 dark:border-dark-text/15 rounded-[2rem] p-8 sm:p-12 min-h-[380px] flex flex-col justify-between shadow-sm
+          group-hover:border-signal/30 dark:group-hover:border-signal/50 dark:group-hover:shadow-[0_0_20px_rgba(230,59,46,0.08)] transition-all duration-300">
           <div className="flex items-start justify-between mb-8">
             <span className="font-mono text-5xl sm:text-7xl font-bold text-dark/8 dark:text-dark-text/8 leading-none">
               {project.number}

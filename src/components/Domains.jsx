@@ -251,7 +251,7 @@ export default function Domains() {
         {domains.map(({ icon: Icon, title, description, Component }) => (
           <div
             key={title}
-            className="domain-card group bg-offwhite dark:bg-dark-card border border-dark/8 dark:border-dark-text/8 rounded-[2rem] p-6 sm:p-8
+            className="domain-card group bg-offwhite dark:bg-dark-card border border-dark/8 dark:border-dark-text/15 rounded-[2rem] p-6 sm:p-8
               hover:scale-[1.03] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]
               cursor-default overflow-hidden"
           >

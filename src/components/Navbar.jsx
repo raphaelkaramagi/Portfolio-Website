@@ -58,7 +58,7 @@ export default function Navbar() {
             onClick={(e) => handleNavClick(e, link)}
             target={link.external ? '_blank' : undefined}
             rel={link.external ? 'noopener noreferrer' : undefined}
-            className="font-grotesk text-sm font-bold text-dark dark:text-dark-text hover:text-signal transition-colors duration-300"
+            className="font-grotesk text-sm font-bold text-dark dark:text-dark-text hover:text-signal dark:hover:text-signal transition-colors duration-300"
           >
             {link.label}
           </a>
@@ -69,7 +69,7 @@ export default function Navbar() {
             href="https://github.com/raphaelkaramagi"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-dark/50 dark:text-dark-text/50 hover:text-signal transition-colors duration-300"
+            className="text-dark/50 dark:text-dark-text/50 hover:text-signal dark:hover:text-signal transition-colors duration-300"
             aria-label="GitHub"
           >
             <Github className="w-4 h-4" />
@@ -78,17 +78,20 @@ export default function Navbar() {
             href="https://linkedin.com/in/raphaelkar"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-dark/50 dark:text-dark-text/50 hover:text-signal transition-colors duration-300"
+            className="text-dark/50 dark:text-dark-text/50 hover:text-signal dark:hover:text-signal transition-colors duration-300"
             aria-label="LinkedIn"
           >
             <Linkedin className="w-4 h-4" />
           </a>
           <button
             onClick={toggleDark}
-            className="text-dark/50 dark:text-dark-text/50 hover:text-signal transition-colors duration-300"
+            className="transition-colors duration-300"
             aria-label="Toggle dark mode"
           >
-            {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            {dark
+              ? <Sun className="w-4 h-4 text-amber-400 hover:text-amber-500" fill="currentColor" />
+              : <Moon className="w-4 h-4 text-indigo-400 hover:text-indigo-500" fill="currentColor" />
+            }
           </button>
         </div>
 
@@ -104,10 +107,13 @@ export default function Navbar() {
       <div className="md:hidden flex items-center gap-3">
         <button
           onClick={toggleDark}
-          className="text-dark/50 dark:text-dark-text/50 hover:text-signal transition-colors duration-300 p-2"
+          className="transition-colors duration-300 p-2"
           aria-label="Toggle dark mode"
         >
-          {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          {dark
+            ? <Sun className="w-4 h-4 text-amber-400" fill="currentColor" />
+            : <Moon className="w-4 h-4 text-indigo-400" fill="currentColor" />
+          }
         </button>
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
@@ -144,7 +150,7 @@ export default function Navbar() {
               }}
               target={link.external ? '_blank' : undefined}
               rel={link.external ? 'noopener noreferrer' : undefined}
-              className="font-grotesk text-base font-bold text-dark dark:text-dark-text hover:text-signal transition-colors"
+              className="font-grotesk text-base font-bold text-dark dark:text-dark-text hover:text-signal dark:hover:text-signal transition-colors"
             >
               {link.label}
             </a>
@@ -154,7 +160,7 @@ export default function Navbar() {
               href="https://github.com/raphaelkaramagi"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-dark/50 dark:text-dark-text/50 hover:text-signal transition-colors duration-300"
+              className="text-dark/50 dark:text-dark-text/50 hover:text-signal dark:hover:text-signal transition-colors duration-300"
               aria-label="GitHub"
             >
               <Github className="w-5 h-5" />
@@ -163,7 +169,7 @@ export default function Navbar() {
               href="https://linkedin.com/in/raphaelkar"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-dark/50 dark:text-dark-text/50 hover:text-signal transition-colors duration-300"
+              className="text-dark/50 dark:text-dark-text/50 hover:text-signal dark:hover:text-signal transition-colors duration-300"
               aria-label="LinkedIn"
             >
               <Linkedin className="w-5 h-5" />
