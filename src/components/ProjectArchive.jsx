@@ -60,13 +60,20 @@ function ProjectCard({ project, index }) {
             <span className="font-mono text-5xl sm:text-7xl font-bold text-dark/8 dark:text-dark-text/8 leading-none">
               {project.number}
             </span>
-            <span
-              className={`font-mono text-xs px-3 py-1 rounded-full border ${
-                statusColors[project.status]
-              }`}
-            >
-              {project.status}
-            </span>
+            <div className="flex items-center gap-2">
+              {project.client && (
+                <span className="font-mono text-xs text-dark/40 dark:text-dark-text/40">
+                  Client Project
+                </span>
+              )}
+              <span
+                className={`font-mono text-xs px-3 py-1 rounded-full border ${
+                  statusColors[project.status]
+                }`}
+              >
+                {project.status}
+              </span>
+            </div>
           </div>
 
           <h3 className="font-grotesk text-2xl sm:text-4xl font-bold text-dark dark:text-dark-text tracking-tight mb-6 max-w-2xl">
@@ -100,6 +107,14 @@ function ProjectCard({ project, index }) {
   )
 }
 
+const sectionOrder = ['Ongoing', 'Completed', 'Planned']
+
+const sectionMeta = {
+  Ongoing: { label: 'In Progress', accent: 'text-signal' },
+  Completed: { label: 'Completed', accent: 'text-green-600 dark:text-green-400' },
+  Planned: { label: 'Planned', accent: 'text-dark/40 dark:text-dark-text/40' },
+}
+
 export default function ProjectArchive() {
   const sectionRef = useRef(null)
 
@@ -123,6 +138,14 @@ export default function ProjectArchive() {
     return () => ctx.revert()
   }, [])
 
+  const grouped = sectionOrder.map((status) => ({
+    status,
+    ...sectionMeta[status],
+    items: projects.filter((p) => p.status === status),
+  })).filter((g) => g.items.length > 0)
+
+  let globalIndex = 0
+
   return (
     <section
       id="projects"
@@ -138,11 +161,26 @@ export default function ProjectArchive() {
         </h2>
       </div>
 
-      <div className="flex flex-col gap-8">
-        {projects.map((project, index) => (
-          <ProjectCard key={project.number} project={project} index={index} />
-        ))}
-      </div>
+      {grouped.map((group, gi) => (
+        <div key={group.status} className="mb-12 last:mb-0">
+          {gi > 0 && (
+            <div className="relative z-50 max-w-5xl mx-auto pt-16 pb-2 mb-8">
+              <div className="border-t border-dark/8 dark:border-dark-text/10" />
+            </div>
+          )}
+          <div className="relative z-50 max-w-5xl mx-auto mb-8">
+            <span className={`font-mono text-xs tracking-widest uppercase ${group.accent}`}>
+              {group.label}
+            </span>
+          </div>
+          <div className="flex flex-col gap-8">
+            {group.items.map((project) => {
+              const idx = globalIndex++
+              return <ProjectCard key={project.number} project={project} index={idx} />
+            })}
+          </div>
+        </div>
+      ))}
     </section>
   )
 }

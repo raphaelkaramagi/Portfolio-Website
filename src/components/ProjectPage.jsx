@@ -139,13 +139,20 @@ export default function ProjectPage() {
           <span className="font-mono text-6xl sm:text-8xl font-bold text-dark/6 dark:text-dark-text/6 leading-none">
             {project.number}
           </span>
-          <span
-            className={`font-mono text-xs px-3 py-1 rounded-full border ${
-              statusColors[project.status]
-            }`}
-          >
-            {project.status}
-          </span>
+          <div className="flex flex-col items-end gap-2">
+            <span
+              className={`font-mono text-xs px-3 py-1 rounded-full border ${
+                statusColors[project.status]
+              }`}
+            >
+              {project.status}
+            </span>
+            {project.client && (
+              <span className="font-mono text-xs text-dark/40 dark:text-dark-text/40">
+                Client Project — {project.client}
+              </span>
+            )}
+          </div>
         </div>
 
         <h1 className="proj-animate font-grotesk text-3xl sm:text-5xl font-bold text-dark dark:text-dark-text tracking-tight mb-6">
@@ -198,7 +205,7 @@ export default function ProjectPage() {
                   src={img}
                   alt={`${project.title} screenshot ${i + 1}`}
                   onClick={() => setLightboxImg(img)}
-                  className="w-full aspect-video object-cover rounded-2xl border border-dark/8 dark:border-dark-text/8 cursor-pointer
+                  className="w-full aspect-video object-cover rounded-2xl border border-dark/8 dark:border-dark-text/12 dark:shadow-[0_2px_12px_rgba(0,0,0,0.3)] cursor-pointer
                     hover:scale-[1.02] transition-transform duration-300"
                 />
               ))}

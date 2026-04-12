@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { Brain, Cpu, Globe } from 'lucide-react'
+import { Brain, CircuitBoard, Code } from 'lucide-react'
 import { hasPlayedHomeIntro } from '../lib/animationState'
 
 gsap.registerPlugin(ScrollTrigger)
 
-// ─── Card 1: Telemetry Typewriter ───────────────────────────────────────────
+// ─── Card 1: Telemetry Typewriter (Machine Learning) ────────────────────────
 function TelemetryTypewriter() {
   const [lines, setLines] = useState([])
   const [currentLine, setCurrentLine] = useState('')
@@ -77,14 +77,78 @@ function TelemetryTypewriter() {
   )
 }
 
-// ─── Card 2: Diagnostic Shuffler ────────────────────────────────────────────
+// ─── Card 2: Pin State Monitor (Embedded & Hardware) ────────────────────────
+function PinStateMonitor() {
+  const pins = [
+    { id: 'D2', label: 'WASH_BTN' },
+    { id: 'D3', label: 'E_STOP' },
+    { id: 'D5', label: 'SOLENOID' },
+    { id: 'D6', label: 'STATUS_LED' },
+    { id: 'D9', label: 'BEACON' },
+  ]
+
+  const sequence = [
+    [false, false, false, false, false],
+    [true,  false, false, false, false],
+    [true,  false, true,  false, false],
+    [true,  false, true,  true,  false],
+    [true,  false, true,  true,  true],
+    [false, false, true,  true,  true],
+    [false, false, true,  true,  true],
+    [false, false, false, true,  true],
+    [false, false, false, false, true],
+    [false, false, false, false, false],
+  ]
+
+  const [step, setStep] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setStep((s) => (s + 1) % sequence.length)
+    }, 900)
+    return () => clearInterval(interval)
+  }, [])
+
+  const states = sequence[step]
+
+  return (
+    <div className="h-56 flex flex-col justify-center gap-2.5">
+      {pins.map((pin, i) => (
+        <div key={pin.id} className="flex items-center gap-3 font-mono text-xs">
+          <span className="text-dark/40 dark:text-dark-text/40 w-6">{pin.id}</span>
+          <div
+            className={`w-2 h-2 rounded-full transition-all duration-200 ${
+              states[i]
+                ? 'bg-signal shadow-[0_0_6px_rgba(230,59,46,0.6)]'
+                : 'bg-dark/15 dark:bg-dark-text/15'
+            }`}
+          />
+          <span className="text-dark/60 dark:text-dark-text/60">{pin.label}</span>
+          <span
+            className={`ml-auto font-bold transition-colors duration-200 ${
+              states[i] ? 'text-signal' : 'text-dark/25 dark:text-dark-text/25'
+            }`}
+          >
+            {states[i] ? 'HIGH' : 'LOW'}
+          </span>
+        </div>
+      ))}
+      <div className="mt-2 font-mono text-xs text-dark/40 dark:text-dark-text/40 flex items-center gap-2">
+        <span className="w-2 h-2 rounded-full bg-signal animate-pulse" />
+        GPIO monitor — wash cycle
+      </div>
+    </div>
+  )
+}
+
+// ─── Card 3: Diagnostic Shuffler (Software Engineering) ─────────────────────
 function DiagnosticShuffler() {
   const items = [
-    { label: 'malloc()', detail: 'heap allocation', color: 'text-signal' },
-    { label: 'mutex_lock()', detail: 'thread sync', color: 'text-dark dark:text-dark-text' },
     { label: 'fork()', detail: 'process spawn', color: 'text-signal' },
-    { label: 'mmap()', detail: 'memory mapping', color: 'text-dark dark:text-dark-text' },
-    { label: 'syscall()', detail: 'kernel trap', color: 'text-signal' },
+    { label: 'mutex_lock()', detail: 'thread sync', color: 'text-dark dark:text-dark-text' },
+    { label: 'fetch()', detail: 'async request', color: 'text-signal' },
+    { label: 'malloc()', detail: 'heap alloc', color: 'text-dark dark:text-dark-text' },
+    { label: 'render()', detail: 'DOM update', color: 'text-signal' },
   ]
 
   const [stack, setStack] = useState(items)
@@ -130,68 +194,28 @@ function DiagnosticShuffler() {
   )
 }
 
-// ─── Card 3: Cursor Protocol Scheduler ──────────────────────────────────────
-function CursorProtocolScheduler() {
-  const gridRef = useRef(null)
-  const [activeCell, setActiveCell] = useState(null)
-  const cells = Array.from({ length: 20 }, (_, i) => i)
-
-  useEffect(() => {
-    let idx = 0
-    const interval = setInterval(() => {
-      setActiveCell(idx % 20)
-      idx++
-    }, 400)
-    return () => clearInterval(interval)
-  }, [])
-
-  return (
-    <div className="h-56 flex flex-col items-center justify-center gap-4">
-      <div ref={gridRef} className="grid grid-cols-5 gap-2">
-        {cells.map((cell) => (
-          <div
-            key={cell}
-            className={`w-9 h-9 sm:w-10 sm:h-10 rounded-lg border transition-all duration-300 flex items-center justify-center text-xs font-mono
-              ${
-                activeCell === cell
-                  ? 'bg-signal border-signal text-offwhite scale-110'
-                  : 'bg-paper/60 dark:bg-dark-card-alt/60 border-dark/10 dark:border-dark-text/10 text-dark/30 dark:text-dark-text/30'
-              }`}
-          >
-            {activeCell === cell ? '▸' : cell.toString(16).toUpperCase()}
-          </div>
-        ))}
-      </div>
-      <div className="font-mono text-xs text-dark/40 dark:text-dark-text/40 flex items-center gap-2">
-        <span className="w-2 h-2 rounded-full bg-signal animate-pulse" />
-        Process scheduling active — PID {activeCell ?? 0}
-      </div>
-    </div>
-  )
-}
-
 // ─── Domain Cards Container ────────────────────────────────────────────────
 const domains = [
   {
     icon: Brain,
-    title: 'Applied Machine Learning',
+    title: 'Machine Learning',
     description:
-      'Building production-ready models — from ASL gesture recognition systems and LSTM stock predictors to NLP sentiment analysis pipelines.',
+      'Building production-ready models — from ASL gesture recognition and LSTM stock predictors to NLP sentiment analysis pipelines.',
     Component: TelemetryTypewriter,
   },
   {
-    icon: Cpu,
-    title: 'Systems Fundamentals',
+    icon: CircuitBoard,
+    title: 'Embedded Systems & Hardware',
     description:
-      'Engineering from first principles, including C++ HTTP servers and custom scripting language interpreters.',
-    Component: DiagnosticShuffler,
+      'Microcontroller firmware, MOSFET drive circuits, power regulation, PCB prototyping, soldering, and CAD — from bench to deployed control systems.',
+    Component: PinStateMonitor,
   },
   {
-    icon: Globe,
-    title: 'Full-Stack Architecture',
+    icon: Code,
+    title: 'Software Engineering',
     description:
-      'Creating real-time, scalable platforms using React, Node.js, WebSockets, and PostgreSQL.',
-    Component: CursorProtocolScheduler,
+      'Systems and full-stack — from C++ servers and language interpreters to React frontends, real-time platforms, and database-driven APIs.',
+    Component: DiagnosticShuffler,
   },
 ]
 
