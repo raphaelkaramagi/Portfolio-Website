@@ -85,12 +85,12 @@ function NodeField() {
           const dy = nodes[i].y - nodes[j].y
           const dist = Math.sqrt(dx * dx + dy * dy)
           if (dist < connThresh) {
-            const alpha = (1 - dist / connThresh) * 0.15
+            const alpha = (1 - dist / connThresh) * (isDark ? 0.18 : 0.22)
             ctx.beginPath()
             ctx.moveTo(nodes[i].x, nodes[i].y)
             ctx.lineTo(nodes[j].x, nodes[j].y)
             ctx.strokeStyle = `rgba(230,59,46,${alpha})`
-            ctx.lineWidth = 0.5
+            ctx.lineWidth = isDark ? 0.5 : 0.7
             ctx.stroke()
           }
         }
@@ -118,8 +118,8 @@ function NodeField() {
         ctx.fillStyle = n.accent || proximity > 0.4
           ? `rgba(230,59,46,${0.4 + proximity * 0.4})`
           : isDark
-            ? 'rgba(229,229,229,0.18)'
-            : 'rgba(17,17,17,0.12)'
+            ? 'rgba(229,229,229,0.25)'
+            : 'rgba(17,17,17,0.22)'
         ctx.fill()
       }
 
@@ -129,39 +129,35 @@ function NodeField() {
     raf = requestAnimationFrame(draw)
 
     const heroEl = canvas.parentElement
+    const isTouch = window.matchMedia('(pointer: coarse)').matches
 
-    const toLocal = (clientX, clientY) => {
-      const rect = canvas.getBoundingClientRect()
-      mouse.current.x = clientX - rect.left
-      mouse.current.y = clientY - rect.top
-    }
+    if (!isTouch) {
+      const onMove = (e) => {
+        const rect = canvas.getBoundingClientRect()
+        mouse.current.x = e.clientX - rect.left
+        mouse.current.y = e.clientY - rect.top
+      }
+      const onLeave = (e) => {
+        if (!heroEl.contains(e.relatedTarget)) {
+          mouse.current.x = -2000
+          mouse.current.y = -2000
+        }
+      }
+      heroEl.addEventListener('mousemove', onMove)
+      heroEl.addEventListener('mouseleave', onLeave)
 
-    const onMove = (e) => toLocal(e.clientX, e.clientY)
-    const onTouch = (e) => {
-      const touch = e.touches[0]
-      if (touch) toLocal(touch.clientX, touch.clientY)
-    }
-    const onLeave = (e) => {
-      if (!heroEl.contains(e.relatedTarget)) {
-        mouse.current.x = -2000
-        mouse.current.y = -2000
+      window.addEventListener('resize', resize)
+      return () => {
+        cancelAnimationFrame(raf)
+        heroEl.removeEventListener('mousemove', onMove)
+        heroEl.removeEventListener('mouseleave', onLeave)
+        window.removeEventListener('resize', resize)
       }
     }
 
-    heroEl.addEventListener('mousemove', onMove)
-    heroEl.addEventListener('mouseleave', onLeave)
-    heroEl.addEventListener('touchmove', onTouch, { passive: true })
-    heroEl.addEventListener('touchend', () => {
-      mouse.current.x = -2000
-      mouse.current.y = -2000
-    })
     window.addEventListener('resize', resize)
-
     return () => {
       cancelAnimationFrame(raf)
-      heroEl.removeEventListener('mousemove', onMove)
-      heroEl.removeEventListener('mouseleave', onLeave)
-      heroEl.removeEventListener('touchmove', onTouch)
       window.removeEventListener('resize', resize)
     }
   }, [initNodes])
