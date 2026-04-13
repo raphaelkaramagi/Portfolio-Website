@@ -10,7 +10,7 @@ export const projects = [
     longDescription:
       'A computer vision system built to classify American Sign Language alphabet gestures. The project explores two distinct architectures: a traditional CNN trained directly on 87,000+ labeled images, and a lightweight Landmark Neural Network (~10K parameters) that operates on hand-skeleton coordinates extracted via MediaPipe.\n\nThe Landmark NN achieves 100% hand-detection accuracy on valid inputs and enables real-time CPU inference — roughly 200× smaller than the CNN baseline with no accuracy loss when hands are clearly visible. Both models reach 71% test accuracy across 29 gesture classes.\n\nA full interactive demo site lets users test both models via webcam or image upload, replay the actual training process epoch-by-epoch, train a small neural network live in the browser with configurable hyperparameters, compare model architectures and metrics side-by-side, and browse the dataset gallery with per-image predictions.',
     repoUrl: 'https://github.com/raphaelkaramagi/daml-asl',
-    demoUrl: 'https://daml-asl.vercel.app',
+    demoUrl: 'https://asl.raphaelkaramagi.com',
     images: [
       '/projects/asl/asl-landing.png',
       '/projects/asl/asl-webcam-predict.png',

@@ -1,6 +1,3 @@
 {
-  "rewrites": [
-    { "source": "/asl/:path*", "destination": "https://daml-asl.vercel.app/asl/:path*" },
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
