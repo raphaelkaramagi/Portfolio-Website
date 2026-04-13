@@ -121,7 +121,7 @@ function ProjectCard({ project, index }) {
   )
 }
 
-const sectionOrder = ['Ongoing', 'Completed', 'Planned']
+const sectionOrder = ['Completed', 'Ongoing', 'Planned']
 
 const sectionMeta = {
   Ongoing: { label: 'In Progress', accent: 'text-signal' },
