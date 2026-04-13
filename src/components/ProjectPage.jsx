@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { ArrowLeft, Github, ImageIcon, ChevronDown, ChevronUp } from 'lucide-react'
+import { ArrowLeft, Github, ImageIcon, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react'
 import { projects } from '../data/projects'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -178,6 +178,18 @@ export default function ProjectPage() {
             >
               <Github className="w-3.5 h-3.5" />
               Repository
+            </a>
+          )}
+          {project.demoUrl && (
+            <a
+              href={project.demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 font-mono text-xs bg-signal text-offwhite px-4 py-1.5 rounded-full
+                hover:bg-dark dark:hover:bg-dark-text dark:hover:text-dark-bg transition-colors duration-300 ml-1"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              Live Demo
             </a>
           )}
         </div>

@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, ExternalLink } from 'lucide-react'
 import { projects } from '../data/projects'
 import { hasPlayedHomeIntro } from '../lib/animationState'
 
@@ -95,10 +95,24 @@ function ProjectCard({ project, index }) {
                   </span>
                 ))}
               </div>
-              <span className="hidden sm:flex items-center gap-1.5 font-mono text-xs text-dark/30 dark:text-dark-text/30 group-hover:text-signal transition-colors duration-300 shrink-0">
-                View project
-                <ArrowRight className="w-3.5 h-3.5" />
-              </span>
+              <div className="hidden sm:flex items-center gap-4 shrink-0">
+                {project.demoUrl && (
+                  <a
+                    href={project.demoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex items-center gap-1.5 font-mono text-xs text-signal hover:text-signal/70 transition-colors duration-300"
+                  >
+                    Live Demo
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                )}
+                <span className="flex items-center gap-1.5 font-mono text-xs text-dark/30 dark:text-dark-text/30 group-hover:text-signal transition-colors duration-300">
+                  View project
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </span>
+              </div>
             </div>
           </div>
         </div>
