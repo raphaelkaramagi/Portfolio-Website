@@ -4,6 +4,9 @@ import { ArrowDown } from 'lucide-react'
 import { hasPlayedHomeIntro, markHomeIntroPlayed } from '../lib/animationState'
 import { useTheme } from '../lib/themeContext'
 
+const isTouchDevice = typeof window !== 'undefined' &&
+  ('ontouchstart' in window || navigator.maxTouchPoints > 0)
+
 function NodeField() {
   const canvasRef = useRef(null)
   const mouse = useRef({ x: -1000, y: -1000 })
@@ -54,11 +57,14 @@ function NodeField() {
 
       const t = time * 0.001
 
-      const lerp = 0.08
-      smoothMouse.current.x += (mouse.current.x - smoothMouse.current.x) * lerp
-      smoothMouse.current.y += (mouse.current.y - smoothMouse.current.y) * lerp
-      const mx = smoothMouse.current.x
-      const my = smoothMouse.current.y
+      let mx = -2000, my = -2000
+      if (!isTouchDevice) {
+        const lerpAmt = 0.08
+        smoothMouse.current.x += (mouse.current.x - smoothMouse.current.x) * lerpAmt
+        smoothMouse.current.y += (mouse.current.y - smoothMouse.current.y) * lerpAmt
+        mx = smoothMouse.current.x
+        my = smoothMouse.current.y
+      }
 
       const attractRadius = 250
       const attractStrength = 0.35
@@ -68,13 +74,15 @@ function NodeField() {
         n.x = n.baseX + Math.sin(t * n.speed + n.phase) * n.amp
         n.y = n.baseY + Math.cos(t * n.speed * 0.7 + n.phase + 1) * n.amp * 0.6
 
-        const dx = mx - n.x
-        const dy = my - n.y
-        const dist = Math.sqrt(dx * dx + dy * dy)
-        if (dist < attractRadius) {
-          const force = ((attractRadius - dist) / attractRadius) * attractStrength
-          n.x += dx * force
-          n.y += dy * force
+        if (!isTouchDevice) {
+          const dx = mx - n.x
+          const dy = my - n.y
+          const dist = Math.sqrt(dx * dx + dy * dy)
+          if (dist < attractRadius) {
+            const force = ((attractRadius - dist) / attractRadius) * attractStrength
+            n.x += dx * force
+            n.y += dy * force
+          }
         }
       }
 
@@ -129,9 +137,8 @@ function NodeField() {
     raf = requestAnimationFrame(draw)
 
     const heroEl = canvas.parentElement
-    const isTouch = window.matchMedia('(pointer: coarse)').matches
 
-    if (!isTouch) {
+    if (!isTouchDevice) {
       const onMove = (e) => {
         const rect = canvas.getBoundingClientRect()
         mouse.current.x = e.clientX - rect.left
