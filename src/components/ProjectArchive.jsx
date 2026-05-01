@@ -14,6 +14,9 @@ const statusColors = {
   Planned: 'bg-dark/8 dark:bg-dark-text/8 text-dark/60 dark:text-dark-text/60 border-dark/15 dark:border-dark-text/15',
 }
 
+const clientProjectBadge =
+  'bg-violet-500/15 text-violet-700 dark:text-violet-300 border-violet-500/35 dark:border-violet-400/40'
+
 /** Shelf under fixed navbar (~top-6 + pill height). */
 const CARD_PIN_START = 'top top+=96'
 /** Next card reaches shelf → previous card finishes overlap + begins exit upward in same scrub timeline. */
@@ -35,7 +38,9 @@ const ProjectCard = forwardRef(function ProjectCard({ project, stackIndex }, ref
             </span>
             <div className="flex items-center gap-2">
               {project.client && (
-                <span className="font-mono text-xs text-dark/40 dark:text-dark-text/40">
+                <span
+                  className={`font-mono text-xs px-3 py-1 rounded-full border shrink-0 ${clientProjectBadge}`}
+                >
                   Client Project
                 </span>
               )}

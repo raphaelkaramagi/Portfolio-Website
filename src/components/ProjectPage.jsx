@@ -13,6 +13,9 @@ const statusColors = {
   Planned: 'bg-dark/8 dark:bg-dark-text/8 text-dark/60 dark:text-dark-text/60 border-dark/15 dark:border-dark-text/15',
 }
 
+const clientProjectBadge =
+  'bg-violet-500/15 text-violet-700 dark:text-violet-300 border-violet-500/35 dark:border-violet-400/40'
+
 const VISIBLE_COUNT = 3
 
 function Lightbox({ src, overlayRef, imgRef, onClose }) {
@@ -148,7 +151,9 @@ export default function ProjectPage() {
               {project.status}
             </span>
             {project.client && (
-              <span className="font-mono text-xs text-dark/40 dark:text-dark-text/40">
+              <span
+                className={`font-mono text-xs px-3 py-1 rounded-full border max-w-full text-right ${clientProjectBadge}`}
+              >
                 Client Project — {project.client}
               </span>
             )}
