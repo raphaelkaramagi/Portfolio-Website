@@ -30,13 +30,13 @@ const ProjectCard = forwardRef(function ProjectCard({ project, stackIndex }, ref
       style={{ zIndex: stackIndex + 1 }}
     >
       <Link to={`/projects/${project.slug}`} className="block group">
-        <div className="bg-offwhite dark:bg-dark-card border border-dark/8 dark:border-dark-text/15 rounded-[2rem] p-8 sm:p-12 min-h-[380px] flex flex-col justify-between shadow-sm
+        <div className="bg-offwhite dark:bg-dark-card border border-dark/8 dark:border-dark-text/15 rounded-[2rem] px-6 py-8 sm:p-12 min-h-[380px] flex flex-col justify-between shadow-sm
           group-hover:border-signal/30 dark:group-hover:border-signal/50 dark:group-hover:shadow-[0_0_20px_rgba(230,59,46,0.08)] transition-all duration-300">
-          <div className="flex items-start justify-between mb-8">
-            <span className="font-mono text-5xl sm:text-7xl font-bold text-dark/8 dark:text-dark-text/8 leading-none">
+          <div className="flex items-start gap-4 sm:gap-8 mb-8 min-w-0">
+            <span className="font-mono text-5xl sm:text-7xl font-bold text-dark/8 dark:text-dark-text/8 leading-none shrink-0 tabular-nums">
               {project.number}
             </span>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-1 flex-wrap justify-end items-center gap-2 min-w-0">
               {project.client && (
                 <span
                   className={`font-mono text-xs px-3 py-1 rounded-full border shrink-0 ${clientProjectBadge}`}
