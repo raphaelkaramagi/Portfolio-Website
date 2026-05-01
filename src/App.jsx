@@ -5,6 +5,7 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Domains from './components/Domains'
 import ProjectArchive from './components/ProjectArchive'
+import AboutSection from './components/AboutSection'
 import ProjectPage from './components/ProjectPage'
 import Footer from './components/Footer'
 
@@ -14,6 +15,7 @@ function HomePage() {
       <Hero />
       <Domains />
       <ProjectArchive />
+      <AboutSection />
     </main>
   )
 }

@@ -67,6 +67,11 @@
   background: #E63B2E;
 }
 
+/* Crisp glyph rasterization on large display / italic hero type */
+.hero-display-text {
+  text-rendering: geometricPrecision;
+}
+
 @keyframes navbar-in {
   from {
     opacity: 0;
@@ -80,6 +85,15 @@
 
 .animate-navbar-in {
   animation: navbar-in 0.8s ease-out 0.4s both;
+}
+
+@keyframes about-exp-progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
 }
 
 /* Utility animation classes for GSAP targets */

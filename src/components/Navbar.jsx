@@ -7,8 +7,9 @@ const RESUME_URL =
   'https://docs.google.com/document/d/e/2PACX-1vTAwbKjKBeitz8um71lzTx__5dS8nAPpiRBLBeJJi7IFbsKAVBI9r3_3eO0YEolfw/pub'
 
 const navLinks = [
-  { label: 'About', href: '/#about' },
+  { label: 'Areas', href: '/#areas' },
   { label: 'Projects', href: '/#projects' },
+  { label: 'About', href: '/#about' },
   { label: 'Resume', href: RESUME_URL, external: true },
 ]
 
@@ -50,7 +51,7 @@ export default function Navbar() {
         Raphael Karamagi.
       </Link>
 
-      <div className="hidden md:flex items-center gap-6">
+      <div className="hidden md:flex items-center gap-5 lg:gap-6">
         {navLinks.map((link) => (
           <a
             key={link.label}

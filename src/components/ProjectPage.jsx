@@ -38,7 +38,7 @@ function Lightbox({ src, overlayRef, imgRef, onClose }) {
         src={src}
         alt="Enlarged view"
         onClick={(e) => e.stopPropagation()}
-        className="max-w-[90vw] max-h-[85vh] object-contain rounded-2xl"
+        className="max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-[0_24px_70px_-18px_rgba(0,0,0,0.55)]"
       />
     </div>
   )
@@ -217,8 +217,10 @@ export default function ProjectPage() {
                   src={img}
                   alt={`${project.title} screenshot ${i + 1}`}
                   onClick={() => setLightboxImg(img)}
-                  className="w-full aspect-video object-cover rounded-2xl border border-dark/8 dark:border-dark-text/12 dark:shadow-[0_2px_12px_rgba(0,0,0,0.3)] cursor-pointer
-                    hover:scale-[1.02] transition-transform duration-300"
+                  className="w-full aspect-video object-cover rounded-2xl cursor-pointer border border-dark/[0.07] dark:border-transparent
+                    shadow-[0_10px_32px_-14px_rgba(17,17,17,0.22)] dark:shadow-[0_18px_44px_-18px_rgba(0,0,0,0.72)]
+                    hover:scale-[1.02] hover:shadow-[0_14px_36px_-14px_rgba(17,17,17,0.28)] dark:hover:shadow-[0_22px_52px_-18px_rgba(0,0,0,0.82)]
+                    transition-[transform,box-shadow] duration-300"
                 />
               ))}
             </div>

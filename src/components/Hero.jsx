@@ -9,8 +9,10 @@ const isTouchDevice = typeof window !== 'undefined' &&
 
 function NodeField() {
   const canvasRef = useRef(null)
-  const mouse = useRef({ x: -1000, y: -1000 })
-  const smoothMouse = useRef({ x: -1000, y: -1000 })
+  const mouse = useRef({ x: 0, y: 0 })
+  const smoothMouse = useRef({ x: 0, y: 0 })
+  const mouseInsideHero = useRef(false)
+  const interactionStrength = useRef(0)
   const nodesRef = useRef([])
   const dimsRef = useRef({ w: 0, h: 0 })
   const { dark } = useTheme()
@@ -18,17 +20,17 @@ function NodeField() {
   darkRef.current = dark
 
   const initNodes = useCallback((w, h) => {
-    const count = Math.min(35, Math.floor((w * h) / 18000))
+    const count = Math.min(52, Math.floor((w * h) / 12500))
     nodesRef.current = Array.from({ length: count }, () => ({
-      baseX: w * 0.15 + Math.random() * w * 0.8,
+      baseX: w * 0.12 + Math.random() * w * 0.83,
       baseY: Math.random() * h,
       x: 0,
       y: 0,
       phase: Math.random() * Math.PI * 2,
       speed: 0.15 + Math.random() * 0.35,
-      amp: 12 + Math.random() * 22,
-      r: 1.2 + Math.random() * 1.8,
-      accent: Math.random() < 0.25,
+      amp: 11 + Math.random() * 24,
+      r: 1.3 + Math.random() * 2.2,
+      accent: Math.random() < 0.34,
     }))
   }, [])
 
@@ -57,24 +59,31 @@ function NodeField() {
 
       const t = time * 0.001
 
-      let mx = -2000, my = -2000
+      let mx = 0
+      let my = 0
+      let str = 0
       if (!isTouchDevice) {
-        const lerpAmt = 0.08
+        const targetStr = mouseInsideHero.current ? 1 : 0
+        interactionStrength.current +=
+          (targetStr - interactionStrength.current) * 0.048
+        str = interactionStrength.current
+
+        const lerpAmt = 0.075 + str * 0.035
         smoothMouse.current.x += (mouse.current.x - smoothMouse.current.x) * lerpAmt
         smoothMouse.current.y += (mouse.current.y - smoothMouse.current.y) * lerpAmt
         mx = smoothMouse.current.x
         my = smoothMouse.current.y
       }
 
-      const attractRadius = 250
-      const attractStrength = 0.35
+      const attractRadius = 268
+      const attractStrength = 0.39 * str
 
       for (let i = 0; i < nodes.length; i++) {
         const n = nodes[i]
         n.x = n.baseX + Math.sin(t * n.speed + n.phase) * n.amp
         n.y = n.baseY + Math.cos(t * n.speed * 0.7 + n.phase + 1) * n.amp * 0.6
 
-        if (!isTouchDevice) {
+        if (!isTouchDevice && str > 0.004) {
           const dx = mx - n.x
           const dy = my - n.y
           const dist = Math.sqrt(dx * dx + dy * dy)
@@ -86,48 +95,54 @@ function NodeField() {
         }
       }
 
-      const connThresh = 150
+      const connThresh = 162
+      const lineAlphaMul = 0.82 + str * 0.18
       for (let i = 0; i < nodes.length; i++) {
         for (let j = i + 1; j < nodes.length; j++) {
           const dx = nodes[i].x - nodes[j].x
           const dy = nodes[i].y - nodes[j].y
           const dist = Math.sqrt(dx * dx + dy * dy)
           if (dist < connThresh) {
-            const alpha = (1 - dist / connThresh) * (isDark ? 0.18 : 0.22)
+            const alpha =
+              (1 - dist / connThresh) * (isDark ? 0.26 : 0.3) * lineAlphaMul
             ctx.beginPath()
             ctx.moveTo(nodes[i].x, nodes[i].y)
             ctx.lineTo(nodes[j].x, nodes[j].y)
             ctx.strokeStyle = `rgba(230,59,46,${alpha})`
-            ctx.lineWidth = isDark ? 0.5 : 0.7
+            ctx.lineWidth = isDark ? 0.55 : 0.78
             ctx.stroke()
           }
         }
       }
 
-      const glowRadius = 160
+      const glowRadius = 172
 
       for (let i = 0; i < nodes.length; i++) {
         const n = nodes[i]
-        const dx = mx - n.x
-        const dy = my - n.y
-        const dist = Math.sqrt(dx * dx + dy * dy)
-        const proximity = dist < glowRadius ? 1 - dist / glowRadius : 0
+        let proximity = 0
+        if (!isTouchDevice && str > 0.004) {
+          const dx = mx - n.x
+          const dy = my - n.y
+          const dist = Math.sqrt(dx * dx + dy * dy)
+          proximity =
+            dist < glowRadius ? (1 - dist / glowRadius) * str : 0
+        }
 
-        if (proximity > 0) {
+        if (proximity > 0.02) {
           ctx.beginPath()
           ctx.arc(n.x, n.y, n.r + 5 * proximity, 0, Math.PI * 2)
-          ctx.fillStyle = `rgba(230,59,46,${proximity * 0.3})`
+          ctx.fillStyle = `rgba(230,59,46,${proximity * 0.38})`
           ctx.fill()
         }
 
-        const baseR = n.r + proximity * 1.5
+        const baseR = n.r + proximity * 1.6
         ctx.beginPath()
         ctx.arc(n.x, n.y, baseR, 0, Math.PI * 2)
-        ctx.fillStyle = n.accent || proximity > 0.4
-          ? `rgba(230,59,46,${0.4 + proximity * 0.4})`
+        ctx.fillStyle = n.accent || proximity > 0.35
+          ? `rgba(230,59,46,${0.42 + proximity * 0.48})`
           : isDark
-            ? 'rgba(229,229,229,0.25)'
-            : 'rgba(17,17,17,0.22)'
+            ? 'rgba(229,229,229,0.3)'
+            : 'rgba(17,17,17,0.26)'
         ctx.fill()
       }
 
@@ -144,19 +159,21 @@ function NodeField() {
         mouse.current.x = e.clientX - rect.left
         mouse.current.y = e.clientY - rect.top
       }
-      const onLeave = (e) => {
-        if (!heroEl.contains(e.relatedTarget)) {
-          mouse.current.x = -2000
-          mouse.current.y = -2000
-        }
+      const onEnter = () => {
+        mouseInsideHero.current = true
+      }
+      const onLeave = () => {
+        mouseInsideHero.current = false
       }
       heroEl.addEventListener('mousemove', onMove)
+      heroEl.addEventListener('mouseenter', onEnter)
       heroEl.addEventListener('mouseleave', onLeave)
 
       window.addEventListener('resize', resize)
       return () => {
         cancelAnimationFrame(raf)
         heroEl.removeEventListener('mousemove', onMove)
+        heroEl.removeEventListener('mouseenter', onEnter)
         heroEl.removeEventListener('mouseleave', onLeave)
         window.removeEventListener('resize', resize)
       }
@@ -172,7 +189,7 @@ function NodeField() {
   return (
     <canvas
       ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-none opacity-60 sm:opacity-80 lg:opacity-100"
+      className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.62] sm:opacity-[0.82] lg:opacity-[0.94]"
     />
   )
 }
@@ -189,12 +206,20 @@ export default function Hero() {
         onComplete: markHomeIntroPlayed,
       })
 
-      tl.from('.hero-line-1', {
-        y: 60,
+      tl.from('.hero-card-panel', {
         opacity: 0,
-        duration: 1,
-        ease: 'power3.out',
-      })
+        duration: 0.58,
+        ease: 'power2.out',
+      }).from(
+        '.hero-line-1',
+        {
+          y: 60,
+          opacity: 0,
+          duration: 1,
+          ease: 'power3.out',
+        },
+        '-=0.34'
+      )
         .from(
           '.hero-line-2',
           {
@@ -243,46 +268,57 @@ export default function Hero() {
   return (
     <section
       ref={heroRef}
-      className="relative h-[100dvh] w-full flex items-center overflow-hidden"
+      className="relative min-h-[100dvh] w-full flex items-center overflow-x-hidden"
     >
       <NodeField />
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-12">
-        <div className="max-w-3xl">
-          <h1 className="hero-line-1 font-grotesk text-4xl sm:text-6xl lg:text-7xl font-bold text-dark dark:text-dark-text tracking-tight leading-none mb-2">
-            Engineering the
-          </h1>
-          <h1 className="hero-line-2 font-serif italic text-6xl sm:text-8xl lg:text-[9rem] text-signal leading-[0.9] mb-8">
-            Architecture.
-          </h1>
-          <p className="hero-subtitle font-mono text-sm sm:text-base text-dark/50 dark:text-dark-text/50 max-w-lg mb-10 leading-relaxed">
-            Duke ECE &amp; CS &apos;29. Machine learning, embedded hardware, and systems infrastructure.
-          </p>
-          <div className="hero-cta flex flex-wrap gap-4">
-            <a
-              href="https://github.com/raphaelkaramagi"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-grotesk text-sm font-semibold bg-signal text-offwhite px-7 py-3 rounded-full
-                hover:bg-dark dark:hover:bg-dark-text dark:hover:text-dark-bg transition-all duration-300"
-            >
-              View My GitHub
-            </a>
-            <a
-              href="mailto:raphael.karamagi@duke.edu"
-              className="font-grotesk text-sm font-semibold border border-dark/20 dark:border-dark-text/20 text-dark dark:text-dark-text px-7 py-3 rounded-full
-                hover:bg-dark hover:text-offwhite dark:hover:bg-dark-text dark:hover:text-dark-bg transition-all duration-300"
-            >
-              Contact Me
-            </a>
+      <div className="relative z-10 w-full max-w-7xl mx-auto min-w-0 px-4 sm:px-8 lg:px-12 box-border">
+        <div
+          className="hero-card-panel relative max-w-4xl lg:max-w-5xl xl:max-w-6xl w-full min-w-0 rounded-[2rem] px-6 py-8 pe-8 sm:px-10 sm:py-10 sm:pe-12 xl:px-12 xl:py-11 xl:pe-14 sm:mx-0
+            bg-offwhite/[0.44] dark:bg-dark-bg/[0.5]
+            backdrop-blur-[3px] sm:backdrop-blur-[5px]
+            shadow-[0_28px_72px_-20px_rgba(17,17,17,0.13)]
+            dark:shadow-[0_36px_96px_-28px_rgba(0,0,0,0.48)]"
+        >
+          <div className="min-w-0 w-full max-w-full [container-type:inline-size]">
+            <h1 className="hero-line-1 hero-display-text font-grotesk font-bold text-dark dark:text-dark-text tracking-tight leading-none mb-2
+              text-[clamp(2rem,min(100cqw_/_19.5,5.85rem),5.85rem)]">
+              Engineering the
+            </h1>
+            <h1 className="hero-line-2 hero-display-text font-serif italic text-signal leading-[0.95] mb-8 block min-w-0 w-full max-w-full box-border pr-[0.2em]
+              text-[clamp(2.75rem,min(100cqw_/_7.58,12rem),12rem)]">
+              Architecture.
+            </h1>
+            <p className="hero-subtitle hero-display-text font-mono text-sm sm:text-base text-dark/55 dark:text-dark-text/55 max-w-lg xl:max-w-2xl mb-10 leading-relaxed">
+              Duke ECE &amp; CS &apos;29. Machine learning, embedded hardware, and systems infrastructure.
+            </p>
+            <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
+              <div className="hero-cta flex flex-wrap gap-4">
+                <a
+                  href="https://github.com/raphaelkaramagi"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-grotesk text-sm font-semibold bg-signal text-offwhite px-7 py-3 rounded-full
+                  hover:bg-dark dark:hover:bg-dark-text dark:hover:text-dark-bg transition-all duration-300"
+                >
+                  View My GitHub
+                </a>
+                <a
+                  href="mailto:raphael.karamagi@duke.edu"
+                  className="font-grotesk text-sm font-semibold border border-dark/20 dark:border-dark-text/20 text-dark dark:text-dark-text px-7 py-3 rounded-full
+                  hover:bg-dark hover:text-offwhite dark:hover:bg-dark-text dark:hover:text-dark-bg transition-all duration-300"
+                >
+                  Contact Me
+                </a>
+              </div>
+              <div className="hero-scroll flex flex-col items-center gap-2 shrink-0 pointer-events-none">
+                <span className="font-mono text-xs text-dark/30 dark:text-dark-text/30 tracking-widest uppercase">
+                  Scroll
+                </span>
+                <ArrowDown className="w-4 h-4 text-dark/30 dark:text-dark-text/30 animate-bounce" />
+              </div>
+            </div>
           </div>
-        </div>
-
-        <div className="hero-scroll absolute bottom-12 right-6 sm:right-12 flex flex-col items-center gap-2">
-          <span className="font-mono text-xs text-dark/30 dark:text-dark-text/30 tracking-widest uppercase">
-            Scroll
-          </span>
-          <ArrowDown className="w-4 h-4 text-dark/30 dark:text-dark-text/30 animate-bounce" />
         </div>
       </div>
     </section>

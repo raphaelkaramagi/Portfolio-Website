@@ -194,7 +194,6 @@ function DiagnosticShuffler() {
   )
 }
 
-// ─── Domain Cards Container ────────────────────────────────────────────────
 const domains = [
   {
     icon: Brain,
@@ -214,7 +213,7 @@ const domains = [
     icon: Code,
     title: 'Software Engineering',
     description:
-      'Systems and full-stack — from C++ servers and language interpreters to React frontends, real-time platforms, and database-driven APIs.',
+      'Systems-oriented Python — chess-style search and evaluation — alongside React frontends and database-backed APIs.',
     Component: DiagnosticShuffler,
   },
 ]
@@ -226,7 +225,7 @@ export default function Domains() {
     if (hasPlayedHomeIntro) return
 
     const ctx = gsap.context(() => {
-      gsap.from('.about-header', {
+      gsap.from('.areas-header', {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top 75%',
@@ -241,13 +240,13 @@ export default function Domains() {
       gsap.from('.domain-card', {
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 65%',
-          end: 'bottom 60%',
+          start: 'top 62%',
+          end: 'bottom 58%',
           toggleActions: 'play none none reverse',
         },
-        y: 60,
+        y: 56,
         opacity: 0,
-        stagger: 0.2,
+        stagger: 0.18,
         duration: 0.8,
         ease: 'power3.out',
       })
@@ -258,13 +257,13 @@ export default function Domains() {
 
   return (
     <section
-      id="about"
+      id="areas"
       ref={sectionRef}
-      className="relative py-24 sm:py-32 px-6 sm:px-12 max-w-7xl mx-auto"
+      className="relative scroll-mt-28 py-24 sm:py-32 px-6 sm:px-12 max-w-7xl mx-auto"
     >
-      <div className="about-header mb-16">
+      <div className="areas-header mb-14 sm:mb-16">
         <span className="font-mono text-xs text-signal tracking-widest uppercase">
-          About
+          Areas
         </span>
         <h2 className="font-grotesk text-3xl sm:text-5xl font-bold text-dark dark:text-dark-text mt-3 tracking-tight">
           What I Build

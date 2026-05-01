@@ -29,8 +29,8 @@
       rel="stylesheet"
     />
     <script>
-      if (localStorage.theme === 'dark' || (!localStorage.theme && matchMedia('(prefers-color-scheme: dark)').matches))
-        document.documentElement.classList.add('dark')
+      /* Default dark for first-time visitors; only explicit 'light' opts out */
+      if (localStorage.theme !== 'light') document.documentElement.classList.add('dark')
     </script>
   </head>
   <body>

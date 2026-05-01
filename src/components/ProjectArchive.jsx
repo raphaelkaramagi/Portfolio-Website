@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { forwardRef, useEffect, useMemo, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -14,46 +14,19 @@ const statusColors = {
   Planned: 'bg-dark/8 dark:bg-dark-text/8 text-dark/60 dark:text-dark-text/60 border-dark/15 dark:border-dark-text/15',
 }
 
-function ProjectCard({ project, index }) {
-  const cardRef = useRef(null)
+/** Shelf under fixed navbar (~top-6 + pill height). */
+const CARD_PIN_START = 'top top+=96'
+/** Next card reaches shelf → previous card finishes overlap + begins exit upward in same scrub timeline. */
+const NEXT_CARD_AT_SHELF = 'top top+=96'
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: cardRef.current,
-        start: 'top 15%',
-        end: 'bottom 15%',
-        pin: true,
-        pinSpacing: false,
-      })
-
-      gsap.to(cardRef.current, {
-        scrollTrigger: {
-          trigger: cardRef.current,
-          start: 'bottom 85%',
-          end: 'bottom 15%',
-          scrub: 0.5,
-        },
-        scale: 0.9,
-        filter: 'blur(20px)',
-        opacity: 0.5,
-        ease: 'power2.inOut',
-      })
-    }, cardRef)
-
-    return () => ctx.revert()
-  }, [])
-
+const ProjectCard = forwardRef(function ProjectCard({ project, stackIndex }, ref) {
   return (
     <div
-      ref={cardRef}
-      className="project-card w-full max-w-5xl mx-auto"
-      style={{ zIndex: index + 1 }}
+      ref={ref}
+      className="project-card will-change-transform origin-top w-full max-w-5xl mx-auto"
+      style={{ zIndex: stackIndex + 1 }}
     >
-      <Link
-        to={`/projects/${project.slug}`}
-        className="block group"
-      >
+      <Link to={`/projects/${project.slug}`} className="block group">
         <div className="bg-offwhite dark:bg-dark-card border border-dark/8 dark:border-dark-text/15 rounded-[2rem] p-8 sm:p-12 min-h-[380px] flex flex-col justify-between shadow-sm
           group-hover:border-signal/30 dark:group-hover:border-signal/50 dark:group-hover:shadow-[0_0_20px_rgba(230,59,46,0.08)] transition-all duration-300">
           <div className="flex items-start justify-between mb-8">
@@ -119,7 +92,7 @@ function ProjectCard({ project, index }) {
       </Link>
     </div>
   )
-}
+})
 
 const sectionOrder = ['Completed', 'Ongoing', 'Planned']
 
@@ -129,8 +102,113 @@ const sectionMeta = {
   Planned: { label: 'Planned', accent: 'text-dark/40 dark:text-dark-text/40' },
 }
 
+function mountProjectCardStacks(nodes) {
+  const ctx = gsap.context(() => {
+    nodes.forEach((el, i) => {
+      const nextEl = nodes[i + 1]
+      const pinEnd = nextEl
+        ? { endTrigger: nextEl, end: NEXT_CARD_AT_SHELF }
+        : { end: 'bottom 15%' }
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: el,
+          start: CARD_PIN_START,
+          scrub: 0.52,
+          pin: true,
+          pinSpacing: false,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          ...pinEnd,
+        },
+      })
+
+      tl.fromTo(
+        el,
+        { scale: 1, filter: 'blur(0px)', opacity: 1, y: 0 },
+        {
+          scale: 0.88,
+          filter: 'blur(22px)',
+          opacity: 0.42,
+          ease: 'none',
+          duration: nextEl ? 0.42 : 1,
+        },
+      )
+
+      if (nextEl) {
+        tl.to(
+          el,
+          {
+            y: () => -(Math.max(window.innerHeight, 640) * 1.14),
+            ease: 'none',
+            duration: 0.54,
+          },
+          '-=0.14',
+        )
+      }
+    })
+
+    ScrollTrigger.refresh()
+  })
+
+  return ctx
+}
+
 export default function ProjectArchive() {
   const sectionRef = useRef(null)
+  const cardsRef = useRef([])
+  const stackCtxRef = useRef(null)
+
+  const grouped = useMemo(
+    () =>
+      sectionOrder
+        .map((status) => ({
+          status,
+          ...sectionMeta[status],
+          items: projects.filter((p) => p.status === status),
+        }))
+        .filter((g) => g.items.length > 0),
+    [],
+  )
+
+  const deckKey = useMemo(
+    () => grouped.flatMap((g) => g.items).map((p) => p.slug).join('|'),
+    [grouped],
+  )
+
+  const deckCount = grouped.reduce((n, g) => n + g.items.length, 0)
+
+  useEffect(() => {
+    stackCtxRef.current?.revert()
+    stackCtxRef.current = null
+
+    let cancelled = false
+    let tries = 0
+
+    const tryMount = () => {
+      if (cancelled || tries++ > 24) return
+
+      const nodes = []
+      for (let i = 0; i < deckCount; i++) {
+        const node = cardsRef.current[i]
+        if (!node) {
+          requestAnimationFrame(tryMount)
+          return
+        }
+        nodes.push(node)
+      }
+
+      stackCtxRef.current = mountProjectCardStacks(nodes)
+    }
+
+    requestAnimationFrame(tryMount)
+
+    return () => {
+      cancelled = true
+      stackCtxRef.current?.revert()
+      stackCtxRef.current = null
+    }
+  }, [deckKey, deckCount])
 
   useEffect(() => {
     if (hasPlayedHomeIntro) return
@@ -152,19 +230,13 @@ export default function ProjectArchive() {
     return () => ctx.revert()
   }, [])
 
-  const grouped = sectionOrder.map((status) => ({
-    status,
-    ...sectionMeta[status],
-    items: projects.filter((p) => p.status === status),
-  })).filter((g) => g.items.length > 0)
-
-  let globalIndex = 0
+  let stackIndex = 0
 
   return (
     <section
       id="projects"
       ref={sectionRef}
-      className="relative py-24 sm:py-32 px-6 sm:px-12"
+      className="relative scroll-mt-28 py-24 sm:py-32 px-6 sm:px-12"
     >
       <div className="archive-header max-w-5xl mx-auto mb-16">
         <span className="font-mono text-xs text-signal tracking-widest uppercase">
@@ -189,8 +261,17 @@ export default function ProjectArchive() {
           </div>
           <div className="flex flex-col gap-8">
             {group.items.map((project) => {
-              const idx = globalIndex++
-              return <ProjectCard key={project.number} project={project} index={idx} />
+              const idx = stackIndex++
+              return (
+                <ProjectCard
+                  key={project.slug}
+                  ref={(el) => {
+                    cardsRef.current[idx] = el
+                  }}
+                  project={project}
+                  stackIndex={idx}
+                />
+              )
             })}
           </div>
         </div>
