@@ -274,44 +274,46 @@ export default function Hero() {
 
       <div className="relative z-10 w-full max-w-7xl mx-auto min-w-0 px-4 sm:px-8 lg:px-12 box-border">
         <div
-          className="hero-card-panel relative max-w-4xl lg:max-w-5xl xl:max-w-6xl w-full min-w-0 rounded-[2rem] px-6 py-8 pe-8 sm:px-10 sm:py-10 sm:pe-12 xl:px-12 xl:py-11 xl:pe-14 sm:mx-0
+          className="hero-card-panel relative max-w-4xl lg:max-w-5xl xl:max-w-6xl w-full min-w-0 rounded-[2rem] px-6 py-8 pe-8 sm:px-10 sm:py-10 sm:pe-12 xl:px-12 xl:py-11 xl:pe-14 sm:mx-0 flex flex-col
             bg-offwhite/[0.44] dark:bg-dark-bg/[0.5]
             backdrop-blur-[3px] sm:backdrop-blur-[5px]
             shadow-[0_28px_72px_-20px_rgba(17,17,17,0.13)]
             dark:shadow-[0_36px_96px_-28px_rgba(0,0,0,0.48)]"
         >
-          <div className="min-w-0 w-full max-w-full [container-type:inline-size]">
-            <h1 className="hero-line-1 hero-display-text font-grotesk font-bold text-dark dark:text-dark-text tracking-tight leading-none mb-2
-              text-[clamp(2rem,min(100cqw_/_19.5,5.85rem),5.85rem)]">
-              Engineering the
-            </h1>
-            <h1 className="hero-line-2 hero-display-text font-serif italic text-signal leading-[0.95] mb-8 block min-w-0 w-full max-w-full box-border pr-[0.2em]
-              text-[clamp(2.75rem,min(100cqw_/_7.58,12rem),12rem)]">
-              Architecture.
-            </h1>
-            <p className="hero-subtitle hero-display-text font-mono text-sm sm:text-base text-dark/55 dark:text-dark-text/55 max-w-lg xl:max-w-2xl mb-10 leading-relaxed">
+          <div className="min-w-0 w-full max-w-full [container-type:inline-size] flex flex-col">
+            <div>
+              <h1 className="hero-line-1 hero-display-text font-grotesk font-bold text-dark dark:text-dark-text tracking-tight leading-none mb-2
+                text-[clamp(2rem,min(100cqw_/_17.5,5.85rem),5.85rem)]">
+                Engineering the
+              </h1>
+              <h1 className="hero-line-2 hero-display-text font-serif italic text-signal leading-[0.95] mb-6 sm:mb-8 block min-w-0 w-full max-w-full box-border pr-[0.2em]
+                text-[clamp(2.85rem,min(100cqw_/_6.85,12rem),12rem)]">
+                Architecture.
+              </h1>
+            </div>
+            <p className="hero-subtitle hero-display-text font-mono text-sm sm:text-base text-dark/55 dark:text-dark-text/55 max-w-lg xl:max-w-2xl mb-6 sm:mb-10 leading-relaxed">
               Duke ECE &amp; CS &apos;29. Machine learning, embedded hardware, and systems infrastructure.
             </p>
-            <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
-              <div className="hero-cta flex flex-wrap gap-4">
+            <div className="flex flex-col gap-4 shrink-0 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-x-3 sm:gap-y-3">
+              <div className="hero-cta flex flex-row flex-nowrap gap-2 sm:flex-wrap sm:gap-4 flex-1 min-w-0 sm:max-w-none">
                 <a
                   href="https://github.com/raphaelkaramagi"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-grotesk text-sm font-semibold bg-signal text-offwhite px-7 py-3 rounded-full
+                  className="font-grotesk text-xs sm:text-sm font-semibold bg-signal text-offwhite px-4 py-2.5 sm:px-7 sm:py-3 rounded-full text-center flex-1 min-w-0 sm:flex-none sm:shrink-0
                   hover:bg-dark dark:hover:bg-dark-text dark:hover:text-dark-bg transition-all duration-300"
                 >
                   View My GitHub
                 </a>
                 <a
                   href="mailto:raphael.karamagi@duke.edu"
-                  className="font-grotesk text-sm font-semibold border border-dark/20 dark:border-dark-text/20 text-dark dark:text-dark-text px-7 py-3 rounded-full
+                  className="font-grotesk text-xs sm:text-sm font-semibold border border-dark/20 dark:border-dark-text/20 text-dark dark:text-dark-text px-4 py-2.5 sm:px-7 sm:py-3 rounded-full text-center flex-1 min-w-0 sm:flex-none sm:shrink-0
                   hover:bg-dark hover:text-offwhite dark:hover:bg-dark-text dark:hover:text-dark-bg transition-all duration-300"
                 >
                   Contact Me
                 </a>
               </div>
-              <div className="hero-scroll flex flex-col items-center gap-2 shrink-0 pointer-events-none">
+              <div className="hero-scroll flex flex-col items-center gap-2 shrink-0 pointer-events-none self-center sm:self-auto">
                 <span className="font-mono text-xs text-dark/30 dark:text-dark-text/30 tracking-widest uppercase">
                   Scroll
                 </span>

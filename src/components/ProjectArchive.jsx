@@ -114,10 +114,10 @@ function mountProjectCardStacks(nodes) {
         scrollTrigger: {
           trigger: el,
           start: CARD_PIN_START,
-          scrub: 0.52,
+          scrub: true,
           pin: true,
           pinSpacing: false,
-          anticipatePin: 1,
+          anticipatePin: 0,
           invalidateOnRefresh: true,
           ...pinEnd,
         },
