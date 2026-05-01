@@ -297,20 +297,20 @@ export default function Hero() {
             <div className="flex flex-col gap-4 shrink-0 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-x-3 sm:gap-y-3">
               <div className="hero-cta flex flex-row flex-nowrap gap-2 sm:flex-wrap sm:gap-4 flex-1 min-w-0 sm:max-w-none">
                 <a
-                  href="https://github.com/raphaelkaramagi"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="mailto:raphael.karamagi@duke.edu"
                   className="font-grotesk text-xs sm:text-sm font-semibold bg-signal text-offwhite px-4 py-2.5 sm:px-7 sm:py-3 rounded-full text-center flex-1 min-w-0 sm:flex-none sm:shrink-0
                   hover:bg-dark dark:hover:bg-dark-text dark:hover:text-dark-bg transition-all duration-300"
                 >
-                  View My GitHub
+                  Contact Me
                 </a>
                 <a
-                  href="mailto:raphael.karamagi@duke.edu"
+                  href="https://github.com/raphaelkaramagi"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="font-grotesk text-xs sm:text-sm font-semibold border border-dark/20 dark:border-dark-text/20 text-dark dark:text-dark-text px-4 py-2.5 sm:px-7 sm:py-3 rounded-full text-center flex-1 min-w-0 sm:flex-none sm:shrink-0
                   hover:bg-dark hover:text-offwhite dark:hover:bg-dark-text dark:hover:text-dark-bg transition-all duration-300"
                 >
-                  Contact Me
+                  View My GitHub
                 </a>
               </div>
               <div className="hero-scroll flex flex-col items-center gap-2 shrink-0 pointer-events-none self-center sm:self-auto">
