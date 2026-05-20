@@ -49,7 +49,7 @@ const experiences = [
 const CARD_CLASS =
   'rounded-[2rem] border border-dark/10 dark:border-dark-text/15 bg-offwhite/95 dark:bg-dark-card/95 backdrop-blur-[6px] shadow-[0_14px_44px_-18px_rgba(17,17,17,0.14)] dark:shadow-[0_22px_56px_-22px_rgba(0,0,0,0.65)]'
 
-const ROTATE_MS = 5600
+const ROTATE_MS = 7600
 
 export default function AboutSection() {
   const sectionRef = useRef(null)

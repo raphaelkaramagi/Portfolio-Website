@@ -7,9 +7,8 @@ const RESUME_URL =
   'https://docs.google.com/document/d/e/2PACX-1vTAwbKjKBeitz8um71lzTx__5dS8nAPpiRBLBeJJi7IFbsKAVBI9r3_3eO0YEolfw/pub'
 
 const navLinks = [
-  { label: 'Areas', href: '/#areas' },
-  { label: 'Projects', href: '/#projects' },
   { label: 'About', href: '/#about' },
+  { label: 'Projects', href: '/#projects' },
   { label: 'Resume', href: RESUME_URL, external: true },
 ]
 
