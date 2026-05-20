@@ -1,28 +1,39 @@
-import { forwardRef, useEffect, useMemo, useRef } from 'react'
+import { forwardRef, useCallback, useEffect, useMemo, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ArrowRight, ExternalLink } from 'lucide-react'
 import { projects } from '../data/projects'
 import { hasPlayedHomeIntro } from '../lib/animationState'
+import useTilt from '../lib/useTilt'
+import useCursorVars from '../lib/useCursorVars'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const statusColors = {
-  Ongoing: 'bg-signal/15 text-signal border-signal/30',
-  Completed: 'bg-green-500/15 text-green-600 dark:text-green-400 border-green-500/30',
-  Planned: 'bg-dark/8 dark:bg-dark-text/8 text-dark/60 dark:text-dark-text/60 border-dark/15 dark:border-dark-text/15',
+  Ongoing:
+    'bg-amber-400/12 text-amber-300 border-amber-400/30',
+  Completed:
+    'bg-emerald-400/12 text-emerald-300 border-emerald-400/30',
+  Planned:
+    'bg-white/[0.05] text-dark-text/55 border-white/10',
 }
 
 const clientProjectBadge =
-  'bg-violet-500/15 text-violet-700 dark:text-violet-300 border-violet-500/35 dark:border-violet-400/40'
-
-/** Shelf under fixed navbar (~top-6 + pill height). */
-const CARD_PIN_START = 'top top+=96'
-/** Next card reaches shelf → previous card finishes overlap + begins exit upward in same scrub timeline. */
-const NEXT_CARD_AT_SHELF = 'top top+=96'
+  'bg-aurora-violet/15 text-violet-300 border-aurora-violet/40'
 
 const ProjectCard = forwardRef(function ProjectCard({ project, stackIndex }, ref) {
+  const tiltRef = useTilt({ max: 3.5 })
+  const cursorRef = useCursorVars()
+
+  const innerRef = useCallback(
+    (node) => {
+      tiltRef.current = node
+      cursorRef.current = node
+    },
+    [tiltRef, cursorRef],
+  )
+
   return (
     <div
       ref={ref}
@@ -30,66 +41,70 @@ const ProjectCard = forwardRef(function ProjectCard({ project, stackIndex }, ref
       style={{ zIndex: stackIndex + 1 }}
     >
       <Link to={`/projects/${project.slug}`} className="block group">
-        <div className="bg-offwhite dark:bg-dark-card border border-dark/8 dark:border-dark-text/15 rounded-[2rem] px-6 py-8 sm:p-12 min-h-[380px] flex flex-col justify-between shadow-sm
-          group-hover:border-signal/30 dark:group-hover:border-signal/50 dark:group-hover:shadow-[0_0_20px_rgba(230,59,46,0.08)] transition-all duration-300">
-          <div className="flex items-start gap-4 sm:gap-8 mb-8 min-w-0">
-            <span className="font-mono text-5xl sm:text-7xl font-bold text-dark/8 dark:text-dark-text/8 leading-none shrink-0 tabular-nums">
-              {project.number}
-            </span>
-            <div className="flex flex-1 flex-wrap justify-end items-center gap-2 min-w-0">
-              {project.client && (
-                <span
-                  className={`font-mono text-xs px-3 py-1 rounded-full border shrink-0 ${clientProjectBadge}`}
-                >
-                  Client Project
-                </span>
-              )}
-              <span
-                className={`font-mono text-xs px-3 py-1 rounded-full border ${
-                  statusColors[project.status]
-                }`}
-              >
-                {project.status}
+        <div
+          ref={innerRef}
+          className="glass-card glass-card-hoverable rounded-[2rem] px-6 py-8 sm:p-12 min-h-[380px] flex flex-col justify-between"
+        >
+          <div className="relative z-10 flex flex-col flex-1 justify-between">
+            <div className="flex items-start gap-4 sm:gap-8 mb-8 min-w-0">
+              <span className="font-mono text-5xl sm:text-7xl font-bold text-dark-text/10 leading-none shrink-0 tabular-nums">
+                {project.number}
               </span>
-            </div>
-          </div>
-
-          <h3 className="font-grotesk text-2xl sm:text-4xl font-bold text-dark dark:text-dark-text tracking-tight mb-6 max-w-2xl">
-            {project.title}
-          </h3>
-
-          <div>
-            <p className="font-grotesk text-sm sm:text-base text-dark/60 dark:text-dark-text/60 leading-relaxed mb-6 max-w-2xl">
-              {project.description}
-            </p>
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex flex-wrap gap-2">
-                {project.stack.map((tech) => (
+              <div className="flex flex-1 flex-wrap justify-end items-center gap-2 min-w-0">
+                {project.client && (
                   <span
-                    key={tech}
-                    className="font-mono text-xs bg-paper dark:bg-dark-card-alt border border-dark/8 dark:border-dark-text/8 text-dark/70 dark:text-dark-text/70 px-3 py-1.5 rounded-full"
+                    className={`font-mono text-xs px-3 py-1 rounded-full border shrink-0 ${clientProjectBadge}`}
                   >
-                    {tech}
+                    Client Project
                   </span>
-                ))}
-              </div>
-              <div className="hidden sm:flex items-center gap-4 shrink-0">
-                {project.demoUrl && (
-                  <a
-                    href={project.demoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                    className="flex items-center gap-1.5 font-mono text-xs text-signal hover:text-signal/70 transition-colors duration-300"
-                  >
-                    Live Demo
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
                 )}
-                <span className="flex items-center gap-1.5 font-mono text-xs text-dark/30 dark:text-dark-text/30 group-hover:text-signal transition-colors duration-300">
-                  View project
-                  <ArrowRight className="w-3.5 h-3.5" />
+                <span
+                  className={`font-mono text-xs px-3 py-1 rounded-full border ${
+                    statusColors[project.status]
+                  }`}
+                >
+                  {project.status}
                 </span>
+              </div>
+            </div>
+
+            <h3 className="font-grotesk text-2xl sm:text-4xl font-bold text-dark-text tracking-tight mb-6 max-w-2xl transition-colors duration-300">
+              {project.title}
+            </h3>
+
+            <div>
+              <p className="font-grotesk text-sm sm:text-base text-dark-text/65 leading-relaxed mb-6 max-w-2xl">
+                {project.description}
+              </p>
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex flex-wrap gap-2">
+                  {project.stack.map((tech) => (
+                    <span
+                      key={tech}
+                      className="font-mono text-xs bg-white/[0.04] border border-white/10 text-dark-text/75 px-3 py-1.5 rounded-full"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+                <div className="hidden sm:flex items-center gap-4 shrink-0">
+                  {project.demoUrl && (
+                    <a
+                      href={project.demoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="flex items-center gap-1.5 font-mono text-xs text-aurora-violet hover:text-aurora-pink transition-colors duration-300"
+                    >
+                      Live Demo
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  )}
+                  <span className="flex items-center gap-1.5 font-mono text-xs text-dark-text/45 group-hover:text-aurora-violet transition-colors duration-300">
+                    View project
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -102,60 +117,34 @@ const ProjectCard = forwardRef(function ProjectCard({ project, stackIndex }, ref
 const sectionOrder = ['Completed', 'Ongoing', 'Planned']
 
 const sectionMeta = {
-  Ongoing: { label: 'In Progress', accent: 'text-signal' },
-  Completed: { label: 'Completed', accent: 'text-green-600 dark:text-green-400' },
-  Planned: { label: 'Planned', accent: 'text-dark/40 dark:text-dark-text/40' },
+  Ongoing: { label: 'In Progress', accent: 'text-amber-300' },
+  Completed: { label: 'Completed', accent: 'text-emerald-300' },
+  Planned: { label: 'Planned', accent: 'text-dark-text/45' },
 }
 
-function mountProjectCardStacks(nodes) {
+function mountCardBlur(nodes) {
   const ctx = gsap.context(() => {
-    nodes.forEach((el, i) => {
-      const nextEl = nodes[i + 1]
-      const pinEnd = nextEl
-        ? { endTrigger: nextEl, end: NEXT_CARD_AT_SHELF }
-        : { end: 'bottom 15%' }
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: el,
-          start: CARD_PIN_START,
-          scrub: true,
-          pin: true,
-          pinSpacing: false,
-          anticipatePin: 0,
-          invalidateOnRefresh: true,
-          ...pinEnd,
-        },
-      })
-
-      tl.fromTo(
+    nodes.forEach((el) => {
+      gsap.fromTo(
         el,
-        { scale: 1, filter: 'blur(0px)', opacity: 1, y: 0 },
+        { opacity: 1, filter: 'blur(0px)', scale: 1 },
         {
-          scale: 0.88,
-          filter: 'blur(22px)',
-          opacity: 0.42,
+          opacity: 0.3,
+          filter: 'blur(14px)',
+          scale: 0.95,
           ease: 'none',
-          duration: nextEl ? 0.42 : 1,
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 50%',
+            end: 'top 8%',
+            scrub: 0.6,
+            invalidateOnRefresh: true,
+          },
         },
       )
-
-      if (nextEl) {
-        tl.to(
-          el,
-          {
-            y: () => -(Math.max(window.innerHeight, 640) * 1.14),
-            ease: 'none',
-            duration: 0.54,
-          },
-          '-=0.14',
-        )
-      }
     })
-
     ScrollTrigger.refresh()
   })
-
   return ctx
 }
 
@@ -203,7 +192,7 @@ export default function ProjectArchive() {
         nodes.push(node)
       }
 
-      stackCtxRef.current = mountProjectCardStacks(nodes)
+      stackCtxRef.current = mountCardBlur(nodes)
     }
 
     requestAnimationFrame(tryMount)
@@ -244,10 +233,10 @@ export default function ProjectArchive() {
       className="relative scroll-mt-28 py-24 sm:py-32 px-6 sm:px-12"
     >
       <div className="archive-header max-w-5xl mx-auto mb-16">
-        <span className="font-mono text-xs text-signal tracking-widest uppercase">
+        <span className="font-mono text-xs text-aurora-animated tracking-widest uppercase">
           Archive
         </span>
-        <h2 className="font-grotesk text-3xl sm:text-5xl font-bold text-dark dark:text-dark-text mt-3 tracking-tight">
+        <h2 className="font-grotesk text-3xl sm:text-5xl font-bold text-dark-text mt-3 tracking-tight">
           Project Archive
         </h2>
       </div>
@@ -256,7 +245,7 @@ export default function ProjectArchive() {
         <div key={group.status} className="mb-12 last:mb-0">
           {gi > 0 && (
             <div className="relative z-50 max-w-5xl mx-auto pt-16 pb-2 mb-8">
-              <div className="border-t border-dark/8 dark:border-dark-text/10" />
+              <div className="border-t border-white/10" />
             </div>
           )}
           <div className="relative z-50 max-w-5xl mx-auto mb-8">

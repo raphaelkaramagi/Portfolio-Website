@@ -3,6 +3,8 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { hasPlayedHomeIntro } from '../lib/animationState'
+import useCursorVars from '../lib/useCursorVars'
+import useTilt from '../lib/useTilt'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -46,8 +48,7 @@ const experiences = [
   },
 ]
 
-const CARD_CLASS =
-  'rounded-[2rem] border border-dark/10 dark:border-dark-text/15 bg-offwhite/95 dark:bg-dark-card/95 backdrop-blur-[6px] shadow-[0_14px_44px_-18px_rgba(17,17,17,0.14)] dark:shadow-[0_22px_56px_-22px_rgba(0,0,0,0.65)]'
+const CARD_CLASS = 'glass-card glass-card-hoverable rounded-[2rem]'
 
 const ROTATE_MS = 7600
 
@@ -56,6 +57,27 @@ export default function AboutSection() {
   const [expIndex, setExpIndex] = useState(0)
   const [experiencePaused, setExperiencePaused] = useState(false)
   const [progressCycle, setProgressCycle] = useState(0)
+
+  const introTiltRef = useTilt({ max: 2.5 })
+  const introCursorRef = useCursorVars()
+  const introCardRef = useCallback(
+    (node) => { introTiltRef.current = node; introCursorRef.current = node },
+    [introTiltRef, introCursorRef],
+  )
+
+  const expTiltRef = useTilt({ max: 3 })
+  const expCursorRef = useCursorVars()
+  const experienceCardRef = useCallback(
+    (node) => { expTiltRef.current = node; expCursorRef.current = node },
+    [expTiltRef, expCursorRef],
+  )
+
+  const skillsTiltRef = useTilt({ max: 3 })
+  const skillsCursorRef = useCursorVars()
+  const skillsCardRef = useCallback(
+    (node) => { skillsTiltRef.current = node; skillsCursorRef.current = node },
+    [skillsTiltRef, skillsCursorRef],
+  )
 
   const advanceTimeoutRef = useRef(null)
   const deadlineRef = useRef(null)
@@ -171,17 +193,17 @@ export default function AboutSection() {
     <section
       id="about"
       ref={sectionRef}
-      className="relative scroll-mt-28 py-24 sm:py-32 px-6 sm:px-12 max-w-7xl mx-auto border-t border-dark/8 dark:border-dark-text/10"
+      className="relative scroll-mt-28 py-24 sm:py-32 px-6 sm:px-12 max-w-7xl mx-auto"
     >
       <div className="about-section-label mb-8 sm:mb-10">
-        <span className="font-mono text-xs text-signal tracking-widest uppercase">
+        <span className="font-mono text-xs text-aurora-animated tracking-widest uppercase">
           About
         </span>
       </div>
 
       <div className="about-section-body flex flex-col gap-6 lg:gap-8">
-        <div className={`about-card ${CARD_CLASS} p-8 sm:p-10 lg:p-12`}>
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,200px)_minmax(0,1fr)_minmax(0,220px)] gap-10 lg:gap-12 items-start">
+        <div ref={introCardRef} className={`about-card ${CARD_CLASS} p-8 sm:p-10 lg:p-12`}>
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[minmax(0,200px)_minmax(0,1fr)_minmax(0,220px)] gap-10 lg:gap-12 items-start">
             <div className="flex justify-center lg:justify-start shrink-0 mx-auto lg:mx-0">
               <img
                 src="/images/raphael-portrait.jpeg"
@@ -190,36 +212,36 @@ export default function AboutSection() {
                 height={800}
                 loading="lazy"
                 className="w-full max-w-[200px] sm:max-w-[220px] lg:w-full lg:max-w-none aspect-[4/5] object-cover rounded-2xl
-                  shadow-[0_12px_36px_-14px_rgba(17,17,17,0.22)] dark:shadow-[0_20px_48px_-18px_rgba(0,0,0,0.72)]"
+                  shadow-[0_20px_48px_-18px_rgba(0,0,0,0.72)] ring-1 ring-white/5"
               />
             </div>
 
             <div className="min-w-0 space-y-5">
               <div className="min-w-0 space-y-3">
-                <span className="font-grotesk block text-[clamp(1.875rem,4vw,2.75rem)] font-bold tracking-tight text-dark dark:text-dark-text leading-tight">
+                <span className="font-grotesk block text-[clamp(1.875rem,4vw,2.75rem)] font-bold tracking-tight text-dark-text leading-tight">
                   Raphael Karamagi
                 </span>
-                <p className="font-grotesk text-base sm:text-lg text-dark/75 dark:text-dark-text/75 leading-relaxed">
+                <p className="font-grotesk text-base sm:text-lg text-dark-text/75 leading-relaxed">
                   is a self taught software and hardware engineer passionate about turning vague ideas into things that work in the real world,
                   whether that&apos;s software, hardware, or the learning systems layered on top. He&apos;s drawn to thoughtful craft, user experience,
                   and building dependable systems.
                 </p>
               </div>
 
-              <p className="font-mono text-xs sm:text-sm text-dark/55 dark:text-dark-text/55 leading-relaxed tracking-wide">
-                <span className="text-signal/90">//</span> Machine Learning{' '}
-                <span className="text-dark/35 dark:text-dark-text/35 mx-1">·</span>{' '}
-                <span className="text-signal/90">//</span> Embedded Systems &amp; Hardware{' '}
-                <span className="text-dark/35 dark:text-dark-text/35 mx-1">·</span>{' '}
-                <span className="text-signal/90">//</span> Software Engineering
+              <p className="font-mono text-xs sm:text-sm text-dark-text/55 leading-relaxed tracking-wide">
+                <span className="text-aurora-violet/90">//</span> Machine Learning{' '}
+                <span className="text-dark-text/35 mx-1">·</span>{' '}
+                <span className="text-aurora-blue/90">//</span> Embedded Systems &amp; Hardware{' '}
+                <span className="text-dark-text/35 mx-1">·</span>{' '}
+                <span className="text-aurora-pink/90">//</span> Software Engineering
               </p>
 
-              <p className="font-grotesk text-sm text-dark/60 dark:text-dark-text/60 leading-relaxed max-w-xl">
+              <p className="font-grotesk text-sm text-dark-text/60 leading-relaxed max-w-xl">
                 Outside of STEM he&apos;s usually on the court for basketball or at the piano sketching compositions.
               </p>
             </div>
 
-            <div className="w-full lg:w-auto lg:border-l border-t lg:border-t-0 border-dark/10 dark:border-dark-text/12 pt-8 lg:pt-0 lg:pl-10">
+            <div className="w-full lg:w-auto lg:border-l border-t lg:border-t-0 border-white/10 pt-8 lg:pt-0 lg:pl-10">
               <ul className="space-y-0 font-grotesk text-sm sm:text-base">
                 {[
                   { n: '1+', label: 'Years of experience' },
@@ -229,13 +251,13 @@ export default function AboutSection() {
                   <li
                     key={row.label}
                     className={`flex items-baseline justify-between gap-6 py-4 ${
-                      i > 0 ? 'border-t border-dark/10 dark:border-dark-text/10' : ''
+                      i > 0 ? 'border-t border-white/10' : ''
                     }`}
                   >
-                    <span className="text-2xl sm:text-3xl font-bold text-dark dark:text-dark-text tabular-nums">
+                    <span className="text-2xl sm:text-3xl font-bold text-dark-text tabular-nums">
                       {row.n}
                     </span>
-                    <span className="text-right text-dark/60 dark:text-dark-text/65 text-sm sm:text-base leading-snug max-w-[11rem]">
+                    <span className="text-right text-dark-text/65 text-sm sm:text-base leading-snug max-w-[11rem]">
                       {row.label}
                     </span>
                   </li>
@@ -247,6 +269,7 @@ export default function AboutSection() {
 
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.65fr)_minmax(0,1fr)] gap-6 lg:gap-8 lg:items-stretch">
           <div
+            ref={experienceCardRef}
             className={`about-card ${CARD_CLASS} p-5 sm:p-6 flex flex-col lg:min-h-0 lg:h-full`}
             onMouseEnter={() => {
               mouseOverCardRef.current = true
@@ -284,106 +307,110 @@ export default function AboutSection() {
               syncExperiencePaused()
             }}
           >
-            <div className="flex items-center justify-between gap-3 mb-2 shrink-0">
-              <span className="font-mono text-[11px] sm:text-xs text-dark/45 dark:text-dark-text/45 tracking-widest uppercase">
-                Experience
-              </span>
-              <div className="flex gap-1.5 items-center">
-                <button
-                  type="button"
-                  onClick={goPrev}
-                  className="flex h-8 w-8 items-center justify-center rounded-full border border-dark/12 dark:border-dark-text/18 text-dark/60 dark:text-dark-text/65 hover:border-signal/40 hover:text-signal transition-colors duration-300"
-                  aria-label="Previous role"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <button
-                  type="button"
-                  onClick={goNext}
-                  className="flex h-8 w-8 items-center justify-center rounded-full border border-dark/12 dark:border-dark-text/18 text-dark/60 dark:text-dark-text/65 hover:border-signal/40 hover:text-signal transition-colors duration-300"
-                  aria-label="Next role"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-
-            <div
-              className="h-[3px] w-full rounded-full bg-dark/10 dark:bg-dark-text/15 overflow-hidden mb-3 shrink-0"
-              aria-hidden
-            >
-              <div
-                key={`${expIndex}-${progressCycle}`}
-                className="h-full rounded-full bg-signal"
-                style={{
-                  animation: `about-exp-progress ${ROTATE_MS}ms linear forwards`,
-                  animationPlayState: experiencePaused ? 'paused' : 'running',
-                }}
-              />
-            </div>
-
-            <div key={activeExp.id} className="flex-1 flex flex-col min-h-0" aria-live="polite">
-              <div className="font-grotesk text-base sm:text-lg font-bold text-dark dark:text-dark-text leading-snug">
-                {activeExp.org}
-              </div>
-              <div className="h-px w-full bg-dark/10 dark:bg-dark-text/12 my-2" />
-              <div className="font-grotesk text-lg sm:text-xl font-semibold text-dark dark:text-dark-text leading-snug">
-                {activeExp.role}
-              </div>
-              <p className="font-mono text-xs sm:text-sm text-dark/50 dark:text-dark-text/55 mt-1">
-                {activeExp.location}
-              </p>
-              <ul className="mt-2 space-y-2 flex-1 min-h-0">
-                {activeExp.bullets.map((b, bi) => (
-                  <li
-                    key={bi}
-                    className="font-grotesk text-sm sm:text-base text-dark/75 dark:text-dark-text/75 leading-relaxed pl-2.5 border-l-2 border-signal/35"
-                  >
-                    {b}
-                  </li>
-                ))}
-              </ul>
-              <div className="flex items-center justify-between mt-3 pt-2 border-t border-dark/8 dark:border-dark-text/10 shrink-0">
-                <span className="font-mono text-xs sm:text-sm text-dark/50 dark:text-dark-text/55">
-                  {activeExp.dates}
+            <div className="relative z-10 flex flex-col flex-1 min-h-0">
+              <div className="flex items-center justify-between gap-3 mb-2 shrink-0">
+                <span className="font-mono text-[11px] sm:text-xs text-dark-text/45 tracking-widest uppercase">
+                  Experience
                 </span>
-                <div className="flex gap-1" aria-hidden>
-                  {experiences.map((exp, i) => (
-                    <span
-                      key={exp.id}
-                      className={`h-1.5 w-1.5 rounded-full transition-colors duration-300 ${
-                        i === expIndex ? 'bg-signal' : 'bg-dark/20 dark:bg-dark-text/25'
-                      }`}
-                    />
+                <div className="flex gap-1.5 items-center">
+                  <button
+                    type="button"
+                    onClick={goPrev}
+                    className="flex h-8 w-8 items-center justify-center rounded-full border border-white/12 text-dark-text/65 hover:border-aurora-violet/55 hover:text-aurora-violet transition-colors duration-300"
+                    aria-label="Previous role"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={goNext}
+                    className="flex h-8 w-8 items-center justify-center rounded-full border border-white/12 text-dark-text/65 hover:border-aurora-violet/55 hover:text-aurora-violet transition-colors duration-300"
+                    aria-label="Next role"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+
+              <div
+                className="h-[3px] w-full rounded-full bg-white/8 overflow-hidden mb-3 shrink-0"
+                aria-hidden
+              >
+                <div
+                  key={`${expIndex}-${progressCycle}`}
+                  className="h-full rounded-full bg-gradient-to-r from-aurora-violet via-aurora-blue to-aurora-pink"
+                  style={{
+                    animation: `about-exp-progress ${ROTATE_MS}ms linear forwards`,
+                    animationPlayState: experiencePaused ? 'paused' : 'running',
+                  }}
+                />
+              </div>
+
+              <div key={activeExp.id} className="flex-1 flex flex-col min-h-0" aria-live="polite">
+                <div className="font-grotesk text-base sm:text-lg font-bold text-dark-text leading-snug">
+                  {activeExp.org}
+                </div>
+                <div className="h-px w-full bg-white/10 my-2" />
+                <div className="font-grotesk text-lg sm:text-xl font-semibold text-dark-text leading-snug">
+                  {activeExp.role}
+                </div>
+                <p className="font-mono text-xs sm:text-sm text-dark-text/55 mt-1">
+                  {activeExp.location}
+                </p>
+                <ul className="mt-2 space-y-2 flex-1 min-h-0">
+                  {activeExp.bullets.map((b, bi) => (
+                    <li
+                      key={bi}
+                      className="font-grotesk text-sm sm:text-base text-dark-text/75 leading-relaxed pl-2.5 border-l-2 border-aurora-violet/45"
+                    >
+                      {b}
+                    </li>
                   ))}
+                </ul>
+                <div className="flex items-center justify-between mt-3 pt-2 border-t border-white/10 shrink-0">
+                  <span className="font-mono text-xs sm:text-sm text-dark-text/55">
+                    {activeExp.dates}
+                  </span>
+                  <div className="flex gap-1" aria-hidden>
+                    {experiences.map((exp, i) => (
+                      <span
+                        key={exp.id}
+                        className={`h-1.5 w-1.5 rounded-full transition-colors duration-300 ${
+                          i === expIndex ? 'bg-aurora-violet' : 'bg-white/20'
+                        }`}
+                      />
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className={`about-card ${CARD_CLASS} p-5 sm:p-6 flex flex-col lg:min-h-0 lg:h-full`}>
-            <h3 className="font-grotesk text-lg font-bold text-dark dark:text-dark-text mb-3 shrink-0">
-              Skills
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 flex-1 min-h-0 auto-rows-min">
-              {skillCategories.map(({ title, items }, idx) => (
-                <div key={title} className={idx === 2 ? 'sm:col-span-2' : ''}>
-                  <div className="font-mono text-xs sm:text-sm text-dark/50 dark:text-dark-text/50 uppercase tracking-wider mb-2">
-                    {title}
+          <div ref={skillsCardRef} className={`about-card ${CARD_CLASS} p-5 sm:p-6 flex flex-col lg:min-h-0 lg:h-full`}>
+            <div className="relative z-10 flex flex-col flex-1 min-h-0">
+              <h3 className="font-grotesk text-lg font-bold text-dark-text mb-3 shrink-0">
+                Skills
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 flex-1 min-h-0 auto-rows-min">
+                {skillCategories.map(({ title, items }, idx) => (
+                  <div key={title} className={idx === 2 ? 'sm:col-span-2' : ''}>
+                    <div className="font-mono text-xs sm:text-sm text-dark-text/50 uppercase tracking-wider mb-2">
+                      {title}
+                    </div>
+                    <ul className="space-y-1.5">
+                      {items.map((item) => (
+                        <li
+                          key={item}
+                          className="font-grotesk text-sm sm:text-base text-dark-text/75 leading-relaxed"
+                        >
+                          <span className="text-aurora-violet font-mono text-xs sm:text-sm">//</span>{' '}
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <ul className="space-y-1.5">
-                    {items.map((item) => (
-                      <li
-                        key={item}
-                        className="font-grotesk text-sm sm:text-base text-dark/70 dark:text-dark-text/70 leading-relaxed"
-                      >
-                        <span className="text-signal font-mono text-xs sm:text-sm">//</span>{' '}
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>
