@@ -83,7 +83,7 @@ export default function Hero() {
     <section
       id="hero"
       ref={heroRef}
-      className="relative min-h-[100dvh] w-full flex items-center overflow-x-hidden"
+      className="relative min-h-[100dvh] w-full flex items-center overflow-x-hidden pt-28 sm:pt-32 pb-12 sm:pb-16"
     >
       <div className="relative z-10 w-full max-w-7xl mx-auto min-w-0 px-4 sm:px-8 lg:px-12 box-border">
         <div

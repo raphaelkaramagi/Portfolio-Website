@@ -33,18 +33,10 @@ export default function useCursorVars() {
       if (!rafId) rafId = requestAnimationFrame(flush)
     }
 
-    const onLeave = () => {
-      pendingX = 50
-      pendingY = 50
-      if (!rafId) rafId = requestAnimationFrame(flush)
-    }
-
     el.addEventListener('pointermove', onMove)
-    el.addEventListener('pointerleave', onLeave)
 
     return () => {
       el.removeEventListener('pointermove', onMove)
-      el.removeEventListener('pointerleave', onLeave)
       if (rafId) cancelAnimationFrame(rafId)
     }
   }, [])
