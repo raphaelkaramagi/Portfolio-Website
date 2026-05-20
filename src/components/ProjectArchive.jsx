@@ -22,9 +22,6 @@ const statusColors = {
 const clientProjectBadge =
   'bg-aurora-violet/15 text-violet-300 border-aurora-violet/40'
 
-const CARD_PIN_START = 'top top+=96'
-const NEXT_CARD_AT_SHELF = 'top top+=96'
-
 const ProjectCard = forwardRef(function ProjectCard({ project, stackIndex }, ref) {
   const tiltRef = useTilt({ max: 3.5 })
   const cursorRef = useCursorVars()
@@ -125,55 +122,29 @@ const sectionMeta = {
   Planned: { label: 'Planned', accent: 'text-dark-text/45' },
 }
 
-function mountProjectCardStacks(nodes) {
+function mountCardBlur(nodes) {
   const ctx = gsap.context(() => {
-    nodes.forEach((el, i) => {
-      const nextEl = nodes[i + 1]
-      const pinEnd = nextEl
-        ? { endTrigger: nextEl, end: NEXT_CARD_AT_SHELF }
-        : { end: 'bottom 15%' }
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: el,
-          start: CARD_PIN_START,
-          scrub: true,
-          pin: true,
-          pinSpacing: false,
-          anticipatePin: 0,
-          invalidateOnRefresh: true,
-          ...pinEnd,
-        },
-      })
-
-      tl.fromTo(
+    nodes.forEach((el) => {
+      gsap.fromTo(
         el,
-        { scale: 1, filter: 'blur(0px)', opacity: 1, y: 0 },
+        { opacity: 1, filter: 'blur(0px)', scale: 1 },
         {
-          scale: 0.88,
-          filter: 'blur(22px)',
-          opacity: 0.42,
+          opacity: 0.3,
+          filter: 'blur(14px)',
+          scale: 0.95,
           ease: 'none',
-          duration: nextEl ? 0.42 : 1,
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 50%',
+            end: 'top 8%',
+            scrub: 0.6,
+            invalidateOnRefresh: true,
+          },
         },
       )
-
-      if (nextEl) {
-        tl.to(
-          el,
-          {
-            y: () => -(Math.max(window.innerHeight, 640) * 1.14),
-            ease: 'none',
-            duration: 0.54,
-          },
-          '-=0.14',
-        )
-      }
     })
-
     ScrollTrigger.refresh()
   })
-
   return ctx
 }
 
@@ -221,7 +192,7 @@ export default function ProjectArchive() {
         nodes.push(node)
       }
 
-      stackCtxRef.current = mountProjectCardStacks(nodes)
+      stackCtxRef.current = mountCardBlur(nodes)
     }
 
     requestAnimationFrame(tryMount)

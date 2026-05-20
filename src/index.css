@@ -63,13 +63,13 @@
 
   .glass-panel-solid {
     position: relative;
-    background-color: rgba(13, 13, 18, 0.94);
+    background-color: rgba(13, 13, 18, 0.86);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow:
       0 28px 70px -22px rgba(0, 0, 0, 0.8),
       0 0 0 1px rgba(255, 255, 255, 0.04) inset;
-    backdrop-filter: blur(28px) saturate(150%);
-    -webkit-backdrop-filter: blur(28px) saturate(150%);
+    backdrop-filter: blur(38px) saturate(160%);
+    -webkit-backdrop-filter: blur(38px) saturate(160%);
   }
 
   @media (max-width: 640px) {
@@ -284,29 +284,31 @@
   }
 }
 
+/* Blob sizes shrunk on desktop (36/30/40/26vw); % translate is relative to element,
+   so ranges scaled up to keep absolute pixel travel ~9–11vw across screen sizes. */
 @keyframes blob-drift-a {
-  0%   { transform: translate3d(-16%, -12%, 0) scale(1); }
-  50%  { transform: translate3d(14%, 10%, 0) scale(1.2); }
-  100% { transform: translate3d(-16%, -12%, 0) scale(1); }
+  0%   { transform: translate3d(-26%, -20%, 0) scale(1); }
+  50%  { transform: translate3d(22%, 16%, 0) scale(1.2); }
+  100% { transform: translate3d(-26%, -20%, 0) scale(1); }
 }
 
 @keyframes blob-drift-b {
-  0%   { transform: translate3d(10%, 14%, 0) scale(0.9); }
-  50%  { transform: translate3d(-14%, -16%, 0) scale(1.15); }
-  100% { transform: translate3d(10%, 14%, 0) scale(0.9); }
+  0%   { transform: translate3d(17%, 23%, 0) scale(0.9); }
+  50%  { transform: translate3d(-23%, -27%, 0) scale(1.15); }
+  100% { transform: translate3d(17%, 23%, 0) scale(0.9); }
 }
 
 @keyframes blob-drift-c {
   0%   { transform: translate3d(0, 0, 0) scale(1); }
-  33%  { transform: translate3d(16%, -12%, 0) scale(1.12); }
-  66%  { transform: translate3d(-12%, 14%, 0) scale(0.88); }
+  33%  { transform: translate3d(25%, -19%, 0) scale(1.12); }
+  66%  { transform: translate3d(-19%, 22%, 0) scale(0.88); }
   100% { transform: translate3d(0, 0, 0) scale(1); }
 }
 
 @keyframes blob-drift-d {
-  0%   { transform: translate3d(6%, -8%, 0) scale(1.08); }
-  50%  { transform: translate3d(-14%, 12%, 0) scale(0.86); }
-  100% { transform: translate3d(6%, -8%, 0) scale(1.08); }
+  0%   { transform: translate3d(11%, -15%, 0) scale(1.08); }
+  50%  { transform: translate3d(-27%, 23%, 0) scale(0.86); }
+  100% { transform: translate3d(11%, -15%, 0) scale(1.08); }
 }
 
 @media (prefers-reduced-motion: reduce) {

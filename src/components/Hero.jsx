@@ -1,15 +1,24 @@
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ArrowDown } from 'lucide-react'
 import { hasPlayedHomeIntro, markHomeIntroPlayed } from '../lib/animationState'
 import useMagnetic from '../lib/useMagnetic'
 import useCursorVars from '../lib/useCursorVars'
+import useTilt from '../lib/useTilt'
 
 export default function Hero() {
   const heroRef = useRef(null)
   const contactRef = useMagnetic({ strength: 0.25, max: 7 })
   const githubRef = useMagnetic({ strength: 0.25, max: 7 })
-  const cardRef = useCursorVars()
+  const tiltRef = useTilt({ max: 2.5 })
+  const cursorRef = useCursorVars()
+  const cardRef = useCallback(
+    (node) => {
+      tiltRef.current = node
+      cursorRef.current = node
+    },
+    [tiltRef, cursorRef],
+  )
 
   useEffect(() => {
     if (hasPlayedHomeIntro) return

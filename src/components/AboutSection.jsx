@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { hasPlayedHomeIntro } from '../lib/animationState'
 import useCursorVars from '../lib/useCursorVars'
+import useTilt from '../lib/useTilt'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -57,9 +58,26 @@ export default function AboutSection() {
   const [experiencePaused, setExperiencePaused] = useState(false)
   const [progressCycle, setProgressCycle] = useState(0)
 
-  const introCardRef = useCursorVars()
-  const experienceCardRef = useCursorVars()
-  const skillsCardRef = useCursorVars()
+  const introTiltRef = useTilt({ max: 2.5 })
+  const introCursorRef = useCursorVars()
+  const introCardRef = useCallback(
+    (node) => { introTiltRef.current = node; introCursorRef.current = node },
+    [introTiltRef, introCursorRef],
+  )
+
+  const expTiltRef = useTilt({ max: 3 })
+  const expCursorRef = useCursorVars()
+  const experienceCardRef = useCallback(
+    (node) => { expTiltRef.current = node; expCursorRef.current = node },
+    [expTiltRef, expCursorRef],
+  )
+
+  const skillsTiltRef = useTilt({ max: 3 })
+  const skillsCursorRef = useCursorVars()
+  const skillsCardRef = useCallback(
+    (node) => { skillsTiltRef.current = node; skillsCursorRef.current = node },
+    [skillsTiltRef, skillsCursorRef],
+  )
 
   const advanceTimeoutRef = useRef(null)
   const deadlineRef = useRef(null)

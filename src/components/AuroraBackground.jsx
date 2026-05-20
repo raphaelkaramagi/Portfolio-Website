@@ -8,13 +8,13 @@ const DESKTOP_BLOBS = [
     style: {
       top: '-6%',
       left: '-4%',
-      width: '58vw',
-      height: '58vw',
+      width: '36vw',
+      height: '36vw',
     },
     inner: {
       background:
-        'radial-gradient(circle at 50% 50%, rgba(139,92,246,0.82), rgba(139,92,246,0) 60%)',
-      animation: 'blob-drift-a 28s ease-in-out infinite',
+        'radial-gradient(circle at 50% 50%, rgba(139,92,246,0.78), rgba(139,92,246,0) 60%)',
+      animation: 'blob-drift-a 22s linear infinite',
     },
   },
   {
@@ -23,13 +23,13 @@ const DESKTOP_BLOBS = [
     style: {
       top: '-10%',
       right: '-6%',
-      width: '52vw',
-      height: '52vw',
+      width: '30vw',
+      height: '30vw',
     },
     inner: {
       background:
-        'radial-gradient(circle at 50% 50%, rgba(59,130,246,0.74), rgba(59,130,246,0) 60%)',
-      animation: 'blob-drift-b 36s ease-in-out infinite',
+        'radial-gradient(circle at 50% 50%, rgba(59,130,246,0.68), rgba(59,130,246,0) 60%)',
+      animation: 'blob-drift-b 28s linear infinite',
     },
   },
   {
@@ -38,13 +38,13 @@ const DESKTOP_BLOBS = [
     style: {
       bottom: '-8%',
       left: '-4%',
-      width: '62vw',
-      height: '62vw',
+      width: '40vw',
+      height: '40vw',
     },
     inner: {
       background:
-        'radial-gradient(circle at 50% 50%, rgba(236,72,153,0.66), rgba(236,72,153,0) 62%)',
-      animation: 'blob-drift-c 42s ease-in-out infinite',
+        'radial-gradient(circle at 50% 50%, rgba(236,72,153,0.62), rgba(236,72,153,0) 62%)',
+      animation: 'blob-drift-c 34s linear infinite',
     },
   },
   {
@@ -53,13 +53,13 @@ const DESKTOP_BLOBS = [
     style: {
       bottom: '-12%',
       right: '-8%',
-      width: '46vw',
-      height: '46vw',
+      width: '26vw',
+      height: '26vw',
     },
     inner: {
       background:
-        'radial-gradient(circle at 50% 50%, rgba(34,211,238,0.46), rgba(34,211,238,0) 60%)',
-      animation: 'blob-drift-d 32s ease-in-out infinite',
+        'radial-gradient(circle at 50% 50%, rgba(34,211,238,0.42), rgba(34,211,238,0) 60%)',
+      animation: 'blob-drift-d 24s linear infinite',
     },
   },
 ]
@@ -163,14 +163,17 @@ export default function AuroraBackground() {
 
   const blobs = isMobile ? MOBILE_BLOBS : DESKTOP_BLOBS
 
-  const baseBlur = isMobile ? 44 : 54
-  const ambientBoost = isMobile ? 30 : 44
+  const baseBlur = isMobile ? 30 : 34
+  const ambientBoost = 18
   const blurPx = baseBlur + (1 - strength) * ambientBoost
+  // Desktop has 4 blobs screen-blending; cap overall brightness so it matches the
+  // 2-blob mobile look that already feels right.
+  const blobLayerOpacity = isMobile ? 1 : 0.52
 
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+      className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
     >
       <div className="absolute inset-0 bg-[#0a0a0f]" />
 
@@ -178,6 +181,7 @@ export default function AuroraBackground() {
         className="absolute inset-0"
         style={{
           filter: `blur(${blurPx}px)`,
+          opacity: blobLayerOpacity,
           transition: 'filter 0.8s ease',
         }}
       >
@@ -211,8 +215,8 @@ export default function AuroraBackground() {
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(ellipse at 50% 0%, transparent 0%, rgba(10,10,15,0.4) 70%, rgba(10,10,15,0.85) 100%)',
-          opacity: 0.55 + (1 - strength) * 0.45,
+            'radial-gradient(ellipse at 50% 0%, transparent 0%, rgba(10,10,15,0.55) 65%, rgba(10,10,15,0.92) 100%)',
+          opacity: 0.7 + (1 - strength) * 0.3,
           transition: 'opacity 0.8s ease',
         }}
       />
