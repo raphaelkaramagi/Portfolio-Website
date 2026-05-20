@@ -10,17 +10,18 @@ gsap.registerPlugin(ScrollTrigger)
 
 const skillCategories = [
   {
-    title: 'ML & AI',
-    items: ['Python', 'TensorFlow / Keras', 'Java', 'MediaPipe'],
+    title: 'Languages',
+    items: ['Python', 'C / C++', 'Java'],
   },
   {
-    title: 'Systems & Software',
-    items: ['Docker', 'SQLite', 'Next.js', 'REST APIs'],
+    title: 'Data & Hardware',
+    items: ['PostgreSQL', 'pandas', 'Arduino', 'SolidWorks'],
   },
   {
-    title: 'Embedded & Hardware',
-    items: ['Arduino', 'C / C++', 'SolidWorks'],
+    title: 'Frameworks & Tools',
+    items: ['TensorFlow / Keras', 'FastAPI', 'Next.js', 'Docker'],
   },
+  
 ]
 
 const experiences = [
@@ -237,7 +238,7 @@ export default function AboutSection() {
               </p>
 
               <p className="font-grotesk text-sm text-dark-text/60 leading-relaxed max-w-xl">
-                Outside of STEM he&apos;s usually recording music, or on the court for basketball.
+                Outside of STEM he&apos;s usually recording music, or on the court playing basketball.
               </p>
             </div>
 
