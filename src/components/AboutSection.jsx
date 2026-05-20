@@ -206,7 +206,7 @@ export default function AboutSection() {
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[minmax(0,200px)_minmax(0,1fr)_minmax(0,220px)] gap-10 lg:gap-12 items-start">
             <div className="flex justify-center lg:justify-start shrink-0 mx-auto lg:mx-0">
               <img
-                src="/images/raphael-portrait.jpeg"
+                src="/images/raphael-portrait.png"
                 alt="Raphael Karamagi"
                 width={640}
                 height={800}

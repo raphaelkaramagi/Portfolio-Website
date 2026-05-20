@@ -1,42 +1,62 @@
 # Raphael Karamagi — Portfolio
 
-A minimal, animated developer portfolio with scroll-driven interactions, interactive domain cards, and sticky-stacking project archive.
+Personal portfolio built with React 19, Tailwind CSS v3, GSAP 3, and Vite. Deployed on Vercel.
 
-Built with **React 19**, **Tailwind CSS**, **GSAP 3**, and **Vite**.
-
-## Quickstart
+## Dev
 
 ```bash
 npm install
-npm run dev
+npm run dev       # localhost:5173
+npm run build     # production build → dist/
+npm run preview   # preview dist/ locally
 ```
 
-Opens at `http://localhost:5173`.
-
-## Build
-
-```bash
-npm run build
-```
-
-Production output in `dist/`. Preview locally with `npm run preview`.
-
-## Project Structure
+## Structure
 
 ```
 src/
-├── main.jsx              # Entry point
-├── App.jsx               # Routing and layout
-├── index.css             # Tailwind + global styles
+├── App.jsx                   # routing, AuroraBackground mount
+├── index.css                 # Tailwind, CSS tokens, keyframes, glass utilities
+├── main.jsx                  # entry point
+├── components/
+│   ├── AuroraBackground.jsx  # fixed animated gradient layer (sitewide)
+│   ├── Navbar.jsx            # floating pill navbar, mobile drawer
+│   ├── Hero.jsx              # hero section, intro GSAP timeline
+│   ├── AboutSection.jsx      # bio card, experience carousel, skills grid
+│   ├── ProjectArchive.jsx    # scroll-blur project card stack
+│   ├── ProjectPage.jsx       # individual project detail page
+│   └── Footer.jsx
 ├── data/
-│   └── projects.js       # All project data (edit here to add/update projects)
-└── components/
-    ├── Navbar.jsx         # Floating pill navbar with scroll morph
-    ├── Hero.jsx           # Landing section
-    ├── Domains.jsx        # Interactive "What I Build" cards
-    ├── ProjectArchive.jsx # Sticky-stacking project cards
-    ├── ProjectPage.jsx    # Individual project detail page
-    └── Footer.jsx         # Footer with status indicator
+│   └── projects.js           # single source of truth for all project content
+└── lib/
+    ├── animationState.js     # intro-played flag (skip on revisit)
+    ├── useCursorVars.js      # writes --mx/--my CSS vars on pointermove
+    ├── useMagnetic.js        # subtle cursor-attract on CTAs
+    └── useTilt.js            # 3D tilt on hover for cards
 ```
 
+## Adding a project
 
+Edit `src/data/projects.js` only. The archive and project page pick up new entries automatically.
+
+```js
+{
+  number: '09',
+  slug: 'my-project',
+  title: '',
+  status: 'Completed' | 'Ongoing' | 'Planned',
+  client: '',           // optional — renders violet "Client Project" badge
+  stack: [],
+  description: '',      // one-liner shown on archive card
+  longDescription: '',  // full prose, shown on project page
+  repoUrl: '',
+  demoUrl: '',          // optional
+  images: [],           // paths relative to /public/
+}
+```
+
+Ordering convention: within each status group, most recent first.
+
+## Deployment
+
+Vercel. Push to `main` triggers a production deploy automatically.

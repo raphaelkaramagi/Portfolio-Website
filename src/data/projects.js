@@ -74,7 +74,7 @@ export const projects = [
       'Security scanning and model evaluation tooling for Duke\'s locally deployed AI — automated artifact inspection before infrastructure access, plus comparative benchmarking to help Duke IT make informed, defensible adoption decisions.',
     longDescription:
       'As Duke deploys more AI models locally for privacy and cost reasons, two problems emerge: ensuring those models are safe to run on Duke infrastructure, and determining which perform best for Duke\'s specific use cases.\n\nThis Code+ 2026 project with the Duke Office of Information Technology builds tooling to answer both — a security scanning framework that automatically evaluates models downloaded from public repositories before they touch Duke systems, and a model evaluation framework that benchmarks performance across Duke-relevant task categories.\n\nThe security scanner checks for malicious code in model files, compromised dependencies, supply chain risks, and exposed credentials — producing a structured risk report. The evaluator produces comparative analytics across inference configurations to guide model selection.\n\nBoth pillars feed a shared dashboard for Duke IT teams. Stack is partially confirmed pending stakeholder finalization.',
-    repoUrl: '',
+    repoUrl: 'https://github.com/raphaelkaramagi/Security-and-QA-for-AI-Models',
     images: [],
   },
 
