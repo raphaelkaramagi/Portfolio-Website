@@ -4,69 +4,69 @@ import { useLocation } from 'react-router-dom'
 const DESKTOP_BLOBS = [
   {
     key: 'violet-tl',
-    attraction: 110,
+    attraction: 180,
     style: {
-      top: '-14%',
-      left: '-12%',
-      width: '64vw',
-      height: '64vw',
+      top: '-6%',
+      left: '-4%',
+      width: '58vw',
+      height: '58vw',
     },
     inner: {
       background:
-        'radial-gradient(circle at 50% 50%, rgba(139,92,246,0.72), rgba(139,92,246,0) 62%)',
-      animation: 'blob-drift-a 34s ease-in-out infinite',
+        'radial-gradient(circle at 50% 50%, rgba(139,92,246,0.82), rgba(139,92,246,0) 60%)',
+      animation: 'blob-drift-a 28s ease-in-out infinite',
     },
   },
   {
     key: 'blue-tr',
-    attraction: 70,
+    attraction: 130,
     style: {
-      top: '-20%',
-      right: '-16%',
-      width: '60vw',
-      height: '60vw',
-    },
-    inner: {
-      background:
-        'radial-gradient(circle at 50% 50%, rgba(59,130,246,0.62), rgba(59,130,246,0) 60%)',
-      animation: 'blob-drift-b 40s ease-in-out infinite',
-    },
-  },
-  {
-    key: 'pink-bl',
-    attraction: 140,
-    style: {
-      bottom: '-24%',
-      left: '-10%',
-      width: '66vw',
-      height: '66vw',
-    },
-    inner: {
-      background:
-        'radial-gradient(circle at 50% 50%, rgba(236,72,153,0.55), rgba(236,72,153,0) 62%)',
-      animation: 'blob-drift-c 46s ease-in-out infinite',
-    },
-  },
-  {
-    key: 'cyan-br',
-    attraction: 90,
-    style: {
-      bottom: '-20%',
-      right: '-14%',
+      top: '-10%',
+      right: '-6%',
       width: '52vw',
       height: '52vw',
     },
     inner: {
       background:
-        'radial-gradient(circle at 50% 50%, rgba(34,211,238,0.38), rgba(34,211,238,0) 60%)',
-      animation: 'blob-drift-d 38s ease-in-out infinite',
+        'radial-gradient(circle at 50% 50%, rgba(59,130,246,0.74), rgba(59,130,246,0) 60%)',
+      animation: 'blob-drift-b 36s ease-in-out infinite',
+    },
+  },
+  {
+    key: 'pink-bl',
+    attraction: 220,
+    style: {
+      bottom: '-8%',
+      left: '-4%',
+      width: '62vw',
+      height: '62vw',
+    },
+    inner: {
+      background:
+        'radial-gradient(circle at 50% 50%, rgba(236,72,153,0.66), rgba(236,72,153,0) 62%)',
+      animation: 'blob-drift-c 42s ease-in-out infinite',
+    },
+  },
+  {
+    key: 'cyan-br',
+    attraction: 150,
+    style: {
+      bottom: '-12%',
+      right: '-8%',
+      width: '46vw',
+      height: '46vw',
+    },
+    inner: {
+      background:
+        'radial-gradient(circle at 50% 50%, rgba(34,211,238,0.46), rgba(34,211,238,0) 60%)',
+      animation: 'blob-drift-d 32s ease-in-out infinite',
     },
   },
 ]
 
 const MOBILE_BLOBS = [DESKTOP_BLOBS[0], DESKTOP_BLOBS[2]]
 
-const AMBIENT_STRENGTH = 0.55
+const AMBIENT_STRENGTH = 0.6
 
 export default function AuroraBackground() {
   const blobRefs = useRef([])
@@ -105,7 +105,7 @@ export default function AuroraBackground() {
           const ratio = Math.max(0, Math.min(1, e.intersectionRatio))
           setStrength(AMBIENT_STRENGTH + (1 - AMBIENT_STRENGTH) * ratio)
         },
-        { threshold: [0, 0.15, 0.35, 0.55, 0.75, 1] },
+        { threshold: [0, 0.1, 0.25, 0.4, 0.55, 0.7, 0.85, 1] },
       )
       io.observe(hero)
     }
@@ -137,8 +137,8 @@ export default function AuroraBackground() {
 
     const tick = () => {
       if (!running) return
-      current.x += (target.x - current.x) * 0.045
-      current.y += (target.y - current.y) * 0.045
+      current.x += (target.x - current.x) * 0.05
+      current.y += (target.y - current.y) * 0.05
 
       const refs = blobRefs.current
       for (let i = 0; i < refs.length; i++) {
@@ -163,6 +163,10 @@ export default function AuroraBackground() {
 
   const blobs = isMobile ? MOBILE_BLOBS : DESKTOP_BLOBS
 
+  const baseBlur = isMobile ? 44 : 54
+  const ambientBoost = isMobile ? 30 : 44
+  const blurPx = baseBlur + (1 - strength) * ambientBoost
+
   return (
     <div
       aria-hidden
@@ -173,9 +177,8 @@ export default function AuroraBackground() {
       <div
         className="absolute inset-0"
         style={{
-          opacity: strength,
-          transition: 'opacity 0.6s ease',
-          filter: isMobile ? 'blur(56px)' : 'blur(86px)',
+          filter: `blur(${blurPx}px)`,
+          transition: 'filter 0.8s ease',
         }}
       >
         {blobs.map((b, i) => (
@@ -208,7 +211,9 @@ export default function AuroraBackground() {
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(ellipse at 50% 0%, transparent 0%, rgba(10,10,15,0.45) 65%, rgba(10,10,15,0.88) 100%)',
+            'radial-gradient(ellipse at 50% 0%, transparent 0%, rgba(10,10,15,0.4) 70%, rgba(10,10,15,0.85) 100%)',
+          opacity: 0.55 + (1 - strength) * 0.45,
+          transition: 'opacity 0.8s ease',
         }}
       />
     </div>

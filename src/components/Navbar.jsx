@@ -121,7 +121,7 @@ export default function Navbar() {
       </div>
 
       {mobileOpen && (
-        <div className="absolute top-full left-0 right-0 mt-4 glass-card rounded-[2rem] p-6 flex flex-col gap-4 md:hidden">
+        <div className="absolute top-full left-0 right-0 mt-4 glass-panel-solid rounded-[2rem] p-6 flex flex-col gap-4 md:hidden">
           {navLinks.map((link) => (
             <a
               key={link.label}
