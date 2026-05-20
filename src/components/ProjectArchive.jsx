@@ -135,8 +135,8 @@ function mountCardBlur(nodes) {
           ease: 'none',
           scrollTrigger: {
             trigger: el,
-            start: 'top 50%',
-            end: 'top 8%',
+            start: 'center top',
+            end: 'bottom top',
             scrub: 0.6,
             invalidateOnRefresh: true,
           },
