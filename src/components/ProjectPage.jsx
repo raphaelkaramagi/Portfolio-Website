@@ -2,19 +2,22 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { ArrowLeft, Github, ImageIcon, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react'
+import { ArrowLeft, Github, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react'
 import { projects } from '../data/projects'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const statusColors = {
-  Ongoing: 'bg-signal/15 text-signal border-signal/30',
-  Completed: 'bg-green-500/15 text-green-600 dark:text-green-400 border-green-500/30',
-  Planned: 'bg-dark/8 dark:bg-dark-text/8 text-dark/60 dark:text-dark-text/60 border-dark/15 dark:border-dark-text/15',
+  Ongoing:
+    'bg-amber-400/12 text-amber-300 border-amber-400/30',
+  Completed:
+    'bg-emerald-400/12 text-emerald-300 border-emerald-400/30',
+  Planned:
+    'bg-white/[0.05] text-dark-text/55 border-white/10',
 }
 
 const clientProjectBadge =
-  'bg-violet-500/15 text-violet-700 dark:text-violet-300 border-violet-500/35 dark:border-violet-400/40'
+  'bg-aurora-violet/15 text-violet-300 border-aurora-violet/40'
 
 const VISIBLE_COUNT = 3
 
@@ -33,7 +36,7 @@ function Lightbox({ src, overlayRef, imgRef, onClose }) {
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md"
       onClick={onClose}
     >
       <img
@@ -41,7 +44,7 @@ function Lightbox({ src, overlayRef, imgRef, onClose }) {
         src={src}
         alt="Enlarged view"
         onClick={(e) => e.stopPropagation()}
-        className="max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-[0_24px_70px_-18px_rgba(0,0,0,0.55)]"
+        className="max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-[0_24px_80px_-18px_rgba(0,0,0,0.85)] ring-1 ring-white/10"
       />
     </div>
   )
@@ -107,15 +110,15 @@ export default function ProjectPage() {
   if (!project) {
     return (
       <div className="min-h-[100dvh] flex flex-col items-center justify-center px-6">
-        <h1 className="font-grotesk text-4xl font-bold text-dark dark:text-dark-text mb-4">
+        <h1 className="font-grotesk text-4xl font-bold text-dark-text mb-4">
           Project not found
         </h1>
-        <p className="font-mono text-sm text-dark/50 dark:text-dark-text/50 mb-8">
+        <p className="font-mono text-sm text-dark-text/55 mb-8">
           No project matches that URL.
         </p>
         <Link
           to="/"
-          className="font-grotesk text-sm font-semibold bg-signal text-offwhite px-6 py-3 rounded-full hover:bg-dark dark:hover:bg-dark-text dark:hover:text-dark-bg transition-colors duration-300"
+          className="btn-aurora font-grotesk text-sm font-semibold px-6 py-3 rounded-full"
         >
           Back to Home
         </Link>
@@ -132,14 +135,14 @@ export default function ProjectPage() {
       <div className="max-w-4xl mx-auto">
         <Link
           to="/"
-          className="proj-animate inline-flex items-center gap-2 font-mono text-sm text-dark/50 dark:text-dark-text/50 hover:text-signal transition-colors duration-300 mb-12"
+          className="proj-animate inline-flex items-center gap-2 font-mono text-sm text-dark-text/55 hover:text-aurora-violet transition-colors duration-300 mb-12"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Home
         </Link>
 
         <div className="proj-animate flex items-start justify-between flex-wrap gap-4 mb-4">
-          <span className="font-mono text-6xl sm:text-8xl font-bold text-dark/6 dark:text-dark-text/6 leading-none">
+          <span className="font-mono text-6xl sm:text-8xl font-bold text-dark-text/8 leading-none">
             {project.number}
           </span>
           <div className="flex flex-col items-end gap-2">
@@ -160,7 +163,7 @@ export default function ProjectPage() {
           </div>
         </div>
 
-        <h1 className="proj-animate font-grotesk text-3xl sm:text-5xl font-bold text-dark dark:text-dark-text tracking-tight mb-6">
+        <h1 className="proj-animate font-grotesk text-3xl sm:text-5xl font-bold text-dark-text tracking-tight mb-6">
           {project.title}
         </h1>
 
@@ -168,7 +171,7 @@ export default function ProjectPage() {
           {project.stack.map((tech) => (
             <span
               key={tech}
-              className="font-mono text-xs bg-paper dark:bg-dark-card-alt border border-dark/8 dark:border-dark-text/8 text-dark/70 dark:text-dark-text/70 px-3 py-1.5 rounded-full"
+              className="font-mono text-xs bg-white/[0.04] border border-white/10 text-dark-text/75 px-3 py-1.5 rounded-full"
             >
               {tech}
             </span>
@@ -178,8 +181,7 @@ export default function ProjectPage() {
               href={project.repoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 font-mono text-xs bg-dark dark:bg-dark-text text-offwhite dark:text-dark-bg px-4 py-1.5 rounded-full
-                hover:bg-signal hover:text-offwhite transition-colors duration-300 ml-1"
+              className="btn-glass inline-flex items-center gap-1.5 font-mono text-xs px-4 py-1.5 rounded-full ml-1"
             >
               <Github className="w-3.5 h-3.5" />
               Repository
@@ -190,8 +192,7 @@ export default function ProjectPage() {
               href={project.demoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 font-mono text-xs bg-signal text-offwhite px-4 py-1.5 rounded-full
-                hover:bg-dark dark:hover:bg-dark-text dark:hover:text-dark-bg transition-colors duration-300 ml-1"
+              className="btn-aurora inline-flex items-center gap-1.5 font-mono text-xs px-4 py-1.5 rounded-full ml-1"
             >
               <ExternalLink className="w-3.5 h-3.5" />
               Live Demo
@@ -199,11 +200,11 @@ export default function ProjectPage() {
           )}
         </div>
 
-        <div className="proj-animate mb-16">
+        <div className="proj-animate mb-16 glass-card-soft rounded-[2rem] p-7 sm:p-10">
           {project.longDescription.split('\n\n').map((paragraph, i) => (
             <p
               key={i}
-              className="font-grotesk text-base sm:text-lg text-dark/70 dark:text-dark-text/70 leading-relaxed mb-4"
+              className="font-grotesk text-base sm:text-lg text-dark-text/80 leading-relaxed mb-4 last:mb-0"
             >
               {paragraph}
             </p>
@@ -212,7 +213,7 @@ export default function ProjectPage() {
 
         {hasImages && (
           <div className="proj-animate">
-            <h2 className="font-grotesk text-xl font-semibold text-dark dark:text-dark-text mb-6">
+            <h2 className="font-grotesk text-xl font-semibold text-dark-text mb-6">
               Gallery
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -222,18 +223,18 @@ export default function ProjectPage() {
                   src={img}
                   alt={`${project.title} screenshot ${i + 1}`}
                   onClick={() => setLightboxImg(img)}
-                  className="w-full aspect-video object-cover rounded-2xl cursor-pointer border border-dark/[0.07] dark:border-transparent
-                    shadow-[0_10px_32px_-14px_rgba(17,17,17,0.22)] dark:shadow-[0_18px_44px_-18px_rgba(0,0,0,0.72)]
-                    hover:scale-[1.02] hover:shadow-[0_14px_36px_-14px_rgba(17,17,17,0.28)] dark:hover:shadow-[0_22px_52px_-18px_rgba(0,0,0,0.82)]
-                    transition-[transform,box-shadow] duration-300"
+                  className="w-full aspect-video object-cover rounded-2xl cursor-pointer ring-1 ring-white/10
+                    shadow-[0_18px_44px_-18px_rgba(0,0,0,0.72)]
+                    hover:scale-[1.02] hover:ring-aurora-violet/45 hover:shadow-[0_24px_56px_-18px_rgba(139,92,246,0.45)]
+                    transition-[transform,box-shadow,outline] duration-300"
                 />
               ))}
             </div>
             {hasMany && (
               <button
                 onClick={() => setExpanded(!expanded)}
-                className="mt-6 mx-auto flex items-center gap-2 font-mono text-sm text-dark/50 dark:text-dark-text/50
-                  hover:text-signal transition-colors duration-300"
+                className="mt-6 mx-auto flex items-center gap-2 font-mono text-sm text-dark-text/55
+                  hover:text-aurora-violet transition-colors duration-300"
               >
                 {expanded ? 'Show less' : `Show all ${project.images.length} images`}
                 {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
