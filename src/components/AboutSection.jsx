@@ -50,7 +50,7 @@ const experiences = [
 
 const CARD_CLASS = 'glass-card glass-card-hoverable rounded-[2rem]'
 
-const ROTATE_MS = 5600
+const ROTATE_MS = 7600
 
 export default function AboutSection() {
   const sectionRef = useRef(null)
