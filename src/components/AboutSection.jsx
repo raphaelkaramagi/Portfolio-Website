@@ -237,7 +237,7 @@ export default function AboutSection() {
               </p>
 
               <p className="font-grotesk text-sm text-dark-text/60 leading-relaxed max-w-xl">
-                Outside of STEM he&apos;s usually on the court for basketball or at the piano sketching compositions.
+                Outside of STEM he&apos;s usually recording music, or on the court for basketball.
               </p>
             </div>
 
