@@ -55,7 +55,7 @@ Edit `src/data/projects.js` only. The archive and project page pick up new entri
 }
 ```
 
-Ordering convention: within each status group, most recent first.
+Ordering convention: archive sections appear as In Progress → Completed → Planned. Numbers are global and sequential. In Progress stays at the current slot (04). New completions are inserted at the top of Completed (most recent first). Planned entries follow the order you intend to build them.
 
 ## Deployment
 

@@ -114,7 +114,7 @@ const ProjectCard = forwardRef(function ProjectCard({ project, stackIndex }, ref
   )
 })
 
-const sectionOrder = ['Completed', 'Ongoing', 'Planned']
+const sectionOrder = ['Ongoing', 'Completed', 'Planned']
 
 const sectionMeta = {
   Ongoing: { label: 'In Progress', accent: 'text-amber-300' },

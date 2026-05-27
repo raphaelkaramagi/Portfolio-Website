@@ -1,7 +1,23 @@
 export const projects = [
+  // ── Ongoing ────────────────────────────────────────────────────────────────
+  {
+    number: '04',
+    slug: 'duke-ai-security',
+    title: 'AI Security & Evaluation Infrastructure',
+    status: 'Ongoing',
+    client: 'Duke OIT',
+    stack: ['Python', 'Docker', 'FastAPI', 'LiteLLM', 'GitLab CI'],
+    description:
+      'Security scanning and model evaluation tooling for Duke\'s locally deployed AI — automated artifact inspection before infrastructure access, plus comparative benchmarking to help Duke IT make informed, defensible adoption decisions.',
+    longDescription:
+      'As Duke deploys more AI models locally for privacy and cost reasons, two problems emerge: ensuring those models are safe to run on Duke infrastructure, and determining which perform best for Duke\'s specific use cases.\n\nThis Code+ 2026 project with the Duke Office of Information Technology builds tooling to answer both — a security scanning framework that automatically evaluates models downloaded from public repositories before they touch Duke systems, and a model evaluation framework that benchmarks performance across Duke-relevant task categories.\n\nThe security scanner checks for malicious code in model files, compromised dependencies, supply chain risks, and exposed credentials — producing a structured risk report. The evaluator produces comparative analytics across inference configurations to guide model selection.\n\nBoth pillars feed a shared dashboard for Duke IT teams. Stack is partially confirmed pending stakeholder finalization.',
+    repoUrl: 'https://github.com/raphaelkaramagi/Security-and-QA-for-AI-Models',
+    images: [],
+  },
+
   // ── Completed (most recent first) ──────────────────────────────────────────
   {
-    number: '01',
+    number: '03',
     slug: 'stock-predictor',
     title: 'Stock Price & Sentiment Predictor',
     status: 'Completed',
@@ -37,7 +53,7 @@ export const projects = [
     ],
   },
   {
-    number: '03',
+    number: '01',
     slug: 'asl-cv-model',
     title: 'ASL Gesture Recognition',
     status: 'Completed',
@@ -62,23 +78,7 @@ export const projects = [
     ],
   },
 
-  // ── Ongoing ────────────────────────────────────────────────────────────────
-  {
-    number: '04',
-    slug: 'duke-ai-security',
-    title: 'AI Security & Evaluation Infrastructure',
-    status: 'Ongoing',
-    client: 'Duke OIT',
-    stack: ['Python', 'Docker', 'FastAPI', 'LiteLLM', 'GitLab CI'],
-    description:
-      'Security scanning and model evaluation tooling for Duke\'s locally deployed AI — automated artifact inspection before infrastructure access, plus comparative benchmarking to help Duke IT make informed, defensible adoption decisions.',
-    longDescription:
-      'As Duke deploys more AI models locally for privacy and cost reasons, two problems emerge: ensuring those models are safe to run on Duke infrastructure, and determining which perform best for Duke\'s specific use cases.\n\nThis Code+ 2026 project with the Duke Office of Information Technology builds tooling to answer both — a security scanning framework that automatically evaluates models downloaded from public repositories before they touch Duke systems, and a model evaluation framework that benchmarks performance across Duke-relevant task categories.\n\nThe security scanner checks for malicious code in model files, compromised dependencies, supply chain risks, and exposed credentials — producing a structured risk report. The evaluator produces comparative analytics across inference configurations to guide model selection.\n\nBoth pillars feed a shared dashboard for Duke IT teams. Stack is partially confirmed pending stakeholder finalization.',
-    repoUrl: 'https://github.com/raphaelkaramagi/Security-and-QA-for-AI-Models',
-    images: [],
-  },
-
-  // ── Planned ────────────────────────────────────────────────────────────────
+  // ── Planned (chronological — order they will be built) ─────────────────────
   {
     number: '05',
     slug: 'quant-backtester',
