@@ -61,17 +61,6 @@
     -webkit-backdrop-filter: blur(16px) saturate(135%);
   }
 
-  .glass-panel-solid {
-    position: relative;
-    background-color: rgba(13, 13, 18, 0.86);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow:
-      0 28px 70px -22px rgba(0, 0, 0, 0.8),
-      0 0 0 1px rgba(255, 255, 255, 0.04) inset;
-    backdrop-filter: blur(72px) saturate(180%);
-    -webkit-backdrop-filter: blur(72px) saturate(180%);
-  }
-
   @media (max-width: 640px) {
     .glass-card,
     .glass-card-soft {
