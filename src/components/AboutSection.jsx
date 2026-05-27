@@ -39,7 +39,7 @@ const experiences = [
   {
     id: 'duke-oit',
     org: 'Duke University — Office of Information Technology',
-    role: 'AI Model Security & Evaluation Infrastructure',
+    role: 'Software Engineer Intern',
     location: 'Durham, NC · Paid contract',
     dates: 'May 2026 – Jul 2026',
     bullets: [
