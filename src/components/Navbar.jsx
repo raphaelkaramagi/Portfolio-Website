@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Github, Linkedin } from 'lucide-react'
 
-const RESUME_URL =
-  'https://docs.google.com/document/d/e/2PACX-1vTAwbKjKBeitz8um71lzTx__5dS8nAPpiRBLBeJJi7IFbsKAVBI9r3_3eO0YEolfw/pub'
+const RESUME_URL = '/resume/Raphael_Karamagi_May_2026.pdf'
 
 const navLinks = [
   { label: 'About', href: '/#about' },
