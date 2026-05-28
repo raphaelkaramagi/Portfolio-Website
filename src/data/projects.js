@@ -21,13 +21,22 @@ export const projects = [
     slug: 'stock-predictor',
     title: 'Stock Price & Sentiment Predictor',
     status: 'Completed',
-    stack: ['Python', 'TensorFlow/Keras', 'pandas', 'SQLite', 'Finnhub API'],
+    stack: ['Python', 'PyTorch', 'Next.js', 'Flask', 'scikit-learn', 'Finnhub API'],
     description:
-      'A dual-model pipeline predicting equity movement by combining windowed price features with headline sentiment — LSTM technical stack plus NLP scoring over Finnhub-fed news.',
+      'Next-day up/down forecasts for 20 US tickers — LSTM on price and technicals, TF-IDF and FinBERT on headlines, fused by a learned ensemble with a live markets dashboard.',
     longDescription:
-      'News to Alpha (repository: news-to-alpha) fuses two ML tracks: an LSTM trained on multi-day technical indicators from SQLite-backed price history, and a sentiment head over financial headlines ingested via Finnhub.\n\nAn ensemble combines price and text signals for directional cues ahead of the next session. Project imagery and live references will be updated here as assets are finalized.',
+      'News to Alpha predicts whether a stock goes up or down the next trading session by combining three tracks: an LSTM on 60-day price history and technical indicators, a TF-IDF logistic baseline on cutoff-aligned Finnhub headlines, and FinBERT embeddings for financial sentiment. A HistGradientBoosting ensemble merges them on the validation split, with conditional combiners for days with vs. without headlines.\n\nTraining runs locally via CLI (SQLite-backed collectors, chronological splits, 134+ pytest tests); only model artifacts ship to production. The deployed stack is a Next.js UI on Vercel proxying a Flask JSON API on Railway — browse 20 tickers, switch Ensemble / LSTM / TF-IDF / Embeddings views, read top headlines, inspect "Why this call" counterfactuals, and track session accuracy on the Markets grid.',
     repoUrl: 'https://github.com/raphaelkaramagi/news-to-alpha',
-    images: [],
+    demoUrl: 'https://stock.raphaelkaramagi.com',
+    images: [
+      '/projects/stock/stock-markets-grid.png',
+      '/projects/stock/stock-markets-overview.png',
+      '/projects/stock/stock-ticker-headlines.png',
+      '/projects/stock/stock-ticker-price-accuracy.png',
+      '/projects/stock/stock-ticker-why-this-call.png',
+      '/projects/stock/stock-ticker-advanced.png',
+      '/projects/stock/stock-ticker-explainability.png',
+    ],
   },
   {
     number: '02',
