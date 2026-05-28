@@ -64,13 +64,13 @@ export const projects = [
   {
     number: '01',
     slug: 'asl-cv-model',
-    title: 'ASL Gesture Recognition',
+    title: 'ASL Alphabet Recognition',
     status: 'Completed',
     stack: ['Python', 'TensorFlow/Keras', 'MediaPipe', 'NumPy', 'Next.js', 'TensorFlow.js'],
     description:
-      'A dual-model computer vision system classifying 29 ASL alphabet gestures from 87,000+ images — with a live interactive demo featuring webcam inference, in-browser training, and model comparison.',
+      'Classifies 29 ASL alphabet gestures from 87,000+ Kaggle images — fine-tuned ResNet50 vs. a ~18K-parameter Landmark NN on MediaPipe features, with fully client-side inference in a live demo.',
     longDescription:
-      'A computer vision system built to classify American Sign Language alphabet gestures. The project explores two distinct architectures: a traditional CNN trained directly on 87,000+ labeled images, and a lightweight Landmark Neural Network (~10K parameters) that operates on hand-skeleton coordinates extracted via MediaPipe.\n\nThe Landmark NN achieves 100% hand-detection accuracy on valid inputs and enables real-time CPU inference — roughly 200× smaller than the CNN baseline with no accuracy loss when hands are clearly visible. Both models reach 71% test accuracy across 29 gesture classes.\n\nA full interactive demo site lets users test both models via webcam or image upload, replay the actual training process epoch-by-epoch, train a small neural network live in the browser with configurable hyperparameters, compare model architectures and metrics side-by-side, and browse the dataset gallery with per-image predictions.',
+      'Classifies American Sign Language alphabet gestures from the Kaggle ASL Alphabet dataset (87,000+ labeled images, 29 classes) with two architectures compared side by side. ResNet50 transfer learning on hand-cropped 96×96 RGB frames (~23.6M parameters, 3-phase fine-tuning) reaches 96.4% end-to-end accuracy on a held-out 28-photo test set. A Landmark Neural Network (~18K parameters, ~72 KB deployed) classifies 63 wrist-relative features from 21 MediaPipe landmarks — 98.97% validation accuracy and 100% when a hand is detected, but 67.9% end-to-end because MediaPipe fails on roughly a third of those photos.\n\nThe Landmark NN is ~1,300× smaller by parameter count and runs in under a millisecond; ResNet50 is the stronger live choice because it always produces a prediction and scores best end-to-end. The demo site runs all inference client-side with TensorFlow.js and MediaPipe — webcam or image upload, architecture and metrics comparison, a 29-class sample gallery with per-image predictions, and tunable detection settings.',
     repoUrl: 'https://github.com/raphaelkaramagi/daml-asl',
     demoUrl: 'https://asl.raphaelkaramagi.com',
     images: [
