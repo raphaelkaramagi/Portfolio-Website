@@ -80,12 +80,12 @@ export default function AboutSection() {
     [skillsTiltRef, skillsCursorRef],
   )
 
+  const mouseOverCardRef = useRef(false)
   const advanceTimeoutRef = useRef(null)
   const deadlineRef = useRef(null)
   const remainingOnPauseRef = useRef(ROTATE_MS)
   const slideChangedWhilePausedRef = useRef(false)
   const prevExpIndexRef = useRef(null)
-  const mouseOverCardRef = useRef(false)
   const touchHoldCardRef = useRef(false)
 
   const syncExperiencePaused = useCallback(() => {
@@ -171,7 +171,7 @@ export default function AboutSection() {
         ease: 'power3.out',
       })
 
-      gsap.from('.about-card', {
+      gsap.from('.about-card-intro', {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top 72%',
@@ -179,7 +179,6 @@ export default function AboutSection() {
         },
         y: 36,
         opacity: 0,
-        stagger: 0.12,
         duration: 0.72,
         ease: 'power3.out',
       })
@@ -203,7 +202,7 @@ export default function AboutSection() {
       </div>
 
       <div className="about-section-body flex flex-col gap-6 lg:gap-8">
-        <div ref={introCardRef} className={`about-card ${CARD_CLASS} p-8 sm:p-10 lg:p-12`}>
+        <div ref={introCardRef} className={`about-card-intro ${CARD_CLASS} p-8 sm:p-10 lg:p-12`}>
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[minmax(0,200px)_minmax(0,1fr)_minmax(0,220px)] gap-10 lg:gap-12 items-start">
             <div className="flex justify-center lg:justify-start shrink-0 mx-auto lg:mx-0 w-full max-w-[200px] sm:max-w-[220px] lg:max-w-[200px]">
               <div className="relative w-full aspect-[4/5] overflow-hidden rounded-2xl shadow-[0_20px_48px_-18px_rgba(0,0,0,0.72)] ring-1 ring-white/5">
@@ -273,7 +272,7 @@ export default function AboutSection() {
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.65fr)_minmax(0,1fr)] gap-6 lg:gap-8 lg:items-stretch">
           <div
             ref={experienceCardRef}
-            className={`about-card ${CARD_CLASS} p-5 sm:p-6 flex flex-col lg:min-h-0 lg:h-full`}
+            className={`${CARD_CLASS} p-5 sm:p-6 flex flex-col lg:min-h-0 lg:h-full`}
             onMouseEnter={() => {
               mouseOverCardRef.current = true
               syncExperiencePaused()
@@ -389,7 +388,7 @@ export default function AboutSection() {
             </div>
           </div>
 
-          <div ref={skillsCardRef} className={`about-card ${CARD_CLASS} p-5 sm:p-6 flex flex-col lg:min-h-0 lg:h-full`}>
+          <div ref={skillsCardRef} className={`${CARD_CLASS} p-5 sm:p-6 flex flex-col lg:min-h-0 lg:h-full`}>
             <div className="relative z-10 flex flex-col flex-1 min-h-0">
               <h3 className="font-grotesk text-lg font-bold text-dark-text mb-3 shrink-0">
                 Skills

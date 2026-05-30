@@ -85,6 +85,11 @@
     }
   }
 
+  .glass-card-hoverable {
+    overflow: hidden;
+  }
+
+  /* Gaussian-falloff stops + solid blurred orbs — no hard radial bands */
   .glass-card-hoverable::before {
     content: '';
     position: absolute;
@@ -93,16 +98,34 @@
     padding: 1px;
     background: radial-gradient(
       320px circle at var(--mx, 50%) var(--my, 50%),
-      rgba(220, 38, 38, 0.5),
-      rgba(234, 88, 12, 0.32) 35%,
-      rgba(245, 158, 11, 0.22) 60%,
-      transparent 80%
+      rgba(220, 38, 38, 0.52) 0%,
+      rgba(221, 47, 35, 0.5155) 4.2%,
+      rgba(223, 56, 33, 0.5024) 8.4%,
+      rgba(225, 65, 31, 0.4812) 12.6%,
+      rgba(227, 74, 29, 0.4531) 16.8%,
+      rgba(229, 83, 27, 0.4193) 21%,
+      rgba(231, 92, 25, 0.3814) 25.2%,
+      rgba(233, 102, 23, 0.341) 29.4%,
+      rgba(235, 111, 21, 0.2996) 33.6%,
+      rgba(237, 120, 19, 0.2588) 37.8%,
+      rgba(239, 129, 17, 0.2198) 42%,
+      rgba(241, 138, 15, 0.1834) 46.2%,
+      rgba(242, 147, 13, 0.1504) 50.4%,
+      rgba(244, 157, 11, 0.1213) 54.6%,
+      rgba(245, 158, 11, 0.0961) 58.8%,
+      rgba(245, 158, 11, 0.0749) 63%,
+      rgba(245, 158, 11, 0.0573) 67.2%,
+      rgba(245, 158, 11, 0.0431) 71.4%,
+      rgba(245, 158, 11, 0.0319) 75.6%,
+      rgba(245, 158, 11, 0.0232) 79.8%,
+      rgba(245, 158, 11, 0.0166) 84%
     );
     -webkit-mask:
       linear-gradient(#000 0 0) content-box,
       linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
+    filter: blur(4px);
     opacity: 0;
     transition: opacity 0.45s ease;
     pointer-events: none;
@@ -116,14 +139,14 @@
   .glass-card-hoverable::after {
     content: '';
     position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: radial-gradient(
-      460px circle at var(--mx, 50%) var(--my, 50%),
-      rgba(220, 38, 38, 0.12),
-      rgba(234, 88, 12, 0.05) 35%,
-      transparent 65%
-    );
+    width: 480px;
+    height: 480px;
+    left: var(--mx, 50%);
+    top: var(--my, 50%);
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: rgb(220, 38, 38);
+    filter: blur(68px);
     opacity: 0;
     transition: opacity 0.45s ease;
     pointer-events: none;
@@ -131,7 +154,7 @@
 
   .glass-card-hoverable:hover::after,
   .glass-card-hoverable:focus-within::after {
-    opacity: 1;
+    opacity: 0.11;
   }
 
   .text-aurora {
@@ -295,6 +318,14 @@
   .gradient-underline[data-active='true']::after {
     transform: scaleX(1);
   }
+
+  /* Breaks 8-bit gradient banding without shifting overall brightness */
+  .aurora-dither {
+    opacity: 0.038;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 160px 160px;
+  }
 }
 
 ::-webkit-scrollbar {
@@ -354,28 +385,28 @@
 /* Blob sizes shrunk on desktop (36/30/40/26vw); % translate is relative to element,
    so ranges scaled up to keep absolute pixel travel ~9–11vw across screen sizes. */
 @keyframes blob-drift-a {
-  0%   { transform: translate3d(-26%, -20%, 0) scale(1); }
-  50%  { transform: translate3d(22%, 16%, 0) scale(1.2); }
-  100% { transform: translate3d(-26%, -20%, 0) scale(1); }
+  0%,
+  100% { transform: translate3d(-34%, -28%, 0) scale(1); }
+  50% { transform: translate3d(30%, 24%, 0) scale(1.28); }
 }
 
 @keyframes blob-drift-b {
-  0%   { transform: translate3d(17%, 23%, 0) scale(0.9); }
-  50%  { transform: translate3d(-23%, -27%, 0) scale(1.15); }
-  100% { transform: translate3d(17%, 23%, 0) scale(0.9); }
+  0%,
+  100% { transform: translate3d(24%, 30%, 0) scale(0.86); }
+  50% { transform: translate3d(-30%, -34%, 0) scale(1.22); }
 }
 
 @keyframes blob-drift-c {
-  0%   { transform: translate3d(0, 0, 0) scale(1); }
-  33%  { transform: translate3d(25%, -19%, 0) scale(1.12); }
-  66%  { transform: translate3d(-19%, 22%, 0) scale(0.88); }
+  0%,
   100% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(32%, -26%, 0) scale(1.2); }
+  66% { transform: translate3d(-26%, 30%, 0) scale(0.84); }
 }
 
 @keyframes blob-drift-d {
-  0%   { transform: translate3d(11%, -15%, 0) scale(1.08); }
-  50%  { transform: translate3d(-27%, 23%, 0) scale(0.86); }
-  100% { transform: translate3d(11%, -15%, 0) scale(1.08); }
+  0%,
+  100% { transform: translate3d(16%, -22%, 0) scale(1.12); }
+  50% { transform: translate3d(-34%, 30%, 0) scale(0.82); }
 }
 
 @media (prefers-reduced-motion: reduce) {

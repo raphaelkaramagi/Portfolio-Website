@@ -5,68 +5,71 @@ const DESKTOP_BLOBS = [
   {
     key: 'red-tl',
     attraction: 180,
+    fill: 'rgb(196, 30, 30)',
+    fillOpacity: 0.2,
     style: {
       top: '-6%',
       left: '-4%',
       width: '36vw',
       height: '36vw',
     },
-    inner: {
-      background:
-        'radial-gradient(circle at 50% 50%, rgba(196,30,30,0.65), rgba(196,30,30,0) 60%)',
-      animation: 'blob-drift-a 22s linear infinite',
-    },
+    animation: 'blob-drift-a 26s ease-in-out infinite',
   },
   {
     key: 'orange-tr',
     attraction: 130,
+    fill: 'rgb(234, 88, 12)',
+    fillOpacity: 0.17,
     style: {
       top: '-10%',
       right: '-6%',
       width: '30vw',
       height: '30vw',
     },
-    inner: {
-      background:
-        'radial-gradient(circle at 50% 50%, rgba(234,88,12,0.55), rgba(234,88,12,0) 60%)',
-      animation: 'blob-drift-b 28s linear infinite',
-    },
+    animation: 'blob-drift-b 32s ease-in-out infinite',
   },
   {
     key: 'amber-bl',
     attraction: 220,
+    fill: 'rgb(245, 158, 11)',
+    fillOpacity: 0.14,
     style: {
       bottom: '-8%',
       left: '-4%',
       width: '40vw',
       height: '40vw',
     },
-    inner: {
-      background:
-        'radial-gradient(circle at 50% 50%, rgba(245,158,11,0.45), rgba(245,158,11,0) 62%)',
-      animation: 'blob-drift-c 34s linear infinite',
-    },
+    animation: 'blob-drift-c 38s ease-in-out infinite',
   },
   {
     key: 'ember-br',
     attraction: 150,
+    fill: 'rgb(220, 80, 40)',
+    fillOpacity: 0.11,
     style: {
       bottom: '-12%',
       right: '-8%',
       width: '26vw',
       height: '26vw',
     },
-    inner: {
-      background:
-        'radial-gradient(circle at 50% 50%, rgba(220,80,40,0.35), rgba(220,80,40,0) 60%)',
-      animation: 'blob-drift-d 24s linear infinite',
-    },
+    animation: 'blob-drift-d 28s ease-in-out infinite',
   },
 ]
 
 const MOBILE_BLOBS = [DESKTOP_BLOBS[0], DESKTOP_BLOBS[2]]
 
 const AMBIENT_STRENGTH = 0.6
+
+/** Per-blob idle motion — dual sine waves for organic, non-repeating drift */
+const IDLE_PROFILES = [
+  { ax: 58, ay: 50, sx: 0.00041, sy: 0.00035, px: 0, py: 1.1, ax2: 30, ay2: 34, sx2: 0.00068, sy2: 0.00058, px2: 2.4, py2: 0.7 },
+  { ax: 48, ay: 56, sx: 0.00038, sy: 0.00044, px: 0.8, py: 2.2, ax2: 24, ay2: 28, sx2: 0.00061, sy2: 0.00071, px2: 1.5, py2: 3.1 },
+  { ax: 66, ay: 54, sx: 0.00033, sy: 0.00039, px: 1.6, py: 0.3, ax2: 32, ay2: 30, sx2: 0.00055, sy2: 0.00064, px2: 3.8, py2: 1.9 },
+  { ax: 44, ay: 48, sx: 0.00047, sy: 0.00042, px: 2.1, py: 2.8, ax2: 22, ay2: 24, sx2: 0.00074, sy2: 0.00067, px2: 0.5, py2: 4.2 },
+]
+
+const IDLE_RAMP_MS = 180
+const IDLE_BLEND = 0.022
 
 export default function AuroraBackground() {
   const blobRefs = useRef([])
@@ -120,44 +123,76 @@ export default function AuroraBackground() {
 
   useEffect(() => {
     if (typeof window === 'undefined') return
-    if (window.matchMedia('(pointer: coarse)').matches) return
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const isCoarse = window.matchMedia('(pointer: coarse)').matches
 
     const target = { x: 0, y: 0 }
     const current = { x: 0, y: 0 }
+    let idleMix = isCoarse ? 1 : 0
+    let lastMove = performance.now()
     let raf = 0
     let running = true
 
     const onMove = (e) => {
+      if (isCoarse) return
+      lastMove = performance.now()
       const w = window.innerWidth || 1
       const h = window.innerHeight || 1
       target.x = e.clientX / w - 0.5
       target.y = e.clientY / h - 0.5
     }
 
-    const tick = () => {
+    const idleOffset = (profile, t, mix) => {
+      const ix =
+        Math.sin(t * profile.sx + profile.px) * profile.ax +
+        Math.sin(t * profile.sx2 + profile.px2) * profile.ax2
+      const iy =
+        Math.cos(t * profile.sy + profile.py) * profile.ay +
+        Math.cos(t * profile.sy2 + profile.py2) * profile.ay2
+      return { x: ix * mix, y: iy * mix }
+    }
+
+    const tick = (now) => {
       if (!running) return
-      current.x += (target.x - current.x) * 0.05
-      current.y += (target.y - current.y) * 0.05
+
+      if (isCoarse) {
+        idleMix = 1
+      } else {
+        const idleTarget = now - lastMove > IDLE_RAMP_MS ? 1 : 0
+        idleMix += (idleTarget - idleMix) * IDLE_BLEND
+        current.x += (target.x - current.x) * 0.05
+        current.y += (target.y - current.y) * 0.05
+      }
 
       const refs = blobRefs.current
       for (let i = 0; i < refs.length; i++) {
         const el = refs[i]
         if (!el) continue
-        const a = parseFloat(el.dataset.attraction) || 80
-        el.style.transform = `translate3d(${current.x * a}px, ${current.y * a}px, 0)`
+        const attraction = parseFloat(el.dataset.attraction) || 80
+        const profile = IDLE_PROFILES[i] ?? IDLE_PROFILES[0]
+        const idle = idleOffset(profile, now, idleMix)
+
+        const px = isCoarse ? idle.x : current.x * attraction + idle.x
+        const py = isCoarse ? idle.y : current.y * attraction + idle.y
+
+        el.style.transform = `translate3d(${px}px, ${py}px, 0)`
       }
 
       raf = requestAnimationFrame(tick)
     }
 
     raf = requestAnimationFrame(tick)
-    window.addEventListener('mousemove', onMove, { passive: true })
+    if (!isCoarse) {
+      window.addEventListener('mousemove', onMove, { passive: true })
+    }
 
     return () => {
       running = false
       cancelAnimationFrame(raf)
-      window.removeEventListener('mousemove', onMove)
+      if (!isCoarse) {
+        window.removeEventListener('mousemove', onMove)
+      }
     }
   }, [isMobile])
 
@@ -166,8 +201,6 @@ export default function AuroraBackground() {
   const baseBlur = isMobile ? 30 : 34
   const ambientBoost = 18
   const blurPx = baseBlur + (1 - strength) * ambientBoost
-  // Desktop has 4 blobs screen-blending; cap overall brightness so it matches the
-  // 2-blob mobile look that already feels right.
   const blobLayerOpacity = isMobile ? 1 : 0.52
 
   return (
@@ -200,10 +233,11 @@ export default function AuroraBackground() {
           >
             <div
               data-aurora-blob
-              className="h-full w-full will-change-transform"
+              className="h-full w-full will-change-transform rounded-full"
               style={{
-                ...b.inner,
-                borderRadius: '50%',
+                background: b.fill,
+                opacity: b.fillOpacity,
+                animation: b.animation,
                 mixBlendMode: 'screen',
               }}
             />
@@ -220,6 +254,8 @@ export default function AuroraBackground() {
           transition: 'opacity 0.8s ease',
         }}
       />
+
+      <div className="absolute inset-0 aurora-dither" aria-hidden />
     </div>
   )
 }
