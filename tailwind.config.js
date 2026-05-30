@@ -10,11 +10,11 @@ export default {
       colors: {
         'dark-bg': '#0A0A0F',
         'dark-text': '#EDEDF0',
-        aurora: {
-          violet: '#8B5CF6',
-          blue: '#3B82F6',
-          pink: '#EC4899',
-          cyan: '#22D3EE',
+        brand: {
+          red: '#DC2626',
+          orange: '#EA580C',
+          amber: '#F59E0B',
+          cream: '#F5EDE4',
         },
       },
       fontFamily: {

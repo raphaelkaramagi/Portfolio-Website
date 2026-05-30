@@ -17,7 +17,10 @@ const statusColors = {
 }
 
 const clientProjectBadge =
-  'bg-aurora-violet/15 text-violet-300 border-aurora-violet/40'
+  'bg-brand-red/15 text-red-300 border-brand-red/40'
+
+const focusRing =
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-bg'
 
 const VISIBLE_COUNT = 3
 
@@ -135,7 +138,7 @@ export default function ProjectPage() {
       <div className="max-w-4xl mx-auto">
         <Link
           to="/"
-          className="proj-animate inline-flex items-center gap-2 font-mono text-sm text-dark-text/55 hover:text-aurora-violet transition-colors duration-300 mb-12"
+          className={`proj-animate inline-flex items-center gap-2 font-mono text-sm text-dark-text/55 hover:text-brand-red transition-colors duration-300 mb-12 ${focusRing} rounded-sm`}
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Home
@@ -181,7 +184,7 @@ export default function ProjectPage() {
               href={project.repoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-glass inline-flex items-center gap-1.5 font-mono text-xs px-4 py-1.5 rounded-full ml-1"
+              className="btn-glass btn-glass-white-hover inline-flex items-center gap-1.5 font-mono text-xs px-4 py-1.5 rounded-full ml-1"
             >
               <Github className="w-3.5 h-3.5" />
               Repository
@@ -225,7 +228,8 @@ export default function ProjectPage() {
                   onClick={() => setLightboxImg(img)}
                   className="w-full aspect-video object-cover rounded-2xl cursor-pointer ring-1 ring-white/10
                     shadow-[0_18px_44px_-18px_rgba(0,0,0,0.72)]
-                    hover:scale-[1.02] hover:ring-aurora-violet/45 hover:shadow-[0_24px_56px_-18px_rgba(139,92,246,0.45)]
+                    hover:scale-[1.02] hover:ring-brand-red/45 hover:shadow-[0_24px_56px_-18px_rgba(220,38,38,0.35)]
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50
                     transition-[transform,box-shadow,outline] duration-300"
                 />
               ))}
@@ -233,8 +237,8 @@ export default function ProjectPage() {
             {hasMany && (
               <button
                 onClick={() => setExpanded(!expanded)}
-                className="mt-6 mx-auto flex items-center gap-2 font-mono text-sm text-dark-text/55
-                  hover:text-aurora-violet transition-colors duration-300"
+                className={`mt-6 mx-auto flex items-center gap-2 font-mono text-sm text-dark-text/55
+                  hover:text-brand-red transition-colors duration-300 ${focusRing} rounded-sm`}
               >
                 {expanded ? 'Show less' : `Show all ${project.images.length} images`}
                 {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}

@@ -2,14 +2,11 @@ import { useCallback, useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ArrowDown } from 'lucide-react'
 import { hasPlayedHomeIntro, markHomeIntroPlayed } from '../lib/animationState'
-import useMagnetic from '../lib/useMagnetic'
 import useCursorVars from '../lib/useCursorVars'
 import useTilt from '../lib/useTilt'
 
 export default function Hero() {
   const heroRef = useRef(null)
-  const contactRef = useMagnetic({ strength: 0.25, max: 7 })
-  const githubRef = useMagnetic({ strength: 0.25, max: 7 })
   const tiltRef = useTilt({ max: 2.5 })
   const cursorRef = useCursorVars()
   const cardRef = useCallback(
@@ -116,18 +113,16 @@ export default function Hero() {
             <div className="flex flex-col gap-4 shrink-0 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-x-3 sm:gap-y-3">
               <div className="hero-cta flex flex-row flex-nowrap gap-2 sm:flex-wrap sm:gap-4 flex-1 min-w-0 sm:max-w-none">
                 <a
-                  ref={contactRef}
                   href="mailto:raphael.karamagi@duke.edu"
-                  className="btn-aurora font-grotesk text-xs sm:text-sm font-semibold px-4 py-2.5 sm:px-7 sm:py-3 rounded-full text-center flex-1 min-w-0 sm:flex-none sm:shrink-0"
+                  className="btn-aurora font-grotesk text-xs sm:text-sm font-semibold px-4 py-2.5 sm:px-7 sm:py-3 rounded-full text-center flex-1 min-w-0 sm:flex-none sm:shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-bg"
                 >
                   Contact Me
                 </a>
                 <a
-                  ref={githubRef}
                   href="https://github.com/raphaelkaramagi"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-glass font-grotesk text-xs sm:text-sm font-semibold px-4 py-2.5 sm:px-7 sm:py-3 rounded-full text-center flex-1 min-w-0 sm:flex-none sm:shrink-0"
+                  className="btn-glass font-grotesk text-xs sm:text-sm font-semibold px-4 py-2.5 sm:px-7 sm:py-3 rounded-full text-center flex-1 min-w-0 sm:flex-none sm:shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-bg"
                 >
                   View My GitHub
                 </a>

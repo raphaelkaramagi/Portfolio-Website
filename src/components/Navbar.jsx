@@ -10,6 +10,9 @@ const navLinks = [
   { label: 'Resume', href: RESUME_URL, external: true },
 ]
 
+const focusRing =
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-bg'
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -39,16 +42,16 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center justify-between
+        className={`fixed top-6 left-1/2 -translate-x-1/2 z-[100] flex items-center justify-between
           px-5 sm:px-8 py-3 rounded-full transition-shadow duration-500 w-[92vw] max-w-4xl
-          animate-navbar-in glass-card
+          animate-navbar-in glass-card pointer-events-auto
           ${scrolled
             ? 'shadow-[0_22px_64px_-20px_rgba(0,0,0,0.7)]'
             : 'shadow-[0_14px_40px_-18px_rgba(0,0,0,0.55)]'}`}
       >
         <Link
           to="/"
-          className="font-grotesk text-lg font-extrabold tracking-tight text-dark-text relative z-10"
+          className={`font-grotesk text-lg font-extrabold tracking-tight text-dark-text relative z-10 ${focusRing} rounded-sm`}
         >
           Raphael Karamagi.
         </Link>
@@ -61,7 +64,7 @@ export default function Navbar() {
               onClick={(e) => handleNavClick(e, link)}
               target={link.external ? '_blank' : undefined}
               rel={link.external ? 'noopener noreferrer' : undefined}
-              className="gradient-underline font-grotesk text-sm font-semibold text-dark-text/85 hover:text-dark-text transition-colors duration-300"
+              className={`gradient-underline font-grotesk text-sm font-semibold text-dark-text/85 hover:text-dark-text transition-colors duration-300 ${focusRing} rounded-sm`}
             >
               {link.label}
             </a>
@@ -72,7 +75,7 @@ export default function Navbar() {
               href="https://github.com/raphaelkaramagi"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-dark-text/55 hover:text-aurora-violet transition-colors duration-300"
+              className={`text-dark-text/55 hover:text-brand-red transition-colors duration-300 ${focusRing} rounded-sm`}
               aria-label="GitHub"
             >
               <Github className="w-4 h-4" />
@@ -81,7 +84,7 @@ export default function Navbar() {
               href="https://linkedin.com/in/raphaelkar"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-dark-text/55 hover:text-aurora-blue transition-colors duration-300"
+              className={`text-dark-text/55 hover:text-[#0A66C2] transition-colors duration-300 ${focusRing} rounded-sm`}
               aria-label="LinkedIn"
             >
               <Linkedin className="w-4 h-4" />
@@ -90,7 +93,7 @@ export default function Navbar() {
 
           <a
             href="mailto:raphael.karamagi@duke.edu"
-            className="btn-aurora font-grotesk text-sm font-semibold px-5 py-2 rounded-full"
+            className={`btn-aurora font-grotesk text-sm font-semibold px-5 py-2 rounded-full ${focusRing}`}
           >
             Contact Me
           </a>
@@ -99,7 +102,7 @@ export default function Navbar() {
         <div className="md:hidden flex items-center gap-2 relative z-10">
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="flex flex-col gap-1.5 p-2"
+            className={`flex flex-col gap-1.5 p-2 ${focusRing} rounded-full`}
             aria-label="Toggle menu"
           >
             <span
@@ -122,7 +125,7 @@ export default function Navbar() {
       </nav>
 
       {mobileOpen && (
-        <div className="fixed top-[92px] left-1/2 -translate-x-1/2 w-[92vw] max-w-4xl z-40 glass-card rounded-[2rem] p-6 flex flex-col gap-4 md:hidden">
+        <div className="fixed top-[92px] left-1/2 -translate-x-1/2 w-[92vw] max-w-4xl z-[90] glass-card rounded-[2rem] p-6 flex flex-col gap-4 md:hidden pointer-events-auto">
           {navLinks.map((link) => (
             <a
               key={link.label}
@@ -133,7 +136,7 @@ export default function Navbar() {
               }}
               target={link.external ? '_blank' : undefined}
               rel={link.external ? 'noopener noreferrer' : undefined}
-              className="font-grotesk text-base font-bold text-dark-text hover:text-aurora-violet transition-colors"
+              className={`font-grotesk text-base font-bold text-dark-text hover:text-brand-red transition-colors ${focusRing} rounded-sm`}
             >
               {link.label}
             </a>
@@ -143,7 +146,7 @@ export default function Navbar() {
               href="https://github.com/raphaelkaramagi"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-dark-text/55 hover:text-aurora-violet transition-colors duration-300"
+              className={`text-dark-text/55 hover:text-brand-red transition-colors duration-300 ${focusRing} rounded-sm`}
               aria-label="GitHub"
             >
               <Github className="w-5 h-5" />
@@ -152,7 +155,7 @@ export default function Navbar() {
               href="https://linkedin.com/in/raphaelkar"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-dark-text/55 hover:text-aurora-blue transition-colors duration-300"
+              className={`text-dark-text/55 hover:text-[#0A66C2] transition-colors duration-300 ${focusRing} rounded-sm`}
               aria-label="LinkedIn"
             >
               <Linkedin className="w-5 h-5" />
@@ -160,7 +163,7 @@ export default function Navbar() {
           </div>
           <a
             href="mailto:raphael.karamagi@duke.edu"
-            className="btn-aurora font-grotesk text-sm font-semibold px-5 py-2 rounded-full text-center"
+            className={`btn-aurora font-grotesk text-sm font-semibold px-5 py-2 rounded-full text-center ${focusRing}`}
           >
             Contact Me
           </a>

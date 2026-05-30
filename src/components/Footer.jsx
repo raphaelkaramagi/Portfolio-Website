@@ -56,7 +56,7 @@ export default function Footer() {
         className="absolute inset-x-0 top-0 h-px"
         style={{
           background:
-            'linear-gradient(90deg, transparent 0%, rgba(139,92,246,0.55) 30%, rgba(59,130,246,0.55) 50%, rgba(236,72,153,0.55) 70%, transparent 100%)',
+            'linear-gradient(90deg, transparent 0%, rgba(220,38,38,0.55) 30%, rgba(234,88,12,0.55) 50%, rgba(245,158,11,0.55) 70%, transparent 100%)',
         }}
       />
 
@@ -77,21 +77,27 @@ export default function Footer() {
             <span className="font-mono text-xs text-dark-text/35 tracking-widest uppercase mb-2">
               Connect
             </span>
-            {links.map(({ icon: Icon, label, href }) => (
+            {links.map(({ icon: Icon, label, href }) => {
+              const isLinkedIn = label === 'LinkedIn'
+              return (
               <a
                 key={label}
                 href={href}
                 target={href.startsWith('http') ? '_blank' : undefined}
                 rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                className="group flex items-center gap-3 text-dark-text/65 hover:text-aurora-violet transition-colors duration-300"
+                className={`group flex items-center gap-3 text-dark-text/65 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-bg rounded-sm ${
+                  isLinkedIn ? 'hover:text-[#0A66C2]' : 'hover:text-brand-red'
+                }`}
               >
                 <Icon className="w-4 h-4" />
                 <span className="font-grotesk text-sm">{label}</span>
-                <span className="font-mono text-xs text-dark-text/25 group-hover:text-aurora-pink transition-colors duration-300">
+                <span className={`font-mono text-xs text-dark-text/25 transition-colors duration-300 ${
+                  isLinkedIn ? 'group-hover:text-[#0A66C2]' : 'group-hover:text-brand-orange'
+                }`}>
                   ↗
                 </span>
               </a>
-            ))}
+            )})}
           </div>
 
           <div className="flex flex-col items-start md:items-end justify-between">
@@ -111,10 +117,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 pt-8 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
-          <span className="font-mono text-xs text-dark-text/30">
-            Built with precision.
-          </span>
+        <div className="mt-16 pt-8 border-t border-white/10 flex flex-wrap items-center justify-end gap-4">
           <span className="font-mono text-xs text-dark-text/30">
             Durham, NC
           </span>

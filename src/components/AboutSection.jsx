@@ -206,15 +206,16 @@ export default function AboutSection() {
         <div ref={introCardRef} className={`about-card ${CARD_CLASS} p-8 sm:p-10 lg:p-12`}>
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[minmax(0,200px)_minmax(0,1fr)_minmax(0,220px)] gap-10 lg:gap-12 items-start">
             <div className="flex justify-center lg:justify-start shrink-0 mx-auto lg:mx-0">
-              <img
-                src="/images/raphael-portrait.png"
-                alt="Raphael Karamagi"
-                width={640}
-                height={800}
-                loading="lazy"
-                className="w-full max-w-[200px] sm:max-w-[220px] lg:w-full lg:max-w-none aspect-[4/5] object-cover rounded-2xl
-                  shadow-[0_20px_48px_-18px_rgba(0,0,0,0.72)] ring-1 ring-white/5"
-              />
+              <div className="w-full max-w-[200px] sm:max-w-[220px] lg:w-full lg:max-w-none aspect-[4/5] overflow-hidden rounded-2xl shadow-[0_20px_48px_-18px_rgba(0,0,0,0.72)] ring-1 ring-white/5">
+                <img
+                  src="/images/raphael-portrait.png"
+                  alt="Raphael Karamagi"
+                  width={640}
+                  height={800}
+                  loading="lazy"
+                  className="h-full w-full object-cover object-[50%_12%] scale-[1.32] origin-[50%_18%]"
+                />
+              </div>
             </div>
 
             <div className="min-w-0 space-y-5">
@@ -230,11 +231,11 @@ export default function AboutSection() {
               </div>
 
               <p className="font-mono text-xs sm:text-sm text-dark-text/55 leading-relaxed tracking-wide">
-                <span className="text-aurora-violet/90">//</span> Machine Learning{' '}
+                <span className="text-brand-red/90">//</span> Machine Learning{' '}
                 <span className="text-dark-text/35 mx-1">·</span>{' '}
-                <span className="text-aurora-blue/90">//</span> Embedded Systems &amp; Hardware{' '}
+                <span className="text-brand-orange/90">//</span> Embedded Systems &amp; Hardware{' '}
                 <span className="text-dark-text/35 mx-1">·</span>{' '}
-                <span className="text-aurora-pink/90">//</span> Software Engineering
+                <span className="text-brand-amber/90">//</span> Software Engineering
               </p>
 
               <p className="font-grotesk text-sm text-dark-text/60 leading-relaxed max-w-xl">
@@ -317,7 +318,7 @@ export default function AboutSection() {
                   <button
                     type="button"
                     onClick={goPrev}
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-white/12 text-dark-text/65 hover:border-aurora-violet/55 hover:text-aurora-violet transition-colors duration-300"
+                    className="flex h-8 w-8 items-center justify-center rounded-full border border-white/12 text-dark-text/65 hover:border-brand-red/55 hover:text-brand-red transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-bg"
                     aria-label="Previous role"
                   >
                     <ChevronLeft className="w-4 h-4" />
@@ -325,7 +326,7 @@ export default function AboutSection() {
                   <button
                     type="button"
                     onClick={goNext}
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-white/12 text-dark-text/65 hover:border-aurora-violet/55 hover:text-aurora-violet transition-colors duration-300"
+                    className="flex h-8 w-8 items-center justify-center rounded-full border border-white/12 text-dark-text/65 hover:border-brand-red/55 hover:text-brand-red transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-bg"
                     aria-label="Next role"
                   >
                     <ChevronRight className="w-4 h-4" />
@@ -339,7 +340,7 @@ export default function AboutSection() {
               >
                 <div
                   key={`${expIndex}-${progressCycle}`}
-                  className="h-full rounded-full bg-gradient-to-r from-aurora-violet via-aurora-blue to-aurora-pink"
+                  className="h-full rounded-full bg-gradient-to-r from-brand-red via-brand-orange to-brand-amber"
                   style={{
                     animation: `about-exp-progress ${ROTATE_MS}ms linear forwards`,
                     animationPlayState: experiencePaused ? 'paused' : 'running',
@@ -362,7 +363,7 @@ export default function AboutSection() {
                   {activeExp.bullets.map((b, bi) => (
                     <li
                       key={bi}
-                      className="font-grotesk text-sm sm:text-base text-dark-text/75 leading-relaxed pl-2.5 border-l-2 border-aurora-violet/45"
+                      className="font-grotesk text-sm sm:text-base text-dark-text/75 leading-relaxed pl-2.5 border-l-2 border-brand-red/45"
                     >
                       {b}
                     </li>
@@ -377,7 +378,7 @@ export default function AboutSection() {
                       <span
                         key={exp.id}
                         className={`h-1.5 w-1.5 rounded-full transition-colors duration-300 ${
-                          i === expIndex ? 'bg-aurora-violet' : 'bg-white/20'
+                          i === expIndex ? 'bg-brand-red' : 'bg-white/20'
                         }`}
                       />
                     ))}
@@ -404,7 +405,7 @@ export default function AboutSection() {
                           key={item}
                           className="font-grotesk text-sm sm:text-base text-dark-text/75 leading-relaxed"
                         >
-                          <span className="text-aurora-violet font-mono text-xs sm:text-sm">//</span>{' '}
+                          <span className="text-brand-red font-mono text-xs sm:text-sm">//</span>{' '}
                           {item}
                         </li>
                       ))}

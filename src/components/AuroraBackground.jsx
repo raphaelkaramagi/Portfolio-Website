@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom'
 
 const DESKTOP_BLOBS = [
   {
-    key: 'violet-tl',
+    key: 'red-tl',
     attraction: 180,
     style: {
       top: '-6%',
@@ -13,12 +13,12 @@ const DESKTOP_BLOBS = [
     },
     inner: {
       background:
-        'radial-gradient(circle at 50% 50%, rgba(139,92,246,0.78), rgba(139,92,246,0) 60%)',
+        'radial-gradient(circle at 50% 50%, rgba(196,30,30,0.65), rgba(196,30,30,0) 60%)',
       animation: 'blob-drift-a 22s linear infinite',
     },
   },
   {
-    key: 'blue-tr',
+    key: 'orange-tr',
     attraction: 130,
     style: {
       top: '-10%',
@@ -28,12 +28,12 @@ const DESKTOP_BLOBS = [
     },
     inner: {
       background:
-        'radial-gradient(circle at 50% 50%, rgba(59,130,246,0.68), rgba(59,130,246,0) 60%)',
+        'radial-gradient(circle at 50% 50%, rgba(234,88,12,0.55), rgba(234,88,12,0) 60%)',
       animation: 'blob-drift-b 28s linear infinite',
     },
   },
   {
-    key: 'pink-bl',
+    key: 'amber-bl',
     attraction: 220,
     style: {
       bottom: '-8%',
@@ -43,12 +43,12 @@ const DESKTOP_BLOBS = [
     },
     inner: {
       background:
-        'radial-gradient(circle at 50% 50%, rgba(236,72,153,0.62), rgba(236,72,153,0) 62%)',
+        'radial-gradient(circle at 50% 50%, rgba(245,158,11,0.45), rgba(245,158,11,0) 62%)',
       animation: 'blob-drift-c 34s linear infinite',
     },
   },
   {
-    key: 'cyan-br',
+    key: 'ember-br',
     attraction: 150,
     style: {
       bottom: '-12%',
@@ -58,7 +58,7 @@ const DESKTOP_BLOBS = [
     },
     inner: {
       background:
-        'radial-gradient(circle at 50% 50%, rgba(34,211,238,0.42), rgba(34,211,238,0) 60%)',
+        'radial-gradient(circle at 50% 50%, rgba(220,80,40,0.35), rgba(220,80,40,0) 60%)',
       animation: 'blob-drift-d 24s linear infinite',
     },
   },

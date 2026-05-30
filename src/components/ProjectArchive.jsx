@@ -20,7 +20,10 @@ const statusColors = {
 }
 
 const clientProjectBadge =
-  'bg-aurora-violet/15 text-violet-300 border-aurora-violet/40'
+  'bg-brand-red/15 text-red-300 border-brand-red/40'
+
+const focusRing =
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-bg'
 
 const ProjectCard = forwardRef(function ProjectCard({ project, stackIndex }, ref) {
   const tiltRef = useTilt({ max: 3.5 })
@@ -40,7 +43,10 @@ const ProjectCard = forwardRef(function ProjectCard({ project, stackIndex }, ref
       className="project-card will-change-transform origin-top w-full max-w-5xl mx-auto"
       style={{ zIndex: stackIndex + 1 }}
     >
-      <Link to={`/projects/${project.slug}`} className="block group">
+      <Link
+        to={`/projects/${project.slug}`}
+        className={`block group rounded-[2rem] ${focusRing}`}
+      >
         <div
           ref={innerRef}
           className="glass-card glass-card-hoverable rounded-[2rem] px-6 py-8 sm:p-12 min-h-[380px] flex flex-col justify-between"
@@ -94,13 +100,13 @@ const ProjectCard = forwardRef(function ProjectCard({ project, stackIndex }, ref
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      className="flex items-center gap-1.5 font-mono text-xs text-aurora-violet hover:text-aurora-pink transition-colors duration-300"
+                      className={`flex items-center gap-1.5 font-mono text-xs text-amber-300 group-hover:text-amber-300 hover:text-yellow-200 transition-colors duration-300 ${focusRing} rounded-full`}
                     >
                       Live Demo
                       <ExternalLink className="w-3 h-3" />
                     </a>
                   )}
-                  <span className="flex items-center gap-1.5 font-mono text-xs text-dark-text/45 group-hover:text-aurora-violet transition-colors duration-300">
+                  <span className="flex items-center gap-1.5 font-mono text-xs text-dark-text/45 group-hover:text-brand-red transition-colors duration-300">
                     View project
                     <ArrowRight className="w-3.5 h-3.5" />
                   </span>
@@ -244,11 +250,11 @@ export default function ProjectArchive() {
       {grouped.map((group, gi) => (
         <div key={group.status} className="mb-12 last:mb-0">
           {gi > 0 && (
-            <div className="relative z-50 max-w-5xl mx-auto pt-16 pb-2 mb-8">
+            <div className="relative z-20 max-w-5xl mx-auto pt-16 pb-2 mb-8">
               <div className="border-t border-white/10" />
             </div>
           )}
-          <div className="relative z-50 max-w-5xl mx-auto mb-8">
+          <div className="relative z-20 max-w-5xl mx-auto mb-8">
             <span className={`font-mono text-xs tracking-widest uppercase ${group.accent}`}>
               {group.label}
             </span>
