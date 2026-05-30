@@ -224,8 +224,8 @@ export default function AboutSection() {
                   Raphael Karamagi
                 </span>
                 <p className="font-grotesk text-base sm:text-lg text-dark-text/75 leading-relaxed">
-                  is a self taught software and hardware engineer passionate about turning vague ideas into things that work in the real world,
-                  whether that&apos;s software, hardware, or the learning systems layered on top. He&apos;s drawn to thoughtful craft, user experience,
+                  is a software and hardware engineer at Duke University passionate about turning engineering problems into solutions that work in the real world,
+                  whether that&apos;s hardware, software, or the infrastructure that suppots them. He&apos;s drawn to thoughtful craft
                   and building dependable systems.
                 </p>
               </div>
@@ -236,10 +236,6 @@ export default function AboutSection() {
                 <span className="text-brand-orange/90">//</span> Embedded Systems &amp; Hardware{' '}
                 <span className="text-dark-text/35 mx-1">·</span>{' '}
                 <span className="text-brand-amber/90">//</span> Software Engineering
-              </p>
-
-              <p className="font-grotesk text-sm text-dark-text/60 leading-relaxed max-w-xl">
-                Outside of STEM he&apos;s usually recording music, or on the court playing basketball.
               </p>
             </div>
 
@@ -269,10 +265,11 @@ export default function AboutSection() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.65fr)_minmax(0,1fr)] gap-6 lg:gap-8 lg:items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2.15fr)_minmax(0,0.72fr)] gap-6 lg:gap-8 items-start lg:items-stretch">
           <div
+            id="experience"
             ref={experienceCardRef}
-            className={`${CARD_CLASS} p-5 sm:p-6 flex flex-col lg:min-h-0 lg:h-full`}
+            className={`${CARD_CLASS} scroll-mt-28 p-5 sm:p-6 flex flex-col lg:min-h-0 lg:h-full`}
             onMouseEnter={() => {
               mouseOverCardRef.current = true
               syncExperiencePaused()
@@ -388,24 +385,24 @@ export default function AboutSection() {
             </div>
           </div>
 
-          <div ref={skillsCardRef} className={`${CARD_CLASS} p-5 sm:p-6 flex flex-col lg:min-h-0 lg:h-full`}>
-            <div className="relative z-10 flex flex-col flex-1 min-h-0">
-              <h3 className="font-grotesk text-lg font-bold text-dark-text mb-3 shrink-0">
+          <div ref={skillsCardRef} className={`${CARD_CLASS} p-5 sm:p-6 flex flex-col h-auto lg:min-h-0 lg:h-full`}>
+            <div className="relative z-10 flex flex-col lg:flex-1 lg:min-h-0">
+              <h3 className="font-grotesk text-base sm:text-lg font-bold text-dark-text mb-3 shrink-0">
                 Skills
               </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 flex-1 min-h-0 auto-rows-min">
-                {skillCategories.map(({ title, items }, idx) => (
-                  <div key={title} className={idx === 2 ? 'sm:col-span-2' : ''}>
-                    <div className="font-mono text-xs sm:text-sm text-dark-text/50 uppercase tracking-wider mb-2">
+              <div className="grid grid-cols-3 gap-x-3 sm:gap-x-5 gap-y-4 lg:grid-cols-1 lg:gap-y-4 lg:flex-1 lg:min-h-0 auto-rows-min">
+                {skillCategories.map(({ title, items }) => (
+                  <div key={title} className="min-w-0">
+                    <div className="font-mono text-[10px] sm:text-[11px] lg:text-xs text-dark-text/50 uppercase tracking-wider mb-1.5 leading-tight">
                       {title}
                     </div>
-                    <ul className="space-y-1.5">
+                    <ul className="space-y-1">
                       {items.map((item) => (
                         <li
                           key={item}
-                          className="font-grotesk text-sm sm:text-base text-dark-text/75 leading-relaxed"
+                          className="font-grotesk text-[11px] sm:text-sm text-dark-text/75 leading-snug"
                         >
-                          <span className="text-brand-red font-mono text-xs sm:text-sm">//</span>{' '}
+                          <span className="text-brand-red font-mono text-[10px] sm:text-xs">//</span>{' '}
                           {item}
                         </li>
                       ))}

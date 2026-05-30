@@ -107,8 +107,18 @@ export default function Hero() {
                 Architecture.
               </h1>
             </div>
-            <p className="hero-subtitle hero-display-text font-mono text-sm sm:text-base text-dark-text/55 max-w-lg xl:max-w-2xl mb-6 sm:mb-10 leading-relaxed">
-              Duke ECE &amp; CS &apos;29. Machine learning, embedded hardware, and systems infrastructure.
+            <p className="hero-subtitle hero-display-text font-mono text-sm sm:text-base w-full max-w-full mb-6 sm:mb-10 leading-relaxed">
+              <span className="block text-dark-text">
+                <span className="text-dark-text">Duke University</span>
+                <span className="text-dark-text/55"> · </span>
+                <span className="font-semibold">
+                  Electrical Engineering &amp; Computer Science
+                </span>{' '}
+                <span className="text-brand-amber font-semibold">&apos;29</span>
+              </span>
+              <span className="block mt-2 text-dark-text/50">
+                Machine learning, embedded hardware, and backend systems.
+              </span>
             </p>
             <div className="flex flex-col gap-4 shrink-0 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-x-3 sm:gap-y-3">
               <div className="hero-cta flex flex-row flex-nowrap gap-2 sm:flex-wrap sm:gap-4 flex-1 min-w-0 sm:max-w-none">

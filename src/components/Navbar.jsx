@@ -6,6 +6,7 @@ const RESUME_URL = '/resume/Raphael_Karamagi_May_2026.pdf'
 
 const navLinks = [
   { label: 'About', href: '/#about' },
+  { label: 'Experience', href: '/#experience' },
   { label: 'Projects', href: '/#projects' },
   { label: 'Resume', href: RESUME_URL, external: true },
 ]
