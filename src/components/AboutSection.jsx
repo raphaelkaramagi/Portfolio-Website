@@ -205,15 +205,16 @@ export default function AboutSection() {
       <div className="about-section-body flex flex-col gap-6 lg:gap-8">
         <div ref={introCardRef} className={`about-card ${CARD_CLASS} p-8 sm:p-10 lg:p-12`}>
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[minmax(0,200px)_minmax(0,1fr)_minmax(0,220px)] gap-10 lg:gap-12 items-start">
-            <div className="flex justify-center lg:justify-start shrink-0 mx-auto lg:mx-0">
-              <div className="w-full max-w-[200px] sm:max-w-[220px] lg:w-full lg:max-w-none aspect-[4/5] overflow-hidden rounded-2xl shadow-[0_20px_48px_-18px_rgba(0,0,0,0.72)] ring-1 ring-white/5">
+            <div className="flex justify-center lg:justify-start shrink-0 mx-auto lg:mx-0 w-full max-w-[200px] sm:max-w-[220px] lg:max-w-[200px]">
+              <div className="relative w-full aspect-[4/5] overflow-hidden rounded-2xl shadow-[0_20px_48px_-18px_rgba(0,0,0,0.72)] ring-1 ring-white/5">
                 <img
                   src="/images/raphael-portrait.png"
                   alt="Raphael Karamagi"
-                  width={640}
-                  height={800}
-                  loading="lazy"
-                  className="h-full w-full object-cover object-[50%_12%] scale-[1.32] origin-[50%_18%]"
+                  width={800}
+                  height={788}
+                  loading="eager"
+                  decoding="async"
+                  className="absolute inset-0 h-full w-full object-cover object-[50%_12%] scale-[1.32] origin-[50%_18%]"
                 />
               </div>
             </div>

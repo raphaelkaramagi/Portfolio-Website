@@ -1,3 +1,11 @@
+/** Gallery preview (960px) for grid; full (1600px) for lightbox. */
+function img(file, folder) {
+  return {
+    preview: `/projects/${folder}/previews/${file}`,
+    full: `/projects/${folder}/${file}`,
+  }
+}
+
 export const projects = [
   // ── Ongoing ────────────────────────────────────────────────────────────────
   {
@@ -29,13 +37,13 @@ export const projects = [
     repoUrl: 'https://github.com/raphaelkaramagi/news-to-alpha',
     demoUrl: 'https://stock.raphaelkaramagi.com',
     images: [
-      '/projects/stock/stock-markets-grid.png',
-      '/projects/stock/stock-markets-overview.png',
-      '/projects/stock/stock-ticker-headlines.png',
-      '/projects/stock/stock-ticker-price-accuracy.png',
-      '/projects/stock/stock-ticker-why-this-call.png',
-      '/projects/stock/stock-ticker-advanced.png',
-      '/projects/stock/stock-ticker-explainability.png',
+      img('stock-markets-grid.png', 'stock'),
+      img('stock-markets-overview.png', 'stock'),
+      img('stock-ticker-headlines.png', 'stock'),
+      img('stock-ticker-price-accuracy.png', 'stock'),
+      img('stock-ticker-why-this-call.png', 'stock'),
+      img('stock-ticker-advanced.png', 'stock'),
+      img('stock-ticker-explainability.png', 'stock'),
     ],
   },
   {
@@ -51,14 +59,14 @@ export const projects = [
       'A completed client project for Compost Now, a Raleigh-based composting company whose workers were manually timing bin washes with a pressure washer and hydraulic lift — leading to water waste and inconsistent cleans.\n\nThe deployed unit centers on an Arduino Nano driving a 12V solenoid valve through a MOSFET switching circuit with flyback diode protection. The solenoid is plumbed in series with the existing manual ball valve for failsafe operation — operators retain full manual control if power or firmware fails. A buck regulator derives 5V logic from the shared 12V supply.\n\nThe operator interface uses a NEMA-rated enclosure with debounced buttons for timed washes (30 / 60 / 90 seconds), LED indicators, an amber beacon during active cycles, and a hardware emergency-stop that drops solenoid drive immediately. Perfboard assemblies use screw terminals for field service.\n\nWork included embedded firmware, schematic-level design, soldering and enclosure fabrication, SolidWorks modeling, on-site commissioning with existing plumbing, and outdoor validation runs.',
     repoUrl: '',
     images: [
-      '/projects/compost-bin/compost-circuit-prototype.jpeg',
-      '/projects/compost-bin/compost-unit-angle.jpeg',
-      '/projects/compost-bin/compost-context-facility.jpeg',
-      '/projects/compost-bin/compost-field-validation.jpeg',
-      '/projects/compost-bin/compost-unit-overview.jpeg',
-      '/projects/compost-bin/compost-enclosure-open.jpeg',
-      '/projects/compost-bin/compost-enclosure-side.jpeg',
-      '/projects/compost-bin/compost-prototype-bench.jpeg',
+      img('compost-circuit-prototype.jpeg', 'compost-bin'),
+      img('compost-unit-angle.jpeg', 'compost-bin'),
+      img('compost-context-facility.jpeg', 'compost-bin'),
+      img('compost-field-validation.jpeg', 'compost-bin'),
+      img('compost-unit-overview.jpeg', 'compost-bin'),
+      img('compost-enclosure-open.jpeg', 'compost-bin'),
+      img('compost-enclosure-side.jpeg', 'compost-bin'),
+      img('compost-prototype-bench.jpeg', 'compost-bin'),
     ],
   },
   {
@@ -74,16 +82,16 @@ export const projects = [
     repoUrl: 'https://github.com/raphaelkaramagi/daml-asl',
     demoUrl: 'https://asl.raphaelkaramagi.com',
     images: [
-      '/projects/asl/asl-landing.png',
-      '/projects/asl/asl-webcam-predict.png',
-      '/projects/asl/asl-upload-predict.png',
-      '/projects/asl/asl-training-replay.png',
-      '/projects/asl/asl-micro-training.png',
-      '/projects/asl/asl-model-comparison.png',
-      '/projects/asl/asl-sample-gallery.png',
-      '/projects/asl/asl1.png',
-      '/projects/asl/asl2.png',
-      '/projects/asl/asl3.png',
+      img('asl-landing.png', 'asl'),
+      img('asl-webcam-predict.png', 'asl'),
+      img('asl-upload-predict.png', 'asl'),
+      img('asl-training-replay.png', 'asl'),
+      img('asl-micro-training.png', 'asl'),
+      img('asl-model-comparison.png', 'asl'),
+      img('asl-sample-gallery.png', 'asl'),
+      img('asl1.png', 'asl'),
+      img('asl2.png', 'asl'),
+      img('asl3.png', 'asl'),
     ],
   },
 

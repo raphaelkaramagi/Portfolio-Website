@@ -220,12 +220,14 @@ export default function ProjectPage() {
               Gallery
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {visibleImages.map((img, i) => (
+              {visibleImages.map((image, i) => (
                 <img
-                  key={i}
-                  src={img}
+                  key={image.full}
+                  src={image.preview}
                   alt={`${project.title} screenshot ${i + 1}`}
-                  onClick={() => setLightboxImg(img)}
+                  loading="lazy"
+                  decoding="async"
+                  onClick={() => setLightboxImg(image.full)}
                   className="w-full aspect-video object-cover rounded-2xl cursor-pointer ring-1 ring-white/10
                     shadow-[0_18px_44px_-18px_rgba(0,0,0,0.72)]
                     hover:scale-[1.02] hover:ring-brand-red/45 hover:shadow-[0_24px_56px_-18px_rgba(220,38,38,0.35)]

@@ -43,8 +43,8 @@ export default function Navbar() {
     <>
       <nav
         className={`fixed top-6 left-1/2 -translate-x-1/2 z-[100] flex items-center justify-between
-          px-5 sm:px-8 py-3 rounded-full transition-shadow duration-500 w-[92vw] max-w-4xl
-          animate-navbar-in glass-card pointer-events-auto
+          px-5 sm:px-8 py-3 rounded-full transition-shadow duration-300 w-[92vw] max-w-4xl
+          animate-navbar-in glass-nav pointer-events-auto
           ${scrolled
             ? 'shadow-[0_22px_64px_-20px_rgba(0,0,0,0.7)]'
             : 'shadow-[0_14px_40px_-18px_rgba(0,0,0,0.55)]'}`}
@@ -125,7 +125,7 @@ export default function Navbar() {
       </nav>
 
       {mobileOpen && (
-        <div className="fixed top-[92px] left-1/2 -translate-x-1/2 w-[92vw] max-w-4xl z-[90] glass-card rounded-[2rem] p-6 flex flex-col gap-4 md:hidden pointer-events-auto">
+        <div className="fixed top-[92px] left-1/2 -translate-x-1/2 w-[92vw] max-w-4xl z-[90] glass-nav rounded-[2rem] p-6 flex flex-col gap-4 md:hidden pointer-events-auto">
           {navLinks.map((link) => (
             <a
               key={link.label}
