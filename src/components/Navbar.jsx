@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Github, Linkedin } from 'lucide-react'
+import scrollToSection from '../lib/scrollToSection'
 
 const RESUME_URL = '/resume/Raphael_Karamagi_May_2026.pdf'
 
@@ -34,8 +35,7 @@ export default function Navbar() {
     if (link.href.startsWith('/#')) {
       if (location.pathname === '/') {
         e.preventDefault()
-        const id = link.href.replace('/#', '')
-        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+        scrollToSection(link.href.replace('/#', ''))
       }
     }
   }

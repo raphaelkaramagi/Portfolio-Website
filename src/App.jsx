@@ -1,19 +1,30 @@
 import { useEffect } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import { Analytics } from '@vercel/analytics/react'
 import AuroraBackground from './components/AuroraBackground'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import ProjectArchive from './components/ProjectArchive'
 import AboutSection from './components/AboutSection'
+import ExperienceSection from './components/ExperienceSection'
 import ProjectPage from './components/ProjectPage'
 import Footer from './components/Footer'
+import scrollToSection from './lib/scrollToSection'
 
 function HomePage() {
+  const { hash } = useLocation()
+
+  useEffect(() => {
+    if (!hash) return
+    const id = hash.replace('#', '')
+    requestAnimationFrame(() => scrollToSection(id))
+  }, [hash])
+
   return (
     <main>
       <Hero />
       <AboutSection />
+      <ExperienceSection />
       <ProjectArchive />
     </main>
   )

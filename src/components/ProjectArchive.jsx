@@ -40,7 +40,7 @@ const ProjectCard = forwardRef(function ProjectCard({ project, stackIndex }, ref
   return (
     <div
       ref={ref}
-      className="project-card will-change-transform origin-top w-full max-w-5xl mx-auto"
+      className="project-card will-change-transform origin-top w-full"
       style={{ zIndex: stackIndex + 1 }}
     >
       <Link
@@ -74,12 +74,12 @@ const ProjectCard = forwardRef(function ProjectCard({ project, stackIndex }, ref
               </div>
             </div>
 
-            <h3 className="font-grotesk text-2xl sm:text-4xl font-bold text-dark-text tracking-tight mb-6 max-w-2xl transition-colors duration-300">
+            <h3 className="font-grotesk text-2xl sm:text-4xl font-bold text-dark-text tracking-tight mb-6 max-w-3xl transition-colors duration-300">
               {project.title}
             </h3>
 
             <div>
-              <p className="font-grotesk text-sm sm:text-base text-dark-text/65 leading-relaxed mb-6 max-w-2xl">
+              <p className="font-grotesk text-sm sm:text-base text-dark-text/65 leading-relaxed mb-6 max-w-3xl">
                 {project.description}
               </p>
               <div className="flex items-center justify-between gap-4">
@@ -234,11 +234,10 @@ export default function ProjectArchive() {
 
   return (
     <section
-      id="projects"
       ref={sectionRef}
-      className="relative scroll-mt-28 py-24 sm:py-32 px-6 sm:px-12"
+      className="relative py-14 sm:py-20 px-6 sm:px-12 max-w-7xl mx-auto"
     >
-      <div className="archive-header max-w-5xl mx-auto mb-16">
+      <div id="projects" className="archive-header mb-10 sm:mb-12">
         <span className="font-mono text-xs text-aurora-animated tracking-widest uppercase">
           Archive
         </span>
@@ -250,11 +249,11 @@ export default function ProjectArchive() {
       {grouped.map((group, gi) => (
         <div key={group.status} className="mb-12 last:mb-0">
           {gi > 0 && (
-            <div className="relative z-20 max-w-5xl mx-auto pt-16 pb-2 mb-8">
+            <div className="relative z-20 pt-16 pb-2 mb-8">
               <div className="border-t border-white/10" />
             </div>
           )}
-          <div className="relative z-20 max-w-5xl mx-auto mb-8">
+          <div className="relative z-20 mb-8">
             <span className={`font-mono text-xs tracking-widest uppercase ${group.accent}`}>
               {group.label}
             </span>

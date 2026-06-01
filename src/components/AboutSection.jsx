@@ -1,63 +1,16 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { hasPlayedHomeIntro } from '../lib/animationState'
 import useCursorVars from '../lib/useCursorVars'
 import useTilt from '../lib/useTilt'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const skillCategories = [
-  {
-    title: 'Languages',
-    items: ['Python', 'C / C++', 'Java'],
-  },
-  {
-    title: 'Data & Hardware',
-    items: ['PostgreSQL', 'pandas', 'Arduino', 'SolidWorks'],
-  },
-  {
-    title: 'Frameworks & Tools',
-    items: ['TensorFlow / Keras', 'FastAPI', 'Next.js', 'Docker'],
-  },
-  
-]
-
-const experiences = [
-  {
-    id: 'intelisoft',
-    org: 'IntelliSOFT Consulting',
-    role: 'Software Engineer Intern',
-    location: 'Nairobi, Kenya · Internship',
-    dates: 'Jul 2024 – Aug 2024',
-    bullets: [
-      'Implemented REST API endpoints for medical records management, enabling role-based access within OpenMRS EMR system; deployed to 20+ hospitals across South Sudan.',
-      'Executed test suite covering patient-record CRUD endpoints; led deployment to 3 pilot sites in Nairobi achieving 98% uptime.',
-    ],
-  },
-  {
-    id: 'duke-oit',
-    org: 'Duke University — Office of Information Technology',
-    role: 'Software Engineer Intern',
-    location: 'Durham, NC · Paid contract',
-    dates: 'May 2026 – Jul 2026',
-    bullets: [
-      'Summer project delivering security scanning and evaluation tooling for Duke’s locally deployed models — Hugging Face ingestion pipelines, artifact inspection before infrastructure access, and benchmark suites for IT-led deployments.',
-      'Partnered with OIT on operationalizing automated checks and repeatable evaluation harnesses so candidate LLMs can be compared across representative workloads.',
-    ],
-  },
-]
-
 const CARD_CLASS = 'glass-card glass-card-hoverable rounded-[2rem]'
-
-const ROTATE_MS = 7600
 
 export default function AboutSection() {
   const sectionRef = useRef(null)
-  const [expIndex, setExpIndex] = useState(0)
-  const [experiencePaused, setExperiencePaused] = useState(false)
-  const [progressCycle, setProgressCycle] = useState(0)
 
   const introTiltRef = useTilt({ max: 2.5 })
   const introCursorRef = useCursorVars()
@@ -65,95 +18,6 @@ export default function AboutSection() {
     (node) => { introTiltRef.current = node; introCursorRef.current = node },
     [introTiltRef, introCursorRef],
   )
-
-  const expTiltRef = useTilt({ max: 3 })
-  const expCursorRef = useCursorVars()
-  const experienceCardRef = useCallback(
-    (node) => { expTiltRef.current = node; expCursorRef.current = node },
-    [expTiltRef, expCursorRef],
-  )
-
-  const skillsTiltRef = useTilt({ max: 3 })
-  const skillsCursorRef = useCursorVars()
-  const skillsCardRef = useCallback(
-    (node) => { skillsTiltRef.current = node; skillsCursorRef.current = node },
-    [skillsTiltRef, skillsCursorRef],
-  )
-
-  const mouseOverCardRef = useRef(false)
-  const advanceTimeoutRef = useRef(null)
-  const deadlineRef = useRef(null)
-  const remainingOnPauseRef = useRef(ROTATE_MS)
-  const slideChangedWhilePausedRef = useRef(false)
-  const prevExpIndexRef = useRef(null)
-  const touchHoldCardRef = useRef(false)
-
-  const syncExperiencePaused = useCallback(() => {
-    setExperiencePaused(mouseOverCardRef.current || touchHoldCardRef.current)
-  }, [])
-
-  const clearAdvanceTimeout = useCallback(() => {
-    if (advanceTimeoutRef.current !== null) {
-      window.clearTimeout(advanceTimeoutRef.current)
-      advanceTimeoutRef.current = null
-    }
-  }, [])
-
-  const scheduleAdvance = useCallback(
-    (ms) => {
-      clearAdvanceTimeout()
-      const safeMs = Math.max(50, ms)
-      deadlineRef.current = Date.now() + safeMs
-      advanceTimeoutRef.current = window.setTimeout(() => {
-        advanceTimeoutRef.current = null
-        deadlineRef.current = null
-        setExpIndex((i) => (i + 1) % experiences.length)
-      }, safeMs)
-    },
-    [clearAdvanceTimeout],
-  )
-
-  useEffect(() => {
-    setProgressCycle((c) => c + 1)
-  }, [expIndex])
-
-  useEffect(() => {
-    const indexChanged =
-      prevExpIndexRef.current !== null && prevExpIndexRef.current !== expIndex
-    prevExpIndexRef.current = expIndex
-
-    clearAdvanceTimeout()
-
-    if (experiencePaused) {
-      if (!indexChanged) {
-        remainingOnPauseRef.current = deadlineRef.current
-          ? Math.max(0, deadlineRef.current - Date.now())
-          : ROTATE_MS
-      } else {
-        slideChangedWhilePausedRef.current = true
-        deadlineRef.current = null
-      }
-      return () => clearAdvanceTimeout()
-    }
-
-    let ms = ROTATE_MS
-    if (indexChanged || slideChangedWhilePausedRef.current) {
-      ms = ROTATE_MS
-      slideChangedWhilePausedRef.current = false
-    } else {
-      ms = remainingOnPauseRef.current
-    }
-
-    scheduleAdvance(ms)
-    return () => clearAdvanceTimeout()
-  }, [expIndex, experiencePaused, clearAdvanceTimeout, scheduleAdvance])
-
-  const goPrev = useCallback(() => {
-    setExpIndex((i) => (i - 1 + experiences.length) % experiences.length)
-  }, [])
-  const goNext = useCallback(() => {
-    setExpIndex((i) => (i + 1) % experiences.length)
-  }, [])
 
   useEffect(() => {
     if (hasPlayedHomeIntro) return
@@ -187,230 +51,76 @@ export default function AboutSection() {
     return () => ctx.revert()
   }, [])
 
-  const activeExp = experiences[expIndex]
-
   return (
     <section
-      id="about"
       ref={sectionRef}
-      className="relative scroll-mt-28 py-24 sm:py-32 px-6 sm:px-12 max-w-7xl mx-auto"
+      className="relative py-14 sm:py-20 px-6 sm:px-12 max-w-7xl mx-auto"
     >
-      <div className="about-section-label mb-8 sm:mb-10">
+      <div id="about" className="about-section-label mb-6 sm:mb-8">
         <span className="font-mono text-xs text-aurora-animated tracking-widest uppercase">
           About
         </span>
       </div>
 
-      <div className="about-section-body flex flex-col gap-6 lg:gap-8">
-        <div ref={introCardRef} className={`about-card-intro ${CARD_CLASS} p-8 sm:p-10 lg:p-12`}>
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[minmax(0,200px)_minmax(0,1fr)_minmax(0,220px)] gap-10 lg:gap-12 items-start">
-            <div className="flex justify-center lg:justify-start shrink-0 mx-auto lg:mx-0 w-full max-w-[200px] sm:max-w-[220px] lg:max-w-[200px]">
-              <div className="relative w-full aspect-[4/5] overflow-hidden rounded-2xl shadow-[0_20px_48px_-18px_rgba(0,0,0,0.72)] ring-1 ring-white/5">
-                <img
-                  src="/images/raphael-portrait.png"
-                  alt="Raphael Karamagi"
-                  width={800}
-                  height={788}
-                  loading="eager"
-                  decoding="async"
-                  className="absolute inset-0 h-full w-full object-cover object-[50%_12%] scale-[1.32] origin-[50%_18%]"
-                />
-              </div>
+      <div ref={introCardRef} className={`about-card-intro ${CARD_CLASS} p-8 sm:p-10 lg:p-12`}>
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[minmax(0,200px)_minmax(0,1fr)_minmax(0,220px)] gap-10 lg:gap-12 items-start">
+          <div className="flex justify-center lg:justify-start shrink-0 mx-auto lg:mx-0 w-full max-w-[200px] sm:max-w-[220px] lg:max-w-[200px]">
+            <div className="relative w-full aspect-[4/5] overflow-hidden rounded-2xl shadow-[0_20px_48px_-18px_rgba(0,0,0,0.72)] ring-1 ring-white/5">
+              <img
+                src="/images/raphael-portrait.png"
+                alt="Raphael Karamagi"
+                width={800}
+                height={788}
+                loading="eager"
+                decoding="async"
+                className="absolute inset-0 h-full w-full object-cover object-[50%_12%] scale-[1.32] origin-[50%_18%]"
+              />
             </div>
+          </div>
 
-            <div className="min-w-0 space-y-5">
-              <div className="min-w-0 space-y-3">
-                <span className="font-grotesk block text-[clamp(1.875rem,4vw,2.75rem)] font-bold tracking-tight text-dark-text leading-tight">
-                  Raphael Karamagi
-                </span>
-                <p className="font-grotesk text-base sm:text-lg text-dark-text/75 leading-relaxed">
-                  is a software and hardware engineer at Duke University passionate about turning engineering problems into solutions that work in the real world,
-                  whether that&apos;s hardware, software, or the infrastructure that suppots them. He&apos;s drawn to thoughtful craft
-                  and building dependable systems.
-                </p>
-              </div>
-
-              <p className="font-mono text-xs sm:text-sm text-dark-text/55 leading-relaxed tracking-wide">
-                <span className="text-brand-red/90">//</span> Machine Learning{' '}
-                <span className="text-dark-text/35 mx-1">·</span>{' '}
-                <span className="text-brand-orange/90">//</span> Embedded Systems &amp; Hardware{' '}
-                <span className="text-dark-text/35 mx-1">·</span>{' '}
-                <span className="text-brand-amber/90">//</span> Software Engineering
+          <div className="min-w-0 space-y-5">
+            <div className="min-w-0 space-y-3">
+              <span className="font-grotesk block text-[clamp(1.875rem,4vw,2.75rem)] font-bold tracking-tight text-dark-text leading-tight">
+                Raphael Karamagi
+              </span>
+              <p className="font-grotesk text-base sm:text-lg text-dark-text/75 leading-relaxed">
+                is a software and hardware engineer at Duke University passionate about turning engineering problems into solutions that work in the real world,
+                whether that&apos;s hardware, software, or the infrastructure that suppots them. He&apos;s drawn to thoughtful craft
+                and building dependable systems.
               </p>
             </div>
 
-            <div className="w-full lg:w-auto lg:border-l border-t lg:border-t-0 border-white/10 pt-8 lg:pt-0 lg:pl-10">
-              <ul className="space-y-0 font-grotesk text-sm sm:text-base">
-                {[
-                  { n: '1+', label: 'Years of experience' },
-                  { n: '3+', label: 'Products shipped' },
-                  { n: '2+', label: 'Happy clients' },
-                ].map((row, i) => (
-                  <li
-                    key={row.label}
-                    className={`flex items-baseline justify-between gap-6 py-4 ${
-                      i > 0 ? 'border-t border-white/10' : ''
-                    }`}
-                  >
-                    <span className="text-2xl sm:text-3xl font-bold text-dark-text tabular-nums">
-                      {row.n}
-                    </span>
-                    <span className="text-right text-dark-text/65 text-sm sm:text-base leading-snug max-w-[11rem]">
-                      {row.label}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <p className="font-mono text-xs sm:text-sm text-dark-text/55 leading-relaxed tracking-wide">
+              <span className="text-brand-red/90">//</span> Machine Learning{' '}
+              <span className="text-dark-text/35 mx-1">·</span>{' '}
+              <span className="text-brand-orange/90">//</span> Embedded Systems &amp; Hardware{' '}
+              <span className="text-dark-text/35 mx-1">·</span>{' '}
+              <span className="text-brand-amber/90">//</span> Software Engineering
+            </p>
           </div>
-        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2.15fr)_minmax(0,0.72fr)] gap-6 lg:gap-8 items-start lg:items-stretch">
-          <div
-            id="experience"
-            ref={experienceCardRef}
-            className={`${CARD_CLASS} scroll-mt-28 p-5 sm:p-6 flex flex-col lg:min-h-0 lg:h-full`}
-            onMouseEnter={() => {
-              mouseOverCardRef.current = true
-              syncExperiencePaused()
-            }}
-            onMouseLeave={() => {
-              mouseOverCardRef.current = false
-              syncExperiencePaused()
-            }}
-            onPointerDown={(e) => {
-              if (e.pointerType !== 'touch') return
-              const t = e.target
-              if (t instanceof Element && t.closest('button')) return
-              try {
-                e.currentTarget.setPointerCapture(e.pointerId)
-              } catch {
-                /* ignore */
-              }
-              touchHoldCardRef.current = true
-              syncExperiencePaused()
-            }}
-            onPointerUp={(e) => {
-              if (e.pointerType !== 'touch') return
-              touchHoldCardRef.current = false
-              syncExperiencePaused()
-            }}
-            onPointerCancel={(e) => {
-              if (e.pointerType !== 'touch') return
-              touchHoldCardRef.current = false
-              syncExperiencePaused()
-            }}
-            onLostPointerCapture={(e) => {
-              if (e.pointerType !== 'touch') return
-              touchHoldCardRef.current = false
-              syncExperiencePaused()
-            }}
-          >
-            <div className="relative z-10 flex flex-col flex-1 min-h-0">
-              <div className="flex items-center justify-between gap-3 mb-2 shrink-0">
-                <span className="font-mono text-[11px] sm:text-xs text-dark-text/45 tracking-widest uppercase">
-                  Experience
-                </span>
-                <div className="flex gap-1.5 items-center">
-                  <button
-                    type="button"
-                    onClick={goPrev}
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-white/12 text-dark-text/65 hover:border-brand-red/55 hover:text-brand-red transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-bg"
-                    aria-label="Previous role"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={goNext}
-                    className="flex h-8 w-8 items-center justify-center rounded-full border border-white/12 text-dark-text/65 hover:border-brand-red/55 hover:text-brand-red transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-bg"
-                    aria-label="Next role"
-                  >
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-
-              <div
-                className="h-[3px] w-full rounded-full bg-white/8 overflow-hidden mb-3 shrink-0"
-                aria-hidden
-              >
-                <div
-                  key={`${expIndex}-${progressCycle}`}
-                  className="h-full rounded-full bg-gradient-to-r from-brand-red via-brand-orange to-brand-amber"
-                  style={{
-                    animation: `about-exp-progress ${ROTATE_MS}ms linear forwards`,
-                    animationPlayState: experiencePaused ? 'paused' : 'running',
-                  }}
-                />
-              </div>
-
-              <div key={activeExp.id} className="flex-1 flex flex-col min-h-0" aria-live="polite">
-                <div className="font-grotesk text-base sm:text-lg font-bold text-dark-text leading-snug">
-                  {activeExp.org}
-                </div>
-                <div className="h-px w-full bg-white/10 my-2" />
-                <div className="font-grotesk text-lg sm:text-xl font-semibold text-dark-text leading-snug">
-                  {activeExp.role}
-                </div>
-                <p className="font-mono text-xs sm:text-sm text-dark-text/55 mt-1">
-                  {activeExp.location}
-                </p>
-                <ul className="mt-2 space-y-2 flex-1 min-h-0">
-                  {activeExp.bullets.map((b, bi) => (
-                    <li
-                      key={bi}
-                      className="font-grotesk text-sm sm:text-base text-dark-text/75 leading-relaxed pl-2.5 border-l-2 border-brand-red/45"
-                    >
-                      {b}
-                    </li>
-                  ))}
-                </ul>
-                <div className="flex items-center justify-between mt-3 pt-2 border-t border-white/10 shrink-0">
-                  <span className="font-mono text-xs sm:text-sm text-dark-text/55">
-                    {activeExp.dates}
+          <div className="w-full lg:w-auto lg:border-l border-t lg:border-t-0 border-white/10 pt-8 lg:pt-0 lg:pl-10">
+            <ul className="space-y-0 font-grotesk text-sm sm:text-base">
+              {[
+                { n: '1+', label: 'Years of experience' },
+                { n: '3+', label: 'Products shipped' },
+                { n: '2+', label: 'Happy clients' },
+              ].map((row, i) => (
+                <li
+                  key={row.label}
+                  className={`flex items-baseline justify-between gap-6 py-4 ${
+                    i > 0 ? 'border-t border-white/10' : ''
+                  }`}
+                >
+                  <span className="text-2xl sm:text-3xl font-bold text-dark-text tabular-nums">
+                    {row.n}
                   </span>
-                  <div className="flex gap-1" aria-hidden>
-                    {experiences.map((exp, i) => (
-                      <span
-                        key={exp.id}
-                        className={`h-1.5 w-1.5 rounded-full transition-colors duration-300 ${
-                          i === expIndex ? 'bg-brand-red' : 'bg-white/20'
-                        }`}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div ref={skillsCardRef} className={`${CARD_CLASS} p-5 sm:p-6 flex flex-col h-auto lg:min-h-0 lg:h-full`}>
-            <div className="relative z-10 flex flex-col lg:flex-1 lg:min-h-0">
-              <h3 className="font-grotesk text-base sm:text-lg font-bold text-dark-text mb-3 shrink-0">
-                Skills
-              </h3>
-              <div className="grid grid-cols-3 gap-x-3 sm:gap-x-5 gap-y-4 lg:grid-cols-1 lg:gap-y-4 lg:flex-1 lg:min-h-0 auto-rows-min">
-                {skillCategories.map(({ title, items }) => (
-                  <div key={title} className="min-w-0">
-                    <div className="font-mono text-[10px] sm:text-[11px] lg:text-xs text-dark-text/50 uppercase tracking-wider mb-1.5 leading-tight">
-                      {title}
-                    </div>
-                    <ul className="space-y-1">
-                      {items.map((item) => (
-                        <li
-                          key={item}
-                          className="font-grotesk text-[11px] sm:text-sm text-dark-text/75 leading-snug"
-                        >
-                          <span className="text-brand-red font-mono text-[10px] sm:text-xs">//</span>{' '}
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
+                  <span className="text-right text-dark-text/65 text-sm sm:text-base leading-snug max-w-[11rem]">
+                    {row.label}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
