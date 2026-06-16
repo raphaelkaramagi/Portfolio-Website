@@ -10,17 +10,11 @@ import useCursorVars from '../lib/useCursorVars'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const statusColors = {
-  Ongoing:
-    'bg-amber-400/12 text-amber-300 border-amber-400/30',
-  Completed:
-    'bg-emerald-400/12 text-emerald-300 border-emerald-400/30',
-  Planned:
-    'bg-white/[0.05] text-dark-text/55 border-white/10',
+const statusBadgeClass = {
+  Ongoing: 'badge-ongoing',
+  Completed: 'badge-completed',
+  Planned: 'badge-planned',
 }
-
-const clientProjectBadge =
-  'bg-brand-red/15 text-red-300 border-brand-red/40'
 
 const focusRing =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-bg'
@@ -58,17 +52,11 @@ const ProjectCard = forwardRef(function ProjectCard({ project, stackIndex }, ref
               </span>
               <div className="flex flex-1 flex-wrap justify-end items-center gap-2 min-w-0">
                 {project.client && (
-                  <span
-                    className={`font-mono text-xs px-3 py-1 rounded-full border shrink-0 ${clientProjectBadge}`}
-                  >
+                  <span className="badge-client">
                     Client Project
                   </span>
                 )}
-                <span
-                  className={`font-mono text-xs px-3 py-1 rounded-full border ${
-                    statusColors[project.status]
-                  }`}
-                >
+                <span className={statusBadgeClass[project.status]}>
                   {project.status}
                 </span>
               </div>
@@ -87,7 +75,7 @@ const ProjectCard = forwardRef(function ProjectCard({ project, stackIndex }, ref
                   {project.stack.map((tech) => (
                     <span
                       key={tech}
-                      className="font-mono text-xs bg-white/[0.04] border border-white/10 text-dark-text/75 px-3 py-1.5 rounded-full"
+                      className="font-mono text-xs bg-overlay/[0.04] border border-overlay/10 text-dark-text/75 px-3 py-1.5 rounded-full"
                     >
                       {tech}
                     </span>
@@ -100,7 +88,7 @@ const ProjectCard = forwardRef(function ProjectCard({ project, stackIndex }, ref
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={(e) => e.stopPropagation()}
-                      className={`flex items-center gap-1.5 font-mono text-xs text-amber-300 group-hover:text-amber-300 hover:text-yellow-200 transition-colors duration-300 ${focusRing} rounded-full`}
+                      className={`flex items-center gap-1.5 font-mono text-xs link-demo ${focusRing} rounded-full`}
                     >
                       Live Demo
                       <ExternalLink className="w-3 h-3" />
@@ -123,9 +111,9 @@ const ProjectCard = forwardRef(function ProjectCard({ project, stackIndex }, ref
 const sectionOrder = ['Ongoing', 'Completed', 'Planned']
 
 const sectionMeta = {
-  Ongoing: { label: 'In Progress', accent: 'text-amber-300' },
-  Completed: { label: 'Completed', accent: 'text-emerald-300' },
-  Planned: { label: 'Planned', accent: 'text-dark-text/45' },
+  Ongoing: { label: 'In Progress', accent: 'accent-ongoing' },
+  Completed: { label: 'Completed', accent: 'accent-completed' },
+  Planned: { label: 'Planned', accent: 'accent-planned' },
 }
 
 function mountCardBlur(nodes) {
@@ -250,7 +238,7 @@ export default function ProjectArchive() {
         <div key={group.status} className="mb-12 last:mb-0">
           {gi > 0 && (
             <div className="relative z-20 pt-16 pb-2 mb-8">
-              <div className="border-t border-white/10" />
+              <div className="border-t border-overlay/10" />
             </div>
           )}
           <div className="relative z-20 mb-8">

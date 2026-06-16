@@ -8,13 +8,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        'dark-bg': '#0A0A0F',
-        'dark-text': '#EDEDF0',
+        'dark-bg': 'rgb(var(--c-bg) / <alpha-value>)',
+        'dark-text': 'rgb(var(--c-text) / <alpha-value>)',
+        overlay: 'rgb(var(--c-overlay) / <alpha-value>)',
         brand: {
-          red: '#DC2626',
-          orange: '#EA580C',
-          amber: '#F59E0B',
-          cream: '#F5EDE4',
+          red: 'rgb(var(--c-brand-red) / <alpha-value>)',
+          orange: 'rgb(var(--c-brand-orange) / <alpha-value>)',
+          amber: 'rgb(var(--c-brand-amber) / <alpha-value>)',
+          cream: 'rgb(var(--c-brand-cream) / <alpha-value>)',
         },
       },
       fontFamily: {

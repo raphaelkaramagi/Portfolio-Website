@@ -244,7 +244,7 @@ export default function ExperienceSection() {
                 <button
                   type="button"
                   onClick={goPrev}
-                  className="flex h-8 w-8 items-center justify-center rounded-full border border-white/12 text-dark-text/65 hover:border-brand-red/55 hover:text-brand-red transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-bg"
+                  className="flex h-8 w-8 items-center justify-center rounded-full border border-overlay/12 text-dark-text/65 hover:border-brand-red/55 hover:text-brand-red transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-bg"
                   aria-label="Previous role"
                 >
                   <ChevronLeft className="w-4 h-4" />
@@ -252,7 +252,7 @@ export default function ExperienceSection() {
                 <button
                   type="button"
                   onClick={goNext}
-                  className="flex h-8 w-8 items-center justify-center rounded-full border border-white/12 text-dark-text/65 hover:border-brand-red/55 hover:text-brand-red transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-bg"
+                  className="flex h-8 w-8 items-center justify-center rounded-full border border-overlay/12 text-dark-text/65 hover:border-brand-red/55 hover:text-brand-red transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-bg"
                   aria-label="Next role"
                 >
                   <ChevronRight className="w-4 h-4" />
@@ -261,7 +261,7 @@ export default function ExperienceSection() {
             </div>
 
             <div
-              className="h-[3px] w-full rounded-full bg-white/8 overflow-hidden mb-3 shrink-0"
+              className="h-[3px] w-full rounded-full bg-overlay/8 overflow-hidden mb-3 shrink-0"
               aria-hidden
             >
               <div
@@ -278,7 +278,7 @@ export default function ExperienceSection() {
               <div className="font-grotesk text-base sm:text-lg font-bold text-dark-text leading-snug">
                 {activeExp.org}
               </div>
-              <div className="h-px w-full bg-white/10 my-2" />
+              <div className="h-px w-full bg-overlay/10 my-2" />
               <div className="font-grotesk text-lg sm:text-xl font-semibold text-dark-text leading-snug">
                 {activeExp.role}
               </div>
@@ -295,7 +295,7 @@ export default function ExperienceSection() {
                   </li>
                 ))}
               </ul>
-              <div className="flex items-center justify-between mt-3 pt-2 border-t border-white/10 shrink-0">
+              <div className="flex items-center justify-between mt-3 pt-2 border-t border-overlay/10 shrink-0">
                 <span className="font-mono text-xs sm:text-sm text-dark-text/55">
                   {activeExp.dates}
                 </span>
@@ -304,7 +304,7 @@ export default function ExperienceSection() {
                     <span
                       key={exp.id}
                       className={`h-1.5 w-1.5 rounded-full transition-colors duration-300 ${
-                        i === expIndex ? 'bg-brand-red' : 'bg-white/20'
+                        i === expIndex ? 'bg-brand-red' : 'bg-overlay/20'
                       }`}
                     />
                   ))}

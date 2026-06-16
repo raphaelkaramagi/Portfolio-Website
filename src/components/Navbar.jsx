@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Github, Linkedin } from 'lucide-react'
 import scrollToSection from '../lib/scrollToSection'
+import ThemeToggle from './ThemeToggle'
 
 const RESUME_URL = '/resume/Raphael_Karamagi_May_2026.pdf'
 
@@ -46,9 +47,7 @@ export default function Navbar() {
         className={`fixed top-6 left-1/2 -translate-x-1/2 z-[100] flex items-center justify-between
           px-5 sm:px-8 py-3 rounded-full transition-shadow duration-300 w-[92vw] max-w-4xl
           animate-navbar-in glass-nav pointer-events-auto
-          ${scrolled
-            ? 'shadow-[0_22px_64px_-20px_rgba(0,0,0,0.7)]'
-            : 'shadow-[0_14px_40px_-18px_rgba(0,0,0,0.55)]'}`}
+          ${scrolled ? 'nav-shadow-scrolled' : 'nav-shadow'}`}
       >
         <Link
           to="/"
@@ -72,6 +71,7 @@ export default function Navbar() {
           ))}
 
           <div className="flex items-center gap-3 ml-1">
+            <ThemeToggle />
             <a
               href="https://github.com/raphaelkaramagi"
               target="_blank"
@@ -101,6 +101,7 @@ export default function Navbar() {
         </div>
 
         <div className="md:hidden flex items-center gap-2 relative z-10">
+          <ThemeToggle />
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className={`flex flex-col gap-1.5 p-2 ${focusRing} rounded-full`}
@@ -143,6 +144,7 @@ export default function Navbar() {
             </a>
           ))}
           <div className="flex items-center gap-4 py-1">
+            <ThemeToggle />
             <a
               href="https://github.com/raphaelkaramagi"
               target="_blank"

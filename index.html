@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#0A0A0F" />
+    <meta name="theme-color" content="#F5EEE6" />
+    <script>
+      (function () {
+        var k = 'theme'
+        var s = localStorage.getItem(k)
+        var t = s === 'light' || s === 'dark' ? s : 'light'
+        document.documentElement.classList.add(t)
+        document.documentElement.style.colorScheme = t
+        var meta = document.querySelector('meta[name="theme-color"]')
+        if (meta) meta.content = t === 'light' ? '#F5EEE6' : '#0A0A0F'
+      })()
+    </script>
     <title>Raphael Karamagi</title>
     <meta name="description" content="Raphael Karamagi — Duke ECE & CS '29. Machine learning, embedded hardware, and systems infrastructure." />
 

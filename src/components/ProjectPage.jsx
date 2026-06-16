@@ -7,17 +7,11 @@ import { projects } from '../data/projects'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const statusColors = {
-  Ongoing:
-    'bg-amber-400/12 text-amber-300 border-amber-400/30',
-  Completed:
-    'bg-emerald-400/12 text-emerald-300 border-emerald-400/30',
-  Planned:
-    'bg-white/[0.05] text-dark-text/55 border-white/10',
+const statusBadgeClass = {
+  Ongoing: 'badge-ongoing',
+  Completed: 'badge-completed',
+  Planned: 'badge-planned',
 }
-
-const clientProjectBadge =
-  'bg-brand-red/15 text-red-300 border-brand-red/40'
 
 const focusRing =
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-bg'
@@ -47,7 +41,7 @@ function Lightbox({ src, overlayRef, imgRef, onClose }) {
         src={src}
         alt="Enlarged view"
         onClick={(e) => e.stopPropagation()}
-        className="max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-[0_24px_80px_-18px_rgba(0,0,0,0.85)] ring-1 ring-white/10"
+        className="max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-[0_24px_80px_-18px_rgba(0,0,0,0.85)] ring-1 ring-overlay/10"
       />
     </div>
   )
@@ -149,17 +143,11 @@ export default function ProjectPage() {
             {project.number}
           </span>
           <div className="flex flex-col items-end gap-2">
-            <span
-              className={`font-mono text-xs px-3 py-1 rounded-full border ${
-                statusColors[project.status]
-              }`}
-            >
+            <span className={statusBadgeClass[project.status]}>
               {project.status}
             </span>
             {project.client && (
-              <span
-                className={`font-mono text-xs px-3 py-1 rounded-full border max-w-full text-right ${clientProjectBadge}`}
-              >
+              <span className="badge-client max-w-full text-right">
                 Client Project — {project.client}
               </span>
             )}
@@ -174,7 +162,7 @@ export default function ProjectPage() {
           {project.stack.map((tech) => (
             <span
               key={tech}
-              className="font-mono text-xs bg-white/[0.04] border border-white/10 text-dark-text/75 px-3 py-1.5 rounded-full"
+              className="font-mono text-xs bg-overlay/[0.04] border border-overlay/10 text-dark-text/75 px-3 py-1.5 rounded-full"
             >
               {tech}
             </span>
@@ -228,7 +216,7 @@ export default function ProjectPage() {
                   loading="lazy"
                   decoding="async"
                   onClick={() => setLightboxImg(image.full)}
-                  className="w-full aspect-video object-cover rounded-2xl cursor-pointer ring-1 ring-white/10
+                  className="w-full aspect-video object-cover rounded-2xl cursor-pointer ring-1 ring-overlay/10
                     shadow-[0_18px_44px_-18px_rgba(0,0,0,0.72)]
                     hover:scale-[1.02] hover:ring-brand-red/45 hover:shadow-[0_24px_56px_-18px_rgba(220,38,38,0.35)]
                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50

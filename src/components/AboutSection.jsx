@@ -65,7 +65,7 @@ export default function AboutSection() {
       <div ref={introCardRef} className={`about-card-intro ${CARD_CLASS} p-8 sm:p-10 lg:p-12`}>
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[minmax(0,200px)_minmax(0,1fr)_minmax(0,220px)] gap-10 lg:gap-12 items-start">
           <div className="flex justify-center lg:justify-start shrink-0 mx-auto lg:mx-0 w-full max-w-[200px] sm:max-w-[220px] lg:max-w-[200px]">
-            <div className="relative w-full aspect-[4/5] overflow-hidden rounded-2xl shadow-[0_20px_48px_-18px_rgba(0,0,0,0.72)] ring-1 ring-white/5">
+            <div className="relative w-full aspect-[4/5] overflow-hidden rounded-2xl shadow-[0_20px_48px_-18px_rgba(0,0,0,0.72)] ring-1 ring-overlay/5">
               <img
                 src="/images/raphael-portrait.png"
                 alt="Raphael Karamagi"
@@ -99,7 +99,7 @@ export default function AboutSection() {
             </p>
           </div>
 
-          <div className="w-full lg:w-auto lg:border-l border-t lg:border-t-0 border-white/10 pt-8 lg:pt-0 lg:pl-10">
+          <div className="w-full lg:w-auto lg:border-l border-t lg:border-t-0 border-overlay/10 pt-8 lg:pt-0 lg:pl-10">
             <ul className="space-y-0 font-grotesk text-sm sm:text-base">
               {[
                 { n: '1+', label: 'Years of experience' },
@@ -109,7 +109,7 @@ export default function AboutSection() {
                 <li
                   key={row.label}
                   className={`flex items-baseline justify-between gap-6 py-4 ${
-                    i > 0 ? 'border-t border-white/10' : ''
+                    i > 0 ? 'border-t border-overlay/10' : ''
                   }`}
                 >
                   <span className="text-2xl sm:text-3xl font-bold text-dark-text tabular-nums">

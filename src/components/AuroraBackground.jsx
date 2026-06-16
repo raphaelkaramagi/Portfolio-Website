@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import useTheme from '../lib/useTheme'
 
-const DESKTOP_BLOBS = [
+const DESKTOP_BLOBS_DARK = [
   {
     key: 'red-tl',
     attraction: 180,
@@ -56,11 +57,66 @@ const DESKTOP_BLOBS = [
   },
 ]
 
-const MOBILE_BLOBS = [DESKTOP_BLOBS[0], DESKTOP_BLOBS[2]]
+const DESKTOP_BLOBS_LIGHT = [
+  {
+    key: 'red-tl',
+    attraction: 140,
+    fill: 'rgb(220, 100, 90)',
+    fillOpacity: 0.22,
+    style: {
+      top: '-6%',
+      left: '-4%',
+      width: '36vw',
+      height: '36vw',
+    },
+    animation: 'blob-drift-a 26s ease-in-out infinite',
+  },
+  {
+    key: 'orange-tr',
+    attraction: 100,
+    fill: 'rgb(234, 140, 80)',
+    fillOpacity: 0.18,
+    style: {
+      top: '-10%',
+      right: '-6%',
+      width: '30vw',
+      height: '30vw',
+    },
+    animation: 'blob-drift-b 32s ease-in-out infinite',
+  },
+  {
+    key: 'amber-bl',
+    attraction: 170,
+    fill: 'rgb(245, 180, 90)',
+    fillOpacity: 0.16,
+    style: {
+      bottom: '-8%',
+      left: '-4%',
+      width: '40vw',
+      height: '40vw',
+    },
+    animation: 'blob-drift-c 38s ease-in-out infinite',
+  },
+  {
+    key: 'ember-br',
+    attraction: 120,
+    fill: 'rgb(230, 130, 90)',
+    fillOpacity: 0.13,
+    style: {
+      bottom: '-12%',
+      right: '-8%',
+      width: '26vw',
+      height: '26vw',
+    },
+    animation: 'blob-drift-d 28s ease-in-out infinite',
+  },
+]
+
+const MOBILE_BLOBS_DARK = [DESKTOP_BLOBS_DARK[0], DESKTOP_BLOBS_DARK[2]]
+const MOBILE_BLOBS_LIGHT = [DESKTOP_BLOBS_LIGHT[0], DESKTOP_BLOBS_LIGHT[2]]
 
 const AMBIENT_STRENGTH = 0.6
 
-/** Per-blob idle motion — dual sine waves for organic, non-repeating drift */
 const IDLE_PROFILES = [
   { ax: 58, ay: 50, sx: 0.00041, sy: 0.00035, px: 0, py: 1.1, ax2: 30, ay2: 34, sx2: 0.00068, sy2: 0.00058, px2: 2.4, py2: 0.7 },
   { ax: 48, ay: 56, sx: 0.00038, sy: 0.00044, px: 0.8, py: 2.2, ax2: 24, ay2: 28, sx2: 0.00061, sy2: 0.00071, px2: 1.5, py2: 3.1 },
@@ -76,6 +132,7 @@ export default function AuroraBackground() {
   const [strength, setStrength] = useState(1)
   const [isMobile, setIsMobile] = useState(false)
   const { pathname } = useLocation()
+  const { isLight } = useTheme()
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 640px)')
@@ -196,26 +253,32 @@ export default function AuroraBackground() {
     }
   }, [isMobile])
 
-  const blobs = isMobile ? MOBILE_BLOBS : DESKTOP_BLOBS
+  const desktopBlobs = isLight ? DESKTOP_BLOBS_LIGHT : DESKTOP_BLOBS_DARK
+  const mobileBlobs = isLight ? MOBILE_BLOBS_LIGHT : MOBILE_BLOBS_DARK
+  const blobs = isMobile ? mobileBlobs : desktopBlobs
 
   const baseBlur = isMobile ? 30 : 34
-  const ambientBoost = 18
+  const ambientBoost = isLight ? 12 : 18
   const blurPx = baseBlur + (1 - strength) * ambientBoost
-  const blobLayerOpacity = isMobile ? 1 : 0.52
+  const blobLayerOpacity = isMobile ? (isLight ? 0.85 : 1) : (isLight ? 0.72 : 0.52)
+  const blobBlendMode = isLight ? 'multiply' : 'screen'
 
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+      className="pointer-events-none fixed inset-0 z-0 overflow-hidden transition-colors duration-500"
     >
-      <div className="absolute inset-0 bg-[#0a0a0f]" />
+      <div
+        className="absolute inset-0 transition-colors duration-500"
+        style={{ backgroundColor: 'var(--aurora-bg)' }}
+      />
 
       <div
         className="absolute inset-0"
         style={{
           filter: `blur(${blurPx}px)`,
           opacity: blobLayerOpacity,
-          transition: 'filter 0.8s ease',
+          transition: 'filter 0.8s ease, opacity 0.5s ease',
         }}
       >
         {blobs.map((b, i) => (
@@ -238,7 +301,7 @@ export default function AuroraBackground() {
                 background: b.fill,
                 opacity: b.fillOpacity,
                 animation: b.animation,
-                mixBlendMode: 'screen',
+                mixBlendMode: blobBlendMode,
               }}
             />
           </div>
@@ -246,10 +309,9 @@ export default function AuroraBackground() {
       </div>
 
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 transition-opacity duration-500"
         style={{
-          background:
-            'radial-gradient(ellipse at 50% 0%, transparent 0%, rgba(10,10,15,0.55) 65%, rgba(10,10,15,0.92) 100%)',
+          background: `radial-gradient(ellipse at 50% 0%, transparent 0%, var(--aurora-vignette-mid) 65%, var(--aurora-vignette-end) 100%)`,
           opacity: 0.7 + (1 - strength) * 0.3,
           transition: 'opacity 0.8s ease',
         }}

@@ -24,6 +24,9 @@ const links = [
   },
 ]
 
+const focusRing =
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#08080c]'
+
 export default function Footer() {
   const footerRef = useRef(null)
   const { pathname } = useLocation()
@@ -49,7 +52,7 @@ export default function Footer() {
   return (
     <footer
       ref={footerRef}
-      className="relative mt-16 rounded-t-[4rem] overflow-hidden border-t border-white/10 bg-[#08080c]/85 backdrop-blur-2xl"
+      className="footer-surface relative mt-16 rounded-t-[4rem] overflow-hidden backdrop-blur-2xl"
     >
       <div
         aria-hidden
@@ -63,18 +66,18 @@ export default function Footer() {
       <div className="footer-content relative max-w-7xl mx-auto px-6 sm:px-12 py-16 sm:py-24">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
           <div>
-            <h3 className="font-grotesk text-2xl sm:text-3xl font-bold text-dark-text mb-3">
+            <h3 className="font-grotesk text-2xl sm:text-3xl font-bold text-[#ededf0] mb-3">
               Raphael
               <br />
               Karamagi.
             </h3>
-            <p className="font-grotesk text-sm text-dark-text/50 leading-relaxed max-w-xs">
+            <p className="font-grotesk text-sm text-[#ededf0]/50 leading-relaxed max-w-xs">
               ECE &amp; CS at Duke University.
             </p>
           </div>
 
           <div className="flex flex-col gap-4">
-            <span className="font-mono text-xs text-dark-text/35 tracking-widest uppercase mb-2">
+            <span className="font-mono text-xs text-[#ededf0]/35 tracking-widest uppercase mb-2">
               Connect
             </span>
             {links.map(({ icon: Icon, label, href }) => {
@@ -85,13 +88,13 @@ export default function Footer() {
                 href={href}
                 target={href.startsWith('http') ? '_blank' : undefined}
                 rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                className={`group flex items-center gap-3 text-dark-text/65 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-bg rounded-sm ${
+                className={`group flex items-center gap-3 text-[#ededf0]/65 transition-colors duration-300 ${focusRing} rounded-sm ${
                   isLinkedIn ? 'hover:text-[#0A66C2]' : 'hover:text-brand-red'
                 }`}
               >
                 <Icon className="w-4 h-4" />
                 <span className="font-grotesk text-sm">{label}</span>
-                <span className={`font-mono text-xs text-dark-text/25 transition-colors duration-300 ${
+                <span className={`font-mono text-xs text-[#ededf0]/25 transition-colors duration-300 ${
                   isLinkedIn ? 'group-hover:text-[#0A66C2]' : 'group-hover:text-brand-orange'
                 }`}>
                   ↗
@@ -106,19 +109,19 @@ export default function Footer() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500" />
               </span>
-              <span className="font-mono text-xs text-dark-text/55">
+              <span className="font-mono text-xs text-[#ededf0]/55">
                 System Operational
               </span>
             </div>
 
-            <span className="font-mono text-xs text-dark-text/30">
+            <span className="font-mono text-xs text-[#ededf0]/30">
               &copy; {new Date().getFullYear()} Raphael Karamagi
             </span>
           </div>
         </div>
 
         <div className="mt-16 pt-8 border-t border-white/10 flex flex-wrap items-center justify-end gap-4">
-          <span className="font-mono text-xs text-dark-text/30">
+          <span className="font-mono text-xs text-[#ededf0]/30">
             Durham, NC
           </span>
         </div>
