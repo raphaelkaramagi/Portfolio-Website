@@ -601,6 +601,15 @@
     );
   }
 
+  .carousel-tile-media {
+    transform-origin: center center;
+  }
+
+  .carousel-tile:hover,
+  .carousel-tile:focus-visible {
+    isolation: isolate;
+  }
+
   .carousel-track {
     animation: marquee-scroll linear infinite;
   }
