@@ -22,7 +22,9 @@ src/
 │   ├── AuroraBackground.jsx  # fixed animated gradient layer (sitewide)
 │   ├── Navbar.jsx            # floating pill navbar, mobile drawer
 │   ├── Hero.jsx              # hero section, intro GSAP timeline
-│   ├── AboutSection.jsx      # bio card, experience carousel, skills grid
+│   ├── ProjectCarousel.jsx   # auto-scrolling project image marquee
+│   ├── AboutSection.jsx      # bio card
+│   ├── ExperienceSection.jsx # experience carousel + skills
 │   ├── ProjectArchive.jsx    # scroll-blur project card stack
 │   ├── ProjectPage.jsx       # individual project detail page
 │   └── Footer.jsx
@@ -51,11 +53,39 @@ Edit `src/data/projects.js` only. The archive and project page pick up new entri
   longDescription: '',  // full prose, shown on project page
   repoUrl: '',
   demoUrl: '',          // optional
-  images: [],           // paths relative to /public/
+  images: [],           // gallery on project page — preview + full via img()
+  // coverImage: ...    // optional — see "Archive card cover" below
 }
 ```
 
 Ordering convention: archive sections appear as In Progress → Completed → Planned. Numbers are global and sequential. In Progress stays at the current slot (04). New completions are inserted at the top of Completed (most recent first). Planned entries follow the order you intend to build them.
+
+### Archive card cover (homepage project cards)
+
+Each project card in the archive can show a **full-resolution** cover image at the top. Configure with `coverImage` in `src/data/projects.js`:
+
+| Setting | Result |
+|---|---|
+| *(omit `coverImage`)* | Uses `images[0]` full size (1600px max) — first gallery image is the cover |
+| `coverImage: img('screenshot.png', 'folder')` | Uses that specific image as the cover |
+| `coverImage: false` | No cover on the archive card, even if `images` has entries |
+
+Examples:
+
+```js
+// Default — first gallery image is the cover
+images: [img('hero.png', 'my-app'), img('detail.png', 'my-app')],
+
+// Pick a different cover than images[0]
+coverImage: img('detail.png', 'my-app'),
+images: [img('hero.png', 'my-app'), img('detail.png', 'my-app')],
+
+// Hide the cover entirely
+coverImage: false,
+images: [img('hero.png', 'my-app')],
+```
+
+Gallery order still matters: put your best / most representative image first in `images[]` if you rely on the default. The homepage carousel uses the same round-robin logic from `src/data/carouselImages.js` (previews only); archive covers always use full resolution.
 
 ## Deployment
 

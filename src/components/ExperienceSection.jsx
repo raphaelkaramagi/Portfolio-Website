@@ -11,15 +11,15 @@ gsap.registerPlugin(ScrollTrigger)
 const skillCategories = [
   {
     title: 'Languages',
-    items: ['Python', 'C / C++', 'Java'],
+    items: ['Python', 'C','C++', 'Java','HTML/CSS'],
   },
   {
     title: 'Data & Hardware',
-    items: ['PostgreSQL', 'pandas', 'Arduino', 'SolidWorks'],
+    items: ['PostgreSQL','NumPy', 'Pandas', 'Arduino', 'SolidWorks'],
   },
   {
     title: 'Frameworks & Tools',
-    items: ['TensorFlow / Keras', 'FastAPI', 'Next.js', 'Docker'],
+    items: ['TensorFlow / Keras', 'Docker', 'CI/CD', 'Flask', 'Next.js', 'React'],
   },
 ]
 
@@ -34,6 +34,7 @@ const experiences = [
       'Summer project delivering security scanning and evaluation tooling for Duke’s locally deployed models — Hugging Face ingestion pipelines, artifact inspection before infrastructure access, and benchmark suites for IT-led deployments.',
       'Partnered with OIT on operationalizing automated checks and repeatable evaluation harnesses so candidate LLMs can be compared across representative workloads.',
     ],
+    skills: ['Python', 'Flask', 'Celery', 'Redis', 'Docker', 'LiteLLM', 'GitLab CI'],
   },
   {
     id: 'intelisoft',
@@ -45,6 +46,7 @@ const experiences = [
       'Implemented REST API endpoints for medical records management, enabling role-based access within OpenMRS EMR system; deployed to 20+ hospitals across South Sudan.',
       'Executed test suite covering patient-record CRUD endpoints; led deployment to 3 pilot sites in Nairobi achieving 98% uptime.',
     ],
+    skills: ['Java', 'OpenMRS', 'REST APIs', 'PostgreSQL', 'Testing'],
   },
 ]
 
@@ -195,10 +197,10 @@ export default function ExperienceSection() {
         </h2>
       </div>
 
-      <div className="experience-section-body grid grid-cols-1 lg:grid-cols-[minmax(0,2.15fr)_minmax(0,0.72fr)] gap-6 lg:gap-8 items-start lg:items-stretch">
+      <div className="experience-section-body flex flex-col gap-6 lg:gap-8">
         <div
           ref={experienceCardRef}
-          className={`${CARD_CLASS} p-5 sm:p-6 flex flex-col lg:min-h-0 lg:h-full`}
+          className={`${CARD_CLASS} p-5 sm:p-6 flex flex-col`}
           onMouseEnter={() => {
             mouseOverCardRef.current = true
             syncExperiencePaused()
@@ -285,7 +287,7 @@ export default function ExperienceSection() {
               <p className="font-mono text-xs sm:text-sm text-dark-text/55 mt-1">
                 {activeExp.location}
               </p>
-              <ul className="mt-2 space-y-2 flex-1 min-h-0">
+              <ul className="mt-2 space-y-2">
                 {activeExp.bullets.map((b, bi) => (
                   <li
                     key={bi}
@@ -295,6 +297,18 @@ export default function ExperienceSection() {
                   </li>
                 ))}
               </ul>
+              {activeExp.skills?.length > 0 && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {activeExp.skills.map((skill) => (
+                    <span
+                      key={skill}
+                      className="font-mono text-xs bg-overlay/[0.04] border border-overlay/10 text-dark-text/75 px-3 py-1.5 rounded-full"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              )}
               <div className="flex items-center justify-between mt-3 pt-2 border-t border-overlay/10 shrink-0">
                 <span className="font-mono text-xs sm:text-sm text-dark-text/55">
                   {activeExp.dates}
@@ -314,12 +328,12 @@ export default function ExperienceSection() {
           </div>
         </div>
 
-        <div ref={skillsCardRef} className={`${CARD_CLASS} p-5 sm:p-6 flex flex-col h-auto lg:min-h-0 lg:h-full`}>
-          <div className="relative z-10 flex flex-col lg:flex-1 lg:min-h-0">
+        <div ref={skillsCardRef} className={`${CARD_CLASS} p-5 sm:p-6 flex flex-col`}>
+          <div className="relative z-10 flex flex-col">
             <h3 className="font-grotesk text-base sm:text-lg font-bold text-dark-text mb-3 shrink-0">
               Skills
             </h3>
-            <div className="grid grid-cols-3 gap-x-3 sm:gap-x-5 gap-y-4 lg:grid-cols-1 lg:gap-y-4 lg:flex-1 lg:min-h-0 auto-rows-min">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-5 gap-y-4 auto-rows-min">
               {skillCategories.map(({ title, items }) => (
                 <div key={title} className="min-w-0">
                   <div className="font-mono text-[10px] sm:text-[11px] lg:text-xs text-dark-text/50 uppercase tracking-wider mb-1.5 leading-tight">

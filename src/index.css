@@ -583,6 +583,33 @@
   html.light .nav-shadow-scrolled {
     box-shadow: 0 16px 48px -18px rgba(28, 26, 23, 0.16);
   }
+
+  .carousel-viewport {
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      black 8%,
+      black 92%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      black 8%,
+      black 92%,
+      transparent 100%
+    );
+  }
+
+  .carousel-track {
+    animation: marquee-scroll linear infinite;
+  }
+
+  .carousel-viewport:hover .carousel-track,
+  .carousel-viewport:focus-within .carousel-track,
+  .carousel-viewport:active .carousel-track {
+    animation-play-state: paused;
+  }
 }
 
 ::-webkit-scrollbar {
@@ -643,6 +670,15 @@
   }
 }
 
+@keyframes marquee-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
 @keyframes blob-drift-a {
   0%,
   100% { transform: translate3d(-34%, -28%, 0) scale(1); }
@@ -675,6 +711,23 @@
   .theme-toggle-icon {
     animation: none !important;
     transition: none !important;
+  }
+
+  .carousel-viewport {
+    -webkit-mask-image: none;
+    mask-image: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .carousel-viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .carousel-track {
+    animation: none !important;
   }
 
   html {

@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/react'
 import AuroraBackground from './components/AuroraBackground'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
+import ProjectCarousel from './components/ProjectCarousel'
 import ProjectArchive from './components/ProjectArchive'
 import AboutSection from './components/AboutSection'
 import ExperienceSection from './components/ExperienceSection'
@@ -23,6 +24,7 @@ function HomePage() {
   return (
     <main>
       <Hero />
+      <ProjectCarousel />
       <AboutSection />
       <ExperienceSection />
       <ProjectArchive />

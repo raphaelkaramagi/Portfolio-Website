@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ArrowRight, ExternalLink } from 'lucide-react'
-import { projects } from '../data/projects'
+import { projects, resolveProjectCover } from '../data/projects'
 import { hasPlayedHomeIntro } from '../lib/animationState'
 import useTilt from '../lib/useTilt'
 import useCursorVars from '../lib/useCursorVars'
@@ -22,6 +22,7 @@ const focusRing =
 const ProjectCard = forwardRef(function ProjectCard({ project, stackIndex }, ref) {
   const tiltRef = useTilt({ max: 3.5 })
   const cursorRef = useCursorVars()
+  const cover = resolveProjectCover(project)
 
   const innerRef = useCallback(
     (node) => {
@@ -43,9 +44,31 @@ const ProjectCard = forwardRef(function ProjectCard({ project, stackIndex }, ref
       >
         <div
           ref={innerRef}
-          className="glass-card glass-card-hoverable rounded-[2rem] px-6 py-8 sm:p-12 min-h-[380px] flex flex-col justify-between"
+          className={`glass-card glass-card-hoverable rounded-[2rem] overflow-hidden flex flex-col justify-between ${
+            cover ? '' : 'min-h-[380px] px-6 py-8 sm:p-12'
+          }`}
         >
-          <div className="relative z-10 flex flex-col flex-1 justify-between">
+          {cover && (
+            <div className="relative w-full h-40 sm:h-52 shrink-0 overflow-hidden">
+              <img
+                src={cover}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+              />
+              <div
+                className="absolute inset-x-0 bottom-0 h-14 sm:h-16 bg-gradient-to-t from-dark-bg/90 via-dark-bg/35 to-transparent pointer-events-none"
+                aria-hidden
+              />
+            </div>
+          )}
+
+          <div
+            className={`relative z-10 flex flex-col flex-1 justify-between ${
+              cover ? 'px-6 py-6 sm:px-10 sm:py-8' : ''
+            } ${cover ? 'min-h-[280px] sm:min-h-[300px]' : ''}`}
+          >
             <div className="flex items-start gap-4 sm:gap-8 mb-8 min-w-0">
               <span className="font-mono text-5xl sm:text-7xl font-bold text-dark-text/10 leading-none shrink-0 tabular-nums">
                 {project.number}
