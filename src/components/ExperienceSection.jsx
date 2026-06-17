@@ -34,7 +34,7 @@ const experiences = [
       'Summer project delivering security scanning and evaluation tooling for Duke’s locally deployed models — Hugging Face ingestion pipelines, artifact inspection before infrastructure access, and benchmark suites for IT-led deployments.',
       'Partnered with OIT on operationalizing automated checks and repeatable evaluation harnesses so candidate LLMs can be compared across representative workloads.',
     ],
-    skills: ['Python', 'Flask', 'PostgreSQL', 'Redis', 'Docker', 'LiteLLM', 'GitLab CI'],
+    skills: ['Python', 'Flask', 'PostgreSQL', 'Docker', 'LiteLLM', 'GitLab CI'],
   },
   {
     id: 'intelisoft',
