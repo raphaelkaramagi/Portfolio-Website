@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger)
 const skillCategories = [
   {
     title: 'Languages',
-    items: ['Python', 'C','C++', 'Java','HTML/CSS'],
+    items: ['Python', 'C/C++', 'Java', 'JavaScript', 'SQL', 'HTML/CSS'],
   },
   {
     title: 'Data & Hardware',
@@ -34,7 +34,7 @@ const experiences = [
       'Summer project delivering security scanning and evaluation tooling for Duke’s locally deployed models — Hugging Face ingestion pipelines, artifact inspection before infrastructure access, and benchmark suites for IT-led deployments.',
       'Partnered with OIT on operationalizing automated checks and repeatable evaluation harnesses so candidate LLMs can be compared across representative workloads.',
     ],
-    skills: ['Python', 'Flask', 'Celery', 'Redis', 'Docker', 'LiteLLM', 'GitLab CI'],
+    skills: ['Python', 'Flask', 'PostgreSQL', 'Redis', 'Docker', 'LiteLLM', 'GitLab CI'],
   },
   {
     id: 'intelisoft',
@@ -46,7 +46,7 @@ const experiences = [
       'Implemented REST API endpoints for medical records management, enabling role-based access within OpenMRS EMR system; deployed to 20+ hospitals across South Sudan.',
       'Executed test suite covering patient-record CRUD endpoints; led deployment to 3 pilot sites in Nairobi achieving 98% uptime.',
     ],
-    skills: ['Java', 'OpenMRS', 'REST APIs', 'PostgreSQL', 'Testing'],
+    skills: ['Java', 'OpenMRS', 'REST APIs', 'SQL', 'Testing'],
   },
 ]
 

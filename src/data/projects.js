@@ -29,7 +29,7 @@ export const projects = [
     title: 'AI Security & Evaluation Infrastructure',
     status: 'Ongoing',
     client: 'Duke OIT',
-    stack: ['Python', 'Docker', 'Flask', 'Celery', 'Redis', 'LiteLLM', 'GitLab CI'],
+    stack: ['Python', 'Docker', 'Flask', 'SQL', 'Redis', 'LiteLLM', 'GitLab CI'],
     description:
       'Security scanning and model evaluation tooling for Duke\'s locally deployed AI — automated artifact inspection before infrastructure access, plus comparative benchmarking to help Duke IT make informed, defensible adoption decisions.',
     longDescription:
