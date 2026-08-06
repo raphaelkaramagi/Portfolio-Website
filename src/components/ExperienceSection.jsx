@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { hasPlayedHomeIntro } from '../lib/animationState'
 import useCursorVars from '../lib/useCursorVars'
 import useTilt from '../lib/useTilt'
@@ -14,22 +13,26 @@ const skillCategories = [
     items: ['Python', 'C/C++', 'Java', 'JavaScript', 'SQL', 'HTML/CSS'],
   },
   {
-    title: 'Data & Hardware',
-    items: ['PostgreSQL','NumPy', 'Pandas', 'Arduino', 'SolidWorks'],
+    title: 'Data & ML',
+    items: ['TensorFlow / Keras','PyTorch', 'NumPy', 'Pandas', 'PostgreSQL'],
   },
   {
     title: 'Frameworks & Tools',
-    items: ['TensorFlow / Keras', 'Docker', 'CI/CD', 'Flask', 'Next.js', 'React'],
+    items: ['Docker', 'CI/CD', 'Flask', 'OAuth', 'Next.js', 'React','SolidWorks'],
   },
 ]
 
+/** Ordered most recent first — `year` drives the calendar markers on the spine. */
 const experiences = [
   {
     id: 'duke-colab',
     org: 'Duke University — Office of Information Technology',
     role: 'Innovation Co-Lab Software Developer',
-    location: 'Durham, NC · Ongoing',
+    location: 'Durham, NC',
     dates: 'Aug 2026 – Present',
+    year: '2026',
+    duration: 'Ongoing',
+    current: true,
     bullets: [
       'Building and maintaining internal Co-Lab systems — Dockerized apps, web services, and AI-related tools that expand campus technology infrastructure for student makers.',
       'Holding weekly office hours and TA support for Co-Lab Roots classes, helping students ship personal projects and learn development practices across the Duke community.',
@@ -42,6 +45,8 @@ const experiences = [
     role: 'Software Engineer Intern (Code+)',
     location: 'Durham, NC',
     dates: 'May 2026 – Jul 2026',
+    year: '2026',
+    duration: '3 mos',
     bullets: [
       'Delivered Model Advisor with Duke OIT — automated report cards for AI Gateway models spanning Hugging Face artifact scanning, inference safety red-teaming, Duke LLM-as-judge evals, and public benchmarks.',
       'Shipped a Dockerized Flask + Postgres platform with background pillar jobs, a ranked model catalog, cross-pillar nutrition labels, and compare tooling so IT can make defensible model adoption decisions.',
@@ -52,8 +57,10 @@ const experiences = [
     id: 'intelisoft',
     org: 'IntelliSOFT Consulting',
     role: 'Software Engineer Intern',
-    location: 'Nairobi, Kenya · Internship',
+    location: 'Nairobi, Kenya',
     dates: 'Jul 2024 – Aug 2024',
+    year: '2024',
+    duration: '2 mos',
     bullets: [
       'Implemented REST API endpoints for medical records management, enabling role-based access within OpenMRS EMR system; deployed to 20+ hospitals across South Sudan.',
       'Executed test suite covering patient-record CRUD endpoints; led deployment to 3 pilot sites in Nairobi achieving 98% uptime.',
@@ -64,19 +71,18 @@ const experiences = [
 
 const CARD_CLASS = 'glass-card glass-card-hoverable rounded-[2rem]'
 
-const ROTATE_MS = 11500
+const focusRing =
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-bg'
 
 export default function ExperienceSection() {
   const sectionRef = useRef(null)
-  const [expIndex, setExpIndex] = useState(0)
-  const [experiencePaused, setExperiencePaused] = useState(false)
-  const [progressCycle, setProgressCycle] = useState(0)
+  const [activeId, setActiveId] = useState(experiences[0].id)
 
-  const expTiltRef = useTilt({ max: 3 })
-  const expCursorRef = useCursorVars()
-  const experienceCardRef = useCallback(
-    (node) => { expTiltRef.current = node; expCursorRef.current = node },
-    [expTiltRef, expCursorRef],
+  const timelineTiltRef = useTilt({ max: 2.5 })
+  const timelineCursorRef = useCursorVars()
+  const timelineCardRef = useCallback(
+    (node) => { timelineTiltRef.current = node; timelineCursorRef.current = node },
+    [timelineTiltRef, timelineCursorRef],
   )
 
   const skillsTiltRef = useTilt({ max: 3 })
@@ -85,81 +91,6 @@ export default function ExperienceSection() {
     (node) => { skillsTiltRef.current = node; skillsCursorRef.current = node },
     [skillsTiltRef, skillsCursorRef],
   )
-
-  const mouseOverCardRef = useRef(false)
-  const advanceTimeoutRef = useRef(null)
-  const deadlineRef = useRef(null)
-  const remainingOnPauseRef = useRef(ROTATE_MS)
-  const slideChangedWhilePausedRef = useRef(false)
-  const prevExpIndexRef = useRef(null)
-  const touchHoldCardRef = useRef(false)
-
-  const syncExperiencePaused = useCallback(() => {
-    setExperiencePaused(mouseOverCardRef.current || touchHoldCardRef.current)
-  }, [])
-
-  const clearAdvanceTimeout = useCallback(() => {
-    if (advanceTimeoutRef.current !== null) {
-      window.clearTimeout(advanceTimeoutRef.current)
-      advanceTimeoutRef.current = null
-    }
-  }, [])
-
-  const scheduleAdvance = useCallback(
-    (ms) => {
-      clearAdvanceTimeout()
-      const safeMs = Math.max(50, ms)
-      deadlineRef.current = Date.now() + safeMs
-      advanceTimeoutRef.current = window.setTimeout(() => {
-        advanceTimeoutRef.current = null
-        deadlineRef.current = null
-        setExpIndex((i) => (i + 1) % experiences.length)
-      }, safeMs)
-    },
-    [clearAdvanceTimeout],
-  )
-
-  useEffect(() => {
-    setProgressCycle((c) => c + 1)
-  }, [expIndex])
-
-  useEffect(() => {
-    const indexChanged =
-      prevExpIndexRef.current !== null && prevExpIndexRef.current !== expIndex
-    prevExpIndexRef.current = expIndex
-
-    clearAdvanceTimeout()
-
-    if (experiencePaused) {
-      if (!indexChanged) {
-        remainingOnPauseRef.current = deadlineRef.current
-          ? Math.max(0, deadlineRef.current - Date.now())
-          : ROTATE_MS
-      } else {
-        slideChangedWhilePausedRef.current = true
-        deadlineRef.current = null
-      }
-      return () => clearAdvanceTimeout()
-    }
-
-    let ms = ROTATE_MS
-    if (indexChanged || slideChangedWhilePausedRef.current) {
-      ms = ROTATE_MS
-      slideChangedWhilePausedRef.current = false
-    } else {
-      ms = remainingOnPauseRef.current
-    }
-
-    scheduleAdvance(ms)
-    return () => clearAdvanceTimeout()
-  }, [expIndex, experiencePaused, clearAdvanceTimeout, scheduleAdvance])
-
-  const goPrev = useCallback(() => {
-    setExpIndex((i) => (i - 1 + experiences.length) % experiences.length)
-  }, [])
-  const goNext = useCallback(() => {
-    setExpIndex((i) => (i + 1) % experiences.length)
-  }, [])
 
   useEffect(() => {
     if (hasPlayedHomeIntro) return
@@ -193,8 +124,6 @@ export default function ExperienceSection() {
     return () => ctx.revert()
   }, [])
 
-  const activeExp = experiences[expIndex]
-
   return (
     <section
       ref={sectionRef}
@@ -210,133 +139,123 @@ export default function ExperienceSection() {
       </div>
 
       <div className="experience-section-body flex flex-col gap-6 lg:gap-8">
-        <div
-          ref={experienceCardRef}
-          className={`${CARD_CLASS} p-5 sm:p-6 flex flex-col`}
-          onMouseEnter={() => {
-            mouseOverCardRef.current = true
-            syncExperiencePaused()
-          }}
-          onMouseLeave={() => {
-            mouseOverCardRef.current = false
-            syncExperiencePaused()
-          }}
-          onPointerDown={(e) => {
-            if (e.pointerType !== 'touch') return
-            const t = e.target
-            if (t instanceof Element && t.closest('button')) return
-            try {
-              e.currentTarget.setPointerCapture(e.pointerId)
-            } catch {
-              /* ignore */
-            }
-            touchHoldCardRef.current = true
-            syncExperiencePaused()
-          }}
-          onPointerUp={(e) => {
-            if (e.pointerType !== 'touch') return
-            touchHoldCardRef.current = false
-            syncExperiencePaused()
-          }}
-          onPointerCancel={(e) => {
-            if (e.pointerType !== 'touch') return
-            touchHoldCardRef.current = false
-            syncExperiencePaused()
-          }}
-          onLostPointerCapture={(e) => {
-            if (e.pointerType !== 'touch') return
-            touchHoldCardRef.current = false
-            syncExperiencePaused()
-          }}
-        >
-          <div className="relative z-10 flex flex-col flex-1 min-h-0">
-            <div className="flex items-center justify-between gap-3 mb-2 shrink-0">
+        <div ref={timelineCardRef} className={`${CARD_CLASS} p-5 sm:p-7`}>
+          <div className="relative z-10">
+            <div className="mb-5 sm:mb-6">
               <span className="font-mono text-[11px] sm:text-xs text-dark-text/45 tracking-widest uppercase">
-                Roles
+                Career timeline
               </span>
-              <div className="flex gap-1.5 items-center">
-                <button
-                  type="button"
-                  onClick={goPrev}
-                  className="flex h-8 w-8 items-center justify-center rounded-full border border-overlay/12 text-dark-text/65 hover:border-brand-red/55 hover:text-brand-red transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-bg"
-                  aria-label="Previous role"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <button
-                  type="button"
-                  onClick={goNext}
-                  className="flex h-8 w-8 items-center justify-center rounded-full border border-overlay/12 text-dark-text/65 hover:border-brand-red/55 hover:text-brand-red transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50 focus-visible:ring-offset-2 focus-visible:ring-offset-dark-bg"
-                  aria-label="Next role"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
             </div>
 
-            <div
-              className="h-[3px] w-full rounded-full bg-overlay/8 overflow-hidden mb-3 shrink-0"
-              aria-hidden
-            >
-              <div
-                key={`${expIndex}-${progressCycle}`}
-                className="h-full rounded-full bg-gradient-to-r from-brand-red via-brand-orange to-brand-amber"
-                style={{
-                  animation: `about-exp-progress ${ROTATE_MS}ms linear forwards`,
-                  animationPlayState: experiencePaused ? 'paused' : 'running',
-                }}
+            <ol className="relative">
+              <span
+                className="timeline-spine absolute left-[6px] top-1.5 bottom-1.5 w-px rounded-full"
+                aria-hidden
               />
-            </div>
 
-            <div key={activeExp.id} className="flex-1 flex flex-col min-h-0" aria-live="polite">
-              <div className="font-grotesk text-base sm:text-lg font-bold text-dark-text leading-snug">
-                {activeExp.org}
-              </div>
-              <div className="h-px w-full bg-overlay/10 my-2" />
-              <div className="font-grotesk text-lg sm:text-xl font-semibold text-dark-text leading-snug">
-                {activeExp.role}
-              </div>
-              <p className="font-mono text-xs sm:text-sm text-dark-text/55 mt-1">
-                {activeExp.location}
-              </p>
-              <ul className="mt-2 space-y-2">
-                {activeExp.bullets.map((b, bi) => (
-                  <li
-                    key={bi}
-                    className="font-grotesk text-sm sm:text-base text-dark-text/75 leading-relaxed pl-2.5 border-l-2 border-brand-red/45"
-                  >
-                    {b}
+              {experiences.map((exp, i) => {
+                const isActive = exp.id === activeId
+                const showYear = i === 0 || experiences[i - 1].year !== exp.year
+
+                return (
+                  <li key={exp.id} className="relative">
+                    {showYear && (
+                      <div className={`relative pl-7 sm:pl-9 ${i === 0 ? 'pb-3' : 'pt-5 pb-3'}`}>
+                        <span
+                          className="absolute left-[6px] top-1/2 h-px w-3 bg-overlay/25"
+                          aria-hidden
+                        />
+                        <span className="font-mono text-[11px] tracking-[0.2em] uppercase text-dark-text/45 tabular-nums">
+                          {exp.year}
+                        </span>
+                      </div>
+                    )}
+
+                    <div className="relative pl-7 sm:pl-9 pb-6 sm:pb-7 last:pb-0">
+                      <span
+                        className="absolute left-0 top-[7px] flex h-[13px] w-[13px] items-center justify-center"
+                        aria-hidden
+                      >
+                        {isActive && (
+                          <span className="timeline-pulse absolute inline-flex h-full w-full rounded-full bg-brand-red/40 animate-ping" />
+                        )}
+                        <span
+                          className={`timeline-node relative h-[11px] w-[11px] rounded-full ${
+                            exp.current ? 'timeline-node-current' : ''
+                          } ${isActive ? 'timeline-node-active' : ''}`}
+                        />
+                      </span>
+
+                      <button
+                        type="button"
+                        onClick={() => setActiveId(exp.id)}
+                        aria-expanded={isActive}
+                        aria-controls={`exp-panel-${exp.id}`}
+                        className={`group/row w-full text-left rounded-lg ${focusRing}`}
+                      >
+                        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                          <div className="min-w-0">
+                            <span
+                              className={`block font-grotesk text-base sm:text-lg font-bold leading-snug transition-colors duration-300 ${
+                                isActive
+                                  ? 'text-dark-text'
+                                  : 'text-dark-text/70 group-hover/row:text-dark-text'
+                              }`}
+                            >
+                              {exp.role}
+                            </span>
+                            <span className="block font-mono text-xs sm:text-sm text-dark-text/50 mt-1">
+                              {exp.org} · {exp.location}
+                            </span>
+                          </div>
+
+                          <div className="flex items-center gap-2 shrink-0">
+                            <span className="font-mono text-[11px] sm:text-xs text-dark-text/55 tabular-nums">
+                              {exp.dates}
+                            </span>
+                            <span className="font-mono text-[10px] sm:text-[11px] bg-overlay/[0.04] border border-overlay/10 text-dark-text/55 px-2 py-0.5 rounded-full">
+                              {exp.duration}
+                            </span>
+                          </div>
+                        </div>
+                      </button>
+
+                      <div
+                        id={`exp-panel-${exp.id}`}
+                        className="timeline-panel"
+                        data-open={isActive}
+                      >
+                        <div className="pb-2">
+                          <ul className="mt-3 space-y-2">
+                            {exp.bullets.map((b, bi) => (
+                              <li
+                                key={bi}
+                                className="font-grotesk text-sm sm:text-base text-dark-text/75 leading-relaxed pl-2.5 border-l-2 border-brand-red/45"
+                              >
+                                {b}
+                              </li>
+                            ))}
+                          </ul>
+
+                          {exp.skills?.length > 0 && (
+                            <div className="mt-3 flex flex-wrap gap-2">
+                              {exp.skills.map((skill) => (
+                                <span
+                                  key={skill}
+                                  className="font-mono text-xs bg-overlay/[0.04] border border-overlay/10 text-dark-text/75 px-3 py-1.5 rounded-full"
+                                >
+                                  {skill}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   </li>
-                ))}
-              </ul>
-              {activeExp.skills?.length > 0 && (
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {activeExp.skills.map((skill) => (
-                    <span
-                      key={skill}
-                      className="font-mono text-xs bg-overlay/[0.04] border border-overlay/10 text-dark-text/75 px-3 py-1.5 rounded-full"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              )}
-              <div className="flex items-center justify-between mt-3 pt-2 border-t border-overlay/10 shrink-0">
-                <span className="font-mono text-xs sm:text-sm text-dark-text/55">
-                  {activeExp.dates}
-                </span>
-                <div className="flex gap-1" aria-hidden>
-                  {experiences.map((exp, i) => (
-                    <span
-                      key={exp.id}
-                      className={`h-1.5 w-1.5 rounded-full transition-colors duration-300 ${
-                        i === expIndex ? 'bg-brand-red' : 'bg-overlay/20'
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
+                )
+              })}
+            </ol>
           </div>
         </div>
 
