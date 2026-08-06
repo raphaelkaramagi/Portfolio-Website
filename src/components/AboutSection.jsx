@@ -103,7 +103,7 @@ export default function AboutSection() {
             <ul className="space-y-0 font-grotesk text-sm sm:text-base">
               {[
                 { n: '1+', label: 'Years of experience' },
-                { n: '3+', label: 'Products shipped' },
+                { n: '4+', label: 'Products shipped' },
                 { n: '2+', label: 'Happy clients' },
               ].map((row, i) => (
                 <li

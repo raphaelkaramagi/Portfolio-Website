@@ -18,7 +18,7 @@ const focusRing =
 
 const VISIBLE_COUNT = 3
 
-function Lightbox({ src, overlayRef, imgRef, onClose }) {
+function Lightbox({ src, caption, overlayRef, imgRef, onClose }) {
   useEffect(() => {
     const overlay = overlayRef.current
     const img = imgRef.current
@@ -33,16 +33,27 @@ function Lightbox({ src, overlayRef, imgRef, onClose }) {
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md"
+      className="fixed inset-0 z-[200] flex flex-col items-center justify-center gap-4 bg-black/80 backdrop-blur-md px-4"
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={caption || 'Enlarged gallery image'}
     >
       <img
         ref={imgRef}
         src={src}
-        alt="Enlarged view"
+        alt={caption || 'Enlarged view'}
         onClick={(e) => e.stopPropagation()}
-        className="max-w-[90vw] max-h-[85vh] object-contain rounded-2xl shadow-[0_24px_80px_-18px_rgba(0,0,0,0.85)] ring-1 ring-overlay/10"
+        className="max-w-[90vw] max-h-[80vh] object-contain rounded-2xl shadow-[0_24px_80px_-18px_rgba(0,0,0,0.85)] ring-1 ring-white/10"
       />
+      {caption && (
+        <p
+          className="max-w-xl text-center font-grotesk text-sm sm:text-base text-white/85 px-2"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {caption}
+        </p>
+      )}
     </div>
   )
 }
@@ -52,15 +63,15 @@ export default function ProjectPage() {
   const pageRef = useRef(null)
   const project = projects.find((p) => p.slug === slug)
   const [expanded, setExpanded] = useState(false)
-  const [lightboxImg, setLightboxImg] = useState(null)
+  const [lightbox, setLightbox] = useState(null)
   const overlayRef = useRef(null)
   const lightboxImgRef = useRef(null)
 
   const closeLightbox = () => {
     const overlay = overlayRef.current
     const img = lightboxImgRef.current
-    if (!overlay || !img) { setLightboxImg(null); return }
-    const tl = gsap.timeline({ onComplete: () => setLightboxImg(null) })
+    if (!overlay || !img) { setLightbox(null); return }
+    const tl = gsap.timeline({ onComplete: () => setLightbox(null) })
     tl.to(img, { scale: 0.85, opacity: 0, duration: 0.25, ease: 'power2.in' }, 0)
     tl.to(overlay, { opacity: 0, duration: 0.3, ease: 'power2.in' }, 0)
   }
@@ -94,7 +105,7 @@ export default function ProjectPage() {
   }, [slug])
 
   useEffect(() => {
-    if (!lightboxImg) return
+    if (!lightbox) return
     document.body.style.overflow = 'hidden'
     const onKey = (e) => { if (e.key === 'Escape') closeLightbox() }
     window.addEventListener('keydown', onKey)
@@ -102,7 +113,7 @@ export default function ProjectPage() {
       document.body.style.overflow = ''
       window.removeEventListener('keydown', onKey)
     }
-  }, [lightboxImg])
+  }, [lightbox])
 
   if (!project) {
     return (
@@ -209,19 +220,38 @@ export default function ProjectPage() {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {visibleImages.map((image, i) => (
-                <img
+                <button
                   key={image.full}
-                  src={image.preview}
-                  alt={`${project.title} screenshot ${i + 1}`}
-                  loading="lazy"
-                  decoding="async"
-                  onClick={() => setLightboxImg(image.full)}
-                  className="w-full aspect-video object-cover rounded-2xl cursor-pointer ring-1 ring-overlay/10
+                  type="button"
+                  title={image.caption || undefined}
+                  aria-label={image.caption || `${project.title} screenshot ${i + 1}`}
+                  onClick={() => setLightbox({ src: image.full, caption: image.caption })}
+                  className={`group relative block w-full overflow-hidden rounded-2xl text-left cursor-pointer ring-1 ring-overlay/10
                     shadow-[0_18px_44px_-18px_rgba(0,0,0,0.72)]
                     hover:scale-[1.02] hover:ring-brand-red/45 hover:shadow-[0_24px_56px_-18px_rgba(220,38,38,0.35)]
-                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-red/50
-                    transition-[transform,box-shadow,outline] duration-300"
-                />
+                    ${focusRing}
+                    transition-[transform,box-shadow] duration-300`}
+                >
+                  <img
+                    src={image.preview}
+                    alt={image.caption || `${project.title} screenshot ${i + 1}`}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full aspect-video object-cover pointer-events-none"
+                  />
+                  {image.caption && (
+                    <span
+                      className="pointer-events-none absolute inset-x-0 bottom-0 px-3 py-2.5
+                        bg-gradient-to-t from-black/75 via-black/45 to-transparent
+                        font-grotesk text-[11px] sm:text-xs text-white/95 leading-snug
+                        opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0
+                        group-focus-visible:opacity-100 group-focus-visible:translate-y-0
+                        transition-all duration-300"
+                    >
+                      {image.caption}
+                    </span>
+                  )}
+                </button>
               ))}
             </div>
             {hasMany && (
@@ -238,9 +268,10 @@ export default function ProjectPage() {
         )}
       </div>
 
-      {lightboxImg && (
+      {lightbox && (
         <Lightbox
-          src={lightboxImg}
+          src={lightbox.src}
+          caption={lightbox.caption}
           overlayRef={overlayRef}
           imgRef={lightboxImgRef}
           onClose={closeLightbox}

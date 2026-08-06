@@ -53,10 +53,12 @@ Edit `src/data/projects.js` only. The archive and project page pick up new entri
   longDescription: '',  // full prose, shown on project page
   repoUrl: '',
   demoUrl: '',          // optional
-  images: [],           // gallery on project page — preview + full via img()
+  images: [],           // gallery on project page — preview + full via img(file, folder, caption?)
   // coverImage: ...    // optional — see "Archive card cover" below
 }
 ```
+
+`img(file, folder, caption?)` builds preview/full paths. The optional `caption` is a short sentence shown on gallery hover and under the lightbox enlarge view.
 
 Ordering convention: archive sections appear as In Progress → Completed → Planned. Numbers are global and sequential. In Progress stays at the current slot (04). New completions are inserted at the top of Completed (most recent first). Planned entries follow the order you intend to build them.
 

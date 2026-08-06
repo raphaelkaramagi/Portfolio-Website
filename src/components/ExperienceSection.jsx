@@ -25,14 +25,26 @@ const skillCategories = [
 
 const experiences = [
   {
+    id: 'duke-colab',
+    org: 'Duke University — Office of Information Technology',
+    role: 'Innovation Co-Lab Software Developer',
+    location: 'Durham, NC · Ongoing',
+    dates: 'Aug 2026 – Present',
+    bullets: [
+      'Building and maintaining internal Co-Lab systems — Dockerized apps, web services, and AI-related tools that expand campus technology infrastructure for student makers.',
+      'Holding weekly office hours and TA support for Co-Lab Roots classes, helping students ship personal projects and learn development practices across the Duke community.',
+    ],
+    skills: ['JavaScript', 'Python', 'Docker', 'APIs', 'Git', 'Web Development'],
+  },
+  {
     id: 'duke-oit',
     org: 'Duke University — Office of Information Technology',
-    role: 'Software Engineer Intern',
-    location: 'Durham, NC · Paid contract',
+    role: 'Software Engineer Intern (Code+)',
+    location: 'Durham, NC',
     dates: 'May 2026 – Jul 2026',
     bullets: [
-      'Summer project delivering security scanning and evaluation tooling for Duke’s locally deployed models — Hugging Face ingestion pipelines, artifact inspection before infrastructure access, and benchmark suites for IT-led deployments.',
-      'Partnered with OIT on operationalizing automated checks and repeatable evaluation harnesses so candidate LLMs can be compared across representative workloads.',
+      'Delivered Model Advisor with Duke OIT — automated report cards for AI Gateway models spanning Hugging Face artifact scanning, inference safety red-teaming, Duke LLM-as-judge evals, and public benchmarks.',
+      'Shipped a Dockerized Flask + Postgres platform with background pillar jobs, a ranked model catalog, cross-pillar nutrition labels, and compare tooling so IT can make defensible model adoption decisions.',
     ],
     skills: ['Python', 'Flask', 'PostgreSQL', 'Docker', 'LiteLLM', 'GitLab CI'],
   },
@@ -52,7 +64,7 @@ const experiences = [
 
 const CARD_CLASS = 'glass-card glass-card-hoverable rounded-[2rem]'
 
-const ROTATE_MS = 7600
+const ROTATE_MS = 11500
 
 export default function ExperienceSection() {
   const sectionRef = useRef(null)
