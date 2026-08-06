@@ -24,7 +24,7 @@ src/
 │   ├── Hero.jsx              # hero section, intro GSAP timeline
 │   ├── ProjectCarousel.jsx   # auto-scrolling project image marquee
 │   ├── AboutSection.jsx      # bio card
-│   ├── ExperienceSection.jsx # experience carousel + skills
+│   ├── ExperienceSection.jsx # career timeline + skills
 │   ├── ProjectArchive.jsx    # scroll-blur project card stack
 │   ├── ProjectPage.jsx       # individual project detail page
 │   └── Footer.jsx

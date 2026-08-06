@@ -588,16 +588,35 @@
     -webkit-mask-image: linear-gradient(
       90deg,
       transparent 0%,
-      black 8%,
-      black 92%,
+      black 6%,
+      black 94%,
       transparent 100%
     );
     mask-image: linear-gradient(
       90deg,
       transparent 0%,
-      black 8%,
-      black 92%,
+      black 6%,
+      black 94%,
       transparent 100%
+    );
+  }
+
+  /* Light mode's bright cream backdrop makes a full fade-to-transparent read as a
+     stark white blur, so the edges dim instead of disappearing entirely. */
+  html.light .carousel-viewport {
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.4) 0%,
+      black 10%,
+      black 90%,
+      rgba(0, 0, 0, 0.4) 100%
+    );
+    mask-image: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.4) 0%,
+      black 10%,
+      black 90%,
+      rgba(0, 0, 0, 0.4) 100%
     );
   }
 
@@ -605,9 +624,59 @@
     transform-origin: center center;
   }
 
-  .carousel-tile:hover,
-  .carousel-tile:focus-visible {
-    isolation: isolate;
+  /* Shadows live on pseudo-elements rather than the tile itself: the tile's own
+     box-shadow is owned by the ring-* utilities, and a filter here would promote
+     every tile to its own layer inside the masked, transform-animated track,
+     which made neighbouring tiles re-rasterize on hover. */
+  .carousel-tile::before,
+  .carousel-tile::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  /* Neighbouring shadows have to overlap into one continuous band under the row
+     — that band is the "platform" the cards sit on. Hence no negative spread:
+     insetting the shape would widen the 16px inter-tile gap the blur has to
+     bridge, and the band would visibly dip between cards. Two layers give the
+     fade its own shape instead of one flat smear: a slim near-black core for
+     definition, plus a wider, much fainter layer that carries the continuity
+     across the gaps and dissolves gradually rather than showing a hard edge. */
+  .carousel-tile::before {
+    box-shadow:
+      0 6px 14px rgba(0, 0, 0, 0.28),
+      0 16px 40px rgba(0, 0, 0, 0.16);
+  }
+
+  /* The glow cross-fades via opacity — animating box-shadow itself repaints
+     every frame. Negative spread keeps it tight to the card. */
+  .carousel-tile::after {
+    box-shadow: 0 12px 26px -16px rgba(220, 38, 38, 0.45);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .carousel-tile:hover::after,
+  .carousel-tile:focus-visible::after {
+    opacity: 1;
+  }
+
+  /* Same layering and reach so the band stays thin and continuous; alpha comes
+     down further so it reads as a soft grounding, not a heavy dark platform,
+     against the cream surface. */
+  html.light .carousel-tile::before {
+    box-shadow:
+      0 5px 12px rgba(28, 26, 23, 0.12),
+      0 14px 36px rgba(28, 26, 23, 0.09);
+  }
+
+  /* Red needs noticeably more alpha to register against cream than it does
+     against the near-black dark surface. */
+  html.light .carousel-tile::after {
+    box-shadow: 0 14px 30px -10px rgba(220, 38, 38, 0.5);
   }
 
   .carousel-track {
@@ -618,6 +687,77 @@
   .carousel-viewport:focus-within .carousel-track,
   .carousel-viewport:active .carousel-track {
     animation-play-state: paused;
+  }
+
+  .timeline-spine {
+    background-image: linear-gradient(
+      180deg,
+      var(--brand-red) 0%,
+      var(--brand-orange) 55%,
+      var(--brand-amber) 100%
+    );
+    opacity: 0.5;
+  }
+
+  html.light .timeline-spine {
+    opacity: 0.55;
+  }
+
+  /* Nodes need an opaque fill so the spine does not read through them. */
+  .timeline-node {
+    background-color: #3b3b44;
+    transition:
+      background-color 0.35s ease,
+      box-shadow 0.35s ease,
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  html.light .timeline-node {
+    background-color: #c9bdb1;
+  }
+
+  /* The present role stays brand-tinted even when another entry is selected. */
+  .timeline-node-current {
+    background-image: linear-gradient(
+      135deg,
+      rgb(var(--c-brand-red) / 0.45),
+      rgb(var(--c-brand-orange) / 0.45)
+    );
+  }
+
+  .timeline-node-active {
+    background-color: var(--brand-red);
+    background-image: linear-gradient(135deg, var(--brand-red), var(--brand-orange));
+    box-shadow: 0 0 0 4px rgb(var(--c-brand-red) / 0.18);
+    transform: scale(1.25);
+  }
+
+  /* grid-template-rows 0fr -> 1fr gives a height transition without JS measuring.
+     visibility keeps collapsed content out of the a11y tree and tab order. */
+  .timeline-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      grid-template-rows 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.3s ease,
+      visibility 0s linear 0.45s;
+  }
+
+  .timeline-panel > * {
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  .timeline-panel[data-open='true'] {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    visibility: visible;
+    transition:
+      grid-template-rows 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.3s ease,
+      visibility 0s;
   }
 }
 
@@ -659,15 +799,6 @@
 
 .animate-navbar-in {
   animation: navbar-in 0.8s ease-out 0.4s both;
-}
-
-@keyframes about-exp-progress {
-  from {
-    width: 0%;
-  }
-  to {
-    width: 100%;
-  }
 }
 
 @keyframes aurora-sweep {
@@ -717,14 +848,18 @@
   .animate-navbar-in,
   .text-aurora-animated,
   [data-aurora-blob],
-  .theme-toggle-icon {
+  .theme-toggle-icon,
+  .timeline-pulse,
+  .timeline-node,
+  .timeline-panel,
+  .carousel-tile::after {
     animation: none !important;
     transition: none !important;
   }
 
   .carousel-viewport {
-    -webkit-mask-image: none;
-    mask-image: none;
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
     overflow-x: auto;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;

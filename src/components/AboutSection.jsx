@@ -84,7 +84,7 @@ export default function AboutSection() {
                 Raphael Karamagi
               </span>
               <p className="font-grotesk text-base sm:text-lg text-dark-text/75 leading-relaxed">
-                is a software and hardware engineer at Duke University passionate about turning engineering problems into solutions that work in the real world,
+                is a software and electrical engineer at Duke University passionate about turning engineering problems into solutions that work in the real world,
                 whether that&apos;s hardware, software, or the infrastructure that suppots them. He&apos;s drawn to thoughtful craft
                 and building dependable systems.
               </p>
@@ -104,7 +104,7 @@ export default function AboutSection() {
               {[
                 { n: '1+', label: 'Years of experience' },
                 { n: '4+', label: 'Products shipped' },
-                { n: '2+', label: 'Happy clients' },
+                { n: '10+', label: 'Happy clients' },
               ].map((row, i) => (
                 <li
                   key={row.label}
