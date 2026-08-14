@@ -4,7 +4,8 @@ import { Github, Linkedin } from 'lucide-react'
 import scrollToSection from '../lib/scrollToSection'
 import ThemeToggle from './ThemeToggle'
 
-const RESUME_URL = '/resume/Raphael_Karamagi_May_2026.pdf'
+// Keep this filename stable. 
+const RESUME_URL = '/resume/Raphael_Karamagi_Resume.pdf'
 
 const navLinks = [
   { label: 'About', href: '/#about' },
